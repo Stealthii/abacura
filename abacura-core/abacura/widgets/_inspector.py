@@ -31,7 +31,7 @@ SOFTWARE.
 import asyncio
 import inspect
 import os
-from typing import Any, Iterable, NamedTuple, Optional, Type, TypeGuard
+from typing import Any, Iterable, NamedTuple, Optional, TypeGuard
 
 from rich.highlighter import ReprHighlighter
 from rich.markup import escape
@@ -855,7 +855,7 @@ class NodeInfo(Container):
         # Documentation strings could go in tooltips or otherwise be abbreviated.
         # Source code links could go in tooltips, which might help to prevent line-
         # breaks, which break automatic <file>:<line> linking (Ctrl+Click support) in VS Code.
-        available_events: list[Type[Message]] = []
+        available_events: list[type[Message]] = []
         for cls in type(dom_node).__mro__:
             for value in cls.__dict__.values():
                 if isinstance(value, type) and issubclass(value, Message):
@@ -870,7 +870,7 @@ class NodeInfo(Container):
             except OSError as e:
                 return Text.from_markup(f"[#808080](error getting location: [red]{escape(repr(e))}[/red])[/#808080]")
 
-        def message_info(message_class: Type[Message]) -> Text:
+        def message_info(message_class: type[Message]) -> Text:
             """Return a description of a message class, listing any handlers."""
             handler_name = message_class.handler_name
             handler_names = [handler_name, f"_{handler_name}"]

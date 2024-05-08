@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass, field
 from functools import lru_cache
-from typing import Dict, List, Optional, Set
+from typing import Optional
 
 import tomlkit
 
@@ -11,22 +11,22 @@ from .mob import Mob
 @dataclass()
 class Area:
     name: str = ""
-    include_areas: Optional[List] = field(default_factory=list)
+    include_areas: Optional[list] = field(default_factory=list)
     route: str = "LRV"
     room_range: str = "-"
-    room_min_level: Dict[str, int] = field(default_factory=dict)
-    room_max_level: Dict[str, int] = field(default_factory=dict)
-    rooms_to_scout: Set[str] = field(default_factory=set)
-    room_exclude: Set[str] = field(default_factory=set)
+    room_min_level: dict[str, int] = field(default_factory=dict)
+    room_max_level: dict[str, int] = field(default_factory=dict)
+    rooms_to_scout: set[str] = field(default_factory=set)
+    room_exclude: set[str] = field(default_factory=set)
     track_random_portals: bool = False
-    mobs: List[Mob] = field(default_factory=list)
+    mobs: list[Mob] = field(default_factory=list)
 
     def __post_init__(self):
         # add the cache here to ensure it is an instance level cache
         self.get_excluded_room_vnums = lru_cache(100)(self.get_excluded_room_vnums)
         self.is_allowed_vnum = lru_cache(100)(self.is_allowed_vnum)
 
-    def get_excluded_room_vnums(self, char_level: int) -> Set[str]:
+    def get_excluded_room_vnums(self, char_level: int) -> set[str]:
         exclude = self.room_exclude.copy()
         min_lvl_exclude = {vnum for vnum, min_lvl in self.room_min_level.items() if char_level < min_lvl}
         max_lvl_exclude = {vnum for vnum, max_lvl in self.room_max_level.items() if char_level > max_lvl}

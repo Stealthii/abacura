@@ -4,7 +4,6 @@ import os
 import re
 import time
 from dataclasses import dataclass
-from typing import Dict
 
 from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins import action
@@ -53,7 +52,7 @@ class LegendsOfKallisti(LOKPlugin):
 
         self.dispatch(AbacuraMessage(event_type="core.exec.globals", value={"lok": self.provide_lok_globals}))
 
-    def provide_lok_globals(self) -> Dict:
+    def provide_lok_globals(self) -> dict:
         # pass additional globals to the PythonExecutor Plugin
         _globals = {
             "world": self.world,

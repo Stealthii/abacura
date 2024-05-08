@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 
 @dataclass
@@ -8,7 +7,7 @@ class Skill:
     command: str = ""
     affect_name: str = ""
     renewal: str = ""
-    train: Dict[str, int] = field(default_factory=dict)
+    train: dict[str, int] = field(default_factory=dict)
     sp_base: int = 0
     sp_level_mult: float = 0
     sp_rank_mult: int = 0
@@ -25,7 +24,7 @@ class Skill:
         return hash(self.skill_name)
 
 
-SKILL_LIST: List[Skill] = [
+SKILL_LIST: list[Skill] = [
     Skill("bifrost", train={"Valkyrie": 75}),
     Skill("deathknell", train={"Dreadlord": 33}, delay=2),
     Skill("layhands", train={"Paladin": 11}),
@@ -155,7 +154,7 @@ SKILL_LIST: List[Skill] = [
 ]
 
 # create a lookup dictionary
-SKILLS: Dict[str, Skill] = {s.skill_name: s for s in SKILL_LIST}
-SKILL_COMMANDS: Dict[str, Skill] = {s.command: s for s in SKILL_LIST}
+SKILLS: dict[str, Skill] = {s.skill_name: s for s in SKILL_LIST}
+SKILL_COMMANDS: dict[str, Skill] = {s.command: s for s in SKILL_LIST}
 
 BUTCHER_SKILL_ITEMS = {"extract": "bone", "skin": "hide", "butcher": "meat"}

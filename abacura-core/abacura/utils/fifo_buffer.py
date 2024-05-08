@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generic, List, TypeVar
+from typing import Generic, TypeVar
 
 T = TypeVar("T")
 
@@ -9,7 +9,7 @@ class FIFOBuffer(Generic[T]):
     expelling the first entries when exceeding a maximum size"""
 
     def __init__(self, max_size: int = 16384):
-        self._entries: List[T] = []
+        self._entries: list[T] = []
         self._max_size = max_size
         self.entry_id: int = 0
 
@@ -33,7 +33,7 @@ class FIFOBuffer(Generic[T]):
 class TimestampedBuffer(FIFOBuffer):
     def __init__(self, max_size: int = 16384):
         super().__init__(max_size)
-        self.timestamps: List[datetime] = []
+        self.timestamps: list[datetime] = []
 
     def remove_first(self, n: int = 1):
         super().remove_first(n)

@@ -3,7 +3,7 @@
 import sys
 from collections import OrderedDict
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Optional
 
 import click
 from textual.app import App
@@ -35,7 +35,7 @@ class Abacura(App):
     ]
 
     def __init__(self, config: Config, inspector: bool = False):
-        self.screens: Dict[Session, Screen]
+        self.screens: dict[Session, Screen]
         self.config: Config = config
         self.inspector = inspector
 

@@ -1,7 +1,7 @@
 import time
 from contextlib import ContextDecorator
 from dataclasses import dataclass, field
-from typing import Callable, ClassVar, Dict, Optional
+from typing import Callable, ClassVar, Optional
 
 
 class TimerError(Exception):
@@ -13,7 +13,7 @@ class TimerError(Exception):
 class Timer(ContextDecorator):
     """Time your code using a class, context manager, or decorator"""
 
-    timers: ClassVar[Dict[str, float]] = dict()
+    timers: ClassVar[dict[str, float]] = dict()
     name: Optional[str] = None
     text: str = "{:s}: {:0.6f} seconds"
     logger: Optional[Callable[[str], None]] = print

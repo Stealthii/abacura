@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Dict
 
 
 @dataclass(slots=True)
@@ -117,7 +116,7 @@ _TERRAIN_LIST = [
 ]
 
 # Create a lookup
-_TERRAIN: Dict[str, Terrain] = {t.name: t for t in _TERRAIN_LIST}
+_TERRAIN: dict[str, Terrain] = {t.name: t for t in _TERRAIN_LIST}
 
 
 class TerrainFactory:

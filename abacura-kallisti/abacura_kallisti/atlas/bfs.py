@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .room import Room
@@ -29,7 +29,7 @@ class BFS:
         width: int = 0,
         height: int = 0,
         overscan: int = 0,
-    ) -> List[List[Room | None]]:
+    ) -> list[list[Room | None]]:
         """Return Rooms in Grid around start room"""
         cen_h = int(height / 2)
         cen_w = int(width / 2)

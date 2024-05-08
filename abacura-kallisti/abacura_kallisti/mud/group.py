@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Dict, List
 
 
 @dataclass
@@ -20,9 +19,9 @@ class GroupMember:
 
 class Group:
     def __init__(self):
-        self.members: List[GroupMember] = []
+        self.members: list[GroupMember] = []
 
-    def update_members_from_msdp(self, member_list: List[Dict[str, str]]):
+    def update_members_from_msdp(self, member_list: list[dict[str, str]]):
         self.members = []
         for m in member_list:
             gm = GroupMember(
@@ -41,10 +40,10 @@ class Group:
             )
             self.members.append(gm)
 
-    def get_leaders(self) -> List[GroupMember]:
+    def get_leaders(self) -> list[GroupMember]:
         return [m for m in self.members if m.is_leader or m.is_subleader]
 
-    def get_pcs(self) -> List[GroupMember]:
+    def get_pcs(self) -> list[GroupMember]:
         return [m for m in self.members if m.cls not in ("MOB", "NPC") and m.flags.find("NPC") == -1]
 
     def get_num_pcs_in_group(self) -> int:
@@ -53,11 +52,11 @@ class Group:
     def get_num_pcs_with_you(self) -> int:
         return len([m for m in self.get_pcs() if m.with_you])
 
-    def get_members_with_you(self) -> List[GroupMember]:
+    def get_members_with_you(self) -> list[GroupMember]:
         return [m for m in self.members if m.with_you and m.position != "Linkless"]
 
     @property
-    def members_with_you(self) -> List[GroupMember]:
+    def members_with_you(self) -> list[GroupMember]:
         return [m for m in self.members if m.with_you and m.position != "Linkless"]
 
     def get_num_with_you(self) -> int:

@@ -1,7 +1,6 @@
 from collections import Counter
 from datetime import datetime
 from functools import lru_cache
-from typing import Dict, List
 
 from .terrain import SKILL_TERRAIN, TERRAIN
 from .wilderness import WildernessGrid
@@ -132,8 +131,8 @@ class WildernessMap:
     def get_fg_color_code(fg_color: str) -> str:
         return "<%s>" % TINTIN_COLORS[fg_color]
 
-    def get_map(self, width: int, height: int, you_vnum: str, symbol_overrides: Dict[str, str]) -> List[str]:
-        map_lines: List[str] = []
+    def get_map(self, width: int, height: int, you_vnum: str, symbol_overrides: dict[str, str]) -> list[str]:
+        map_lines: list[str] = []
 
         if you_vnum not in ["?", ""] and int(you_vnum) < 70000:
             return map_lines
@@ -182,9 +181,9 @@ class WildernessMap:
         you_vnum: str = "",
         skill: str = "",
         since: datetime = None,
-    ) -> List[str]:
+    ) -> list[str]:
         scaled_map = []
-        map_lines: List[str] = []
+        map_lines: list[str] = []
         self.sampled_you = False
         self.sampled_gummton = False
 

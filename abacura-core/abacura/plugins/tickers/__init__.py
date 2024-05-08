@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import inspect
 from datetime import datetime, timedelta
-from typing import TYPE_CHECKING, Callable, List
+from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:
     pass
@@ -42,7 +42,7 @@ class Ticker:
 
 class TickerManager:
     def __init__(self):
-        self.tickers: List[Ticker] = []
+        self.tickers: list[Ticker] = []
 
     def register_object(self, obj: object):
         # self.unregister_object(obj)  # prevent duplicates

@@ -1,7 +1,7 @@
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 import tomlkit
 
@@ -16,7 +16,7 @@ class Location:
 
 class LocationList:
     def __init__(self, loc_file: str):
-        self.locations: List[Location] = []
+        self.locations: list[Location] = []
         self.loc_filepath = Path(loc_file)
 
         self.load()
@@ -36,13 +36,13 @@ class LocationList:
 
         with open(self.loc_filepath, "r") as f:
             toml_structure = tomlkit.load(f)
-            locations: List[Location] = []
+            locations: list[Location] = []
             for c in toml_structure.keys():
                 locations += [Location(c, k, v) for k, v in toml_structure[c].items()]
 
             self.locations = locations
 
-    def get_locations_for_vnum(self, vnum: str) -> List[Location]:
+    def get_locations_for_vnum(self, vnum: str) -> list[Location]:
         return [a for a in self.locations if a.vnum == vnum]
 
     @staticmethod
@@ -76,5 +76,5 @@ class LocationList:
     def get_categories(self) -> Counter:
         return Counter([a.category for a in self.locations])
 
-    def get_category(self, category: str) -> List[Location]:
+    def get_category(self, category: str) -> list[Location]:
         return [loc for loc in self.locations if loc.category.lower() == category.lower()]

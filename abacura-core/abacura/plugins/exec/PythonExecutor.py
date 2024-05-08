@@ -1,6 +1,6 @@
 import ast
 import uuid
-from typing import Callable, Dict
+from typing import Callable
 
 from rich.panel import Panel
 from rich.pretty import Pretty
@@ -14,10 +14,10 @@ class PythonExecutor(Plugin):
 
     def __init__(self):
         super().__init__()
-        self.global_providers: Dict[str, Callable] = {"core": self.provide_core_globals}
+        self.global_providers: dict[str, Callable] = {"core": self.provide_core_globals}
         self.exec_locals = {}
 
-    def provide_core_globals(self) -> Dict:
+    def provide_core_globals(self) -> dict:
         return {
             "session": self.session,
             "plugins": self.session.plugin_loader.plugins,
@@ -30,7 +30,7 @@ class PythonExecutor(Plugin):
             "history": self.output_history,
         }
 
-    def get_globals(self) -> Dict:
+    def get_globals(self) -> dict:
         _globals = {}
         for provider in self.global_providers.values():
             _globals.update(provider())

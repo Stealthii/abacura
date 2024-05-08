@@ -9,7 +9,7 @@ import bisect
 import itertools
 from dataclasses import dataclass, field
 from time import monotonic
-from typing import Callable, Dict, Optional
+from typing import Callable, Optional
 
 from textual import log
 
@@ -113,7 +113,7 @@ class CQMessage(AbacuraMessage):
 class TaskManager:
     """Manage tasks by priority"""
 
-    def __init__(self, queues: Dict[str, TaskQueue] | None = None):
+    def __init__(self, queues: dict[str, TaskQueue] | None = None):
         self.tasks: list[Task] = []
         self._NEXT_COMMAND_TIME: float = 0.0
         self._command_inserter: Optional[Callable] = None
@@ -129,7 +129,7 @@ class TaskManager:
     def set_command_inserter(self, f: Callable):
         self._command_inserter = f
 
-    def set_queues(self, queues: Dict[str, TaskQueue]):
+    def set_queues(self, queues: dict[str, TaskQueue]):
         self._queues = queues
 
         # update queues for each task and re-sort in case priorities changed

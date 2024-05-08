@@ -3,7 +3,6 @@ import threading
 from collections import deque
 from dataclasses import dataclass
 from time import perf_counter_ns
-from typing import Dict
 
 try:
     from resource import RUSAGE_SELF, getrusage
@@ -51,7 +50,7 @@ class FunctionCall:
     child_cpu_time: float = 0
 
 
-p_stats: Dict[Function, FunctionStats] = {}
+p_stats: dict[Function, FunctionStats] = {}
 p_start_time = None
 p_profiling = False
 
@@ -126,7 +125,7 @@ def profile_off():
     p_profiling = False
 
 
-def get_profile_stats() -> Dict[Function, FunctionStats]:
+def get_profile_stats() -> dict[Function, FunctionStats]:
     """
     returns dict[Function] -> FunctionStats
     """

@@ -1,7 +1,7 @@
 """Automatic application of Buffs"""
 
 from time import monotonic
-from typing import Dict, Optional
+from typing import Optional
 
 from abacura.plugins import action, command
 from abacura.plugins.events import AbacuraMessage, event
@@ -20,7 +20,7 @@ class AutoBuff(LOKPlugin):
         super().__init__()
         self.getting_skills: bool = False
         self.player_skills: dict[str, PlayerSkill] = {}
-        self.last_attempt: Dict[str, float] = {}
+        self.last_attempt: dict[str, float] = {}
         # Gods don't need buffs :)
         if self.msdp.level < 200:
             self.add_ticker(self._RUNNER_INTERVAL, callback_fn=self.buff_check, repeats=-1, name="autobuff")

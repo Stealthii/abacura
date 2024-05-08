@@ -1,7 +1,7 @@
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Optional
 
 
 @dataclass(slots=True)
@@ -31,11 +31,11 @@ class MudMetrics:
     start_time: Optional[datetime] = None  # field(default_factory=datetime.now)
     stop_time: Optional[datetime] = None
 
-    xp_events: List[EarnedXP] = field(default_factory=list)
-    gold_events: List[EarnedGold] = field(default_factory=list)
+    xp_events: list[EarnedXP] = field(default_factory=list)
+    gold_events: list[EarnedGold] = field(default_factory=list)
 
     counters: Counter = field(default_factory=Counter)
-    info: Dict = field(default_factory=dict)
+    info: dict = field(default_factory=dict)
 
     start_xp: int = 0
     start_gold: int = 0

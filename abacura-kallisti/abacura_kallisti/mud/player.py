@@ -6,7 +6,6 @@ Includes current player information, and preferences
 
 import os
 from dataclasses import dataclass, field, fields
-from typing import Dict
 
 from tomlkit import TOMLDocument, document, parse, table
 
@@ -64,9 +63,9 @@ class PlayerCharacter:
     target_heros: int = 0
 
     harvesting: PlayerHarvesting = field(default_factory=PlayerHarvesting)
-    meta_gold_cost: Dict[str, int] = field(default_factory=dict)
-    meta_xp_cost: Dict[str, int] = field(default_factory=dict)
-    meta_exp_per_hero: Dict[str, float] = field(default_factory=dict)
+    meta_gold_cost: dict[str, int] = field(default_factory=dict)
+    meta_xp_cost: dict[str, int] = field(default_factory=dict)
+    meta_exp_per_hero: dict[str, float] = field(default_factory=dict)
 
     def save(self):
         # convert our convenience stuff back into the _config

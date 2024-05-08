@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Callable, List
+from typing import TYPE_CHECKING, Callable
 
 from abacura.plugins.actions import ActionManager
 from abacura.plugins.aliases.manager import AliasManager
@@ -44,8 +44,8 @@ class Director:
         self.command_manager.unregister_object(obj)
         self.event_manager.unregister_object(obj)
 
-    def get_registrations_for_object(self, obj: object) -> List:
-        registrations: List[Registration] = []
+    def get_registrations_for_object(self, obj: object) -> list:
+        registrations: list[Registration] = []
 
         for act in self.action_manager.actions.queue:
             if act.source == obj:

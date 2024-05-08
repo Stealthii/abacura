@@ -1,6 +1,5 @@
 import re
 from dataclasses import dataclass, field
-from typing import Dict, List
 
 from abacura_kallisti.mud.affect import Affect
 from abacura_kallisti.mud.group import Group
@@ -11,7 +10,7 @@ from abacura_kallisti.mud.skills import SKILL_COMMANDS, SKILLS
 class TypedMSDP:
     ac: int = 0
     account_name: str = ""
-    affects: List[Affect] = field(default_factory=list)
+    affects: list[Affect] = field(default_factory=list)
     alignment: int = 0
     ansi_colors: int = 0
     area_maxlevel: int = 0
@@ -85,7 +84,7 @@ class TypedMSDP:
     remort_laps_in_class: int = 0
     remort_laps_total: int = 0
     reportable_variables: str = ""
-    room_exits: Dict = field(default_factory=dict)
+    room_exits: dict = field(default_factory=dict)
     room_name: str = ""
     room_terrain: str = ""
     room_vnum: str = ""

@@ -1,7 +1,6 @@
 """Kallisti widget for displaying Odometer information"""
 
 from datetime import datetime
-from typing import List
 
 from textual.app import ComposeResult
 from textual.containers import ScrollableContainer
@@ -75,7 +74,7 @@ class LOKOdometer(Static):
         self.styles.height = 7
         self.can_focus = False
         self.can_focus_children = False
-        self.odometers: List[MudMetrics] = []
+        self.odometers: list[MudMetrics] = []
 
     def compose(self) -> ComposeResult:
         yield Static("Odometers", classes="WidgetTitle", id="tq_title")

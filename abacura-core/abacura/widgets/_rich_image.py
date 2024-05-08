@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import lru_cache
 from itertools import groupby
 from pathlib import Path, PurePath
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Union
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
@@ -21,12 +21,12 @@ from textual.widgets import Static
 @dataclass
 class HalfBlock:
     symbol: str
-    fg_color: Optional[Tuple[int, int, int]]
-    bg_color: Optional[Tuple[int, int, int]]
+    fg_color: Optional[tuple[int, int, int]]
+    bg_color: Optional[tuple[int, int, int]]
 
     @staticmethod
     @lru_cache(maxsize=1000)
-    def get_half_block(top_rgba: Tuple, bottom_rgba: Tuple) -> "HalfBlock":
+    def get_half_block(top_rgba: tuple, bottom_rgba: tuple) -> "HalfBlock":
         top_r, top_g, top_b, top_a = top_rgba
         bot_r, bot_g, bot_b, bot_a = bottom_rgba
 
@@ -44,7 +44,7 @@ class HalfBlock:
 
 
 class RichImage:
-    def __init__(self, image: Image, resize: Optional[Tuple[int, int]] = None) -> None:
+    def __init__(self, image: Image, resize: Optional[tuple[int, int]] = None) -> None:
         self.frames = [frame.copy() for frame in ImageSequence.Iterator(image)]
 
         if resize:
@@ -57,7 +57,7 @@ class RichImage:
         self.current_frame: Image = self.frames[self.frame_number]
 
     @staticmethod
-    def from_image_path(path: Union[PurePath, str], resize: Optional[Tuple[int, int]] = None) -> "RichImage":
+    def from_image_path(path: Union[PurePath, str], resize: Optional[tuple[int, int]] = None) -> "RichImage":
         """Create a RichImage object from an image file.
 
         Args:
@@ -68,7 +68,7 @@ class RichImage:
         return RichImage(PILImageModule.open(Path(path)), resize=resize)
 
     @lru_cache(1000)
-    def get_frame_segments(self, frame_number) -> List[Segment]:
+    def get_frame_segments(self, frame_number) -> list[Segment]:
         transparent_black = (0, 0, 0, 0)
         segments = []
         rgba_image = self.frames_rgba[self.frame_number]
@@ -81,7 +81,7 @@ class RichImage:
         # )
 
         for y in range(0, height, 2):
-            blocks: List[HalfBlock] = []
+            blocks: list[HalfBlock] = []
             for x in range(width):
                 top_pixel = rgba_image.getpixel((x, y))
                 if y + 1 < height:

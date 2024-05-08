@@ -3,7 +3,6 @@ import sqlite3
 from dataclasses import fields
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List
 
 from .room import Exit, Room, ScannedRoom
 from .wilderness import WildernessGrid
@@ -16,7 +15,7 @@ class World:
     def __init__(self, db_filename: str):
         db_path = Path(db_filename).expanduser()
 
-        self.rooms: Dict[str, Room] = {}
+        self.rooms: dict[str, Room] = {}
         self.wilderness_loaded: bool = False
 
         # temporary portals do not get persisted
@@ -76,7 +75,7 @@ class World:
         #     # recompute transits
         #     self.area_transits = self.get_area_transits()
 
-    def search(self, word: str) -> List[Room]:
+    def search(self, word: str) -> list[Room]:
         word = word.lower()
         result = []
         for r in self.rooms.values():
@@ -94,7 +93,7 @@ class World:
         name: str,
         vnum: str,
         terrain: str,
-        room_exits: Dict,
+        room_exits: dict,
         scan_room: ScannedRoom,
     ):
         if area_name == "The Wilderness":

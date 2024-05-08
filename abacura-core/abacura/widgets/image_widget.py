@@ -2,7 +2,7 @@ import sys
 from dataclasses import dataclass
 from functools import lru_cache
 from itertools import groupby
-from typing import List, Optional, Tuple
+from typing import Optional
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
@@ -19,12 +19,12 @@ from textual.widget import Widget
 @dataclass
 class HalfBlock:
     symbol: str
-    fg_color: Optional[Tuple[int, int, int]]
-    bg_color: Optional[Tuple[int, int, int]]
+    fg_color: Optional[tuple[int, int, int]]
+    bg_color: Optional[tuple[int, int, int]]
 
     @staticmethod
     @lru_cache(maxsize=1024 * 16)
-    def get_half_block(top_rgba: Tuple, bottom_rgba: Tuple) -> "HalfBlock":
+    def get_half_block(top_rgba: tuple, bottom_rgba: tuple) -> "HalfBlock":
         top_r, top_g, top_b, top_a = top_rgba
         bot_r, bot_g, bot_b, bot_a = bottom_rgba
 
@@ -47,8 +47,8 @@ class ImageWidget(Widget):
 
         self.image_path = image_path
         self.image: Image = PILImageModule.open(image_path)
-        self.frames: List[Image] = [frame.copy() for frame in ImageSequence.Iterator(self.image)]
-        self.strip_cache: List[Optional[List[Strip]]] = [None] * len(self.frames)
+        self.frames: list[Image] = [frame.copy() for frame in ImageSequence.Iterator(self.image)]
+        self.strip_cache: list[Optional[list[Strip]]] = [None] * len(self.frames)
         self.frame_number = 0
         self.loop_number = 0
         self.loops = self.image.info.get("loops", 0)
@@ -80,7 +80,7 @@ class ImageWidget(Widget):
         self.timer = self.set_timer(delay=frame_duration, callback=self.advance_frame)
         self.refresh()
 
-    def get_frame_strips(self, frame_number: int) -> List[Strip]:
+    def get_frame_strips(self, frame_number: int) -> list[Strip]:
         if frame_number > len(self.frames):
             return [Strip([])]
 
@@ -94,9 +94,9 @@ class ImageWidget(Widget):
         rgba_image = current_frame.convert("RGBA")
         width, height = rgba_image.width, rgba_image.height
 
-        strips: List[Strip] = []
+        strips: list[Strip] = []
         for y in range(0, height, 2):
-            blocks: List[HalfBlock] = []
+            blocks: list[HalfBlock] = []
             for x in range(width):
                 top_pixel = rgba_image.getpixel((x, y))
                 if y + 1 < height:

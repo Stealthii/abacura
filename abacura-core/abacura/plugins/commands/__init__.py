@@ -3,7 +3,7 @@ from __future__ import annotations
 import inspect
 import re
 import shlex
-from typing import TYPE_CHECKING, Callable, Dict, List, Tuple
+from typing import TYPE_CHECKING, Callable
 
 from rich.markup import escape
 from textual import log
@@ -64,7 +64,7 @@ class Command:
 
         return submitted_value
 
-    def evaluate_arguments(self, submitted_arguments: List[str], cmd_str: str) -> Dict:
+    def evaluate_arguments(self, submitted_arguments: list[str], cmd_str: str) -> dict:
         """evaluate arguments to command functions"""
         command_parameters = self.get_parameters()
         evaluated_args = {}
@@ -86,7 +86,7 @@ class Command:
 
         return evaluated_args
 
-    def evaluate_options(self, submitted_options: List[str]) -> dict[str, any]:
+    def evaluate_options(self, submitted_options: list[str]) -> dict[str, any]:
         """evaluate options to command functions"""
         if len([so for so in submitted_options if so.lower() in ("h", "help", "?")]):
             return {"help": True}
@@ -128,11 +128,11 @@ class Command:
     def pass_full_command_text(self) -> bool:
         return any([a for a in self.get_parameters() if a.name.lower() == "text"])
 
-    def get_parameters(self) -> List[inspect.Parameter]:
+    def get_parameters(self) -> list[inspect.Parameter]:
         parameters = inspect.signature(self.callback).parameters.values()
         return [p for p in parameters if p.annotation not in [bool, "bool"] and not p.name.startswith("_")]
 
-    def get_options(self) -> Dict[str, inspect.Parameter]:
+    def get_options(self) -> dict[str, inspect.Parameter]:
         parameters = inspect.signature(self.callback).parameters.values()
         return {p.name: p for p in parameters if p.annotation in [bool, "bool"] or p.name.startswith("_")}
 
@@ -146,7 +146,7 @@ class Command:
 
 class CommandManager:
     def __init__(self, session: Session):
-        self.commands: Dict[str, Command] = {}
+        self.commands: dict[str, Command] = {}
         self.session = session
 
     def register_object(self, obj: object):
@@ -164,7 +164,7 @@ class CommandManager:
     def unregister_object(self, obj: object):
         self.commands = {k: v for k, v in self.commands.items() if v.source != obj}
 
-    def parse_command_line(self, command_line: str) -> Tuple[Command, str]:
+    def parse_command_line(self, command_line: str) -> tuple[Command, str]:
         command_line = command_line.lstrip()
         if command_line.startswith("##") and len(command_line) > 2:
             # TODO: This is a bugfix for the input splitter removing a space

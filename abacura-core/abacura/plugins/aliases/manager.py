@@ -6,7 +6,7 @@ import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Optional
 
 import tomlkit
 
@@ -28,7 +28,7 @@ class AliasManager:
     def __init__(self, session: Session):
         super().__init__()
         self.session = session
-        self.aliases: List[Alias] = []
+        self.aliases: list[Alias] = []
         self.re_param = re.compile(r"^%([0-9]+)")
 
     @staticmethod
@@ -47,11 +47,11 @@ class AliasManager:
 
         return None
 
-    def get_categories(self) -> List[str]:
+    def get_categories(self) -> list[str]:
         unique_categories = {a.category for a in self.aliases}
         return list(sorted(unique_categories))
 
-    def get_category(self, category: str) -> List[Alias]:
+    def get_category(self, category: str) -> list[Alias]:
         return [ali for ali in self.aliases if ali.category.lower() == category.lower()]
 
     def get_alias_by_command(self, cmd: str) -> Alias | None:
@@ -90,7 +90,7 @@ class AliasManager:
             self.session.debuglog(msg=f"Import aliases from '{self.alias_filepath}'")
             with open(self.alias_filepath, "r") as f:
                 toml_structure = tomlkit.load(f)
-            aliases: List[Alias] = []
+            aliases: list[Alias] = []
             for c in toml_structure.keys():
                 aliases += [Alias(c, k, v) for k, v in toml_structure[c].items()]
 

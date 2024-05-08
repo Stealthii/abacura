@@ -1,6 +1,5 @@
 # from atlas.known_areas import KnownMob
 from dataclasses import dataclass, field
-from typing import List
 
 
 @dataclass
@@ -11,4 +10,4 @@ class Encounter:
     alert: bool = False
     # known_mob: Optional[KnownMob] = None
     fighting: bool = False
-    flags: List[str] = field(default_factory=List)
+    flags: list[str] = field(default_factory=list)

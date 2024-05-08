@@ -4,7 +4,7 @@ import inspect
 from collections import Counter
 from dataclasses import dataclass, field
 from queue import PriorityQueue
-from typing import Callable, Dict
+from typing import Callable
 
 from textual import log
 
@@ -44,7 +44,7 @@ class EventManager:
 
     def __init__(self):
         log("Booting EventManager")
-        self.events: Dict[str, PriorityQueue] = {}
+        self.events: dict[str, PriorityQueue] = {}
         self.event_counts = Counter()
 
     def register_object(self, obj: object):

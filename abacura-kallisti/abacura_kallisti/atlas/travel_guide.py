@@ -1,7 +1,7 @@
 import heapq
 from dataclasses import dataclass
 from itertools import chain, groupby
-from typing import Callable, Dict, Generator, List, Set
+from typing import Callable, Generator
 
 from abacura_kallisti.atlas.room import Area, Exit, Room
 from abacura_kallisti.atlas.wilderness import WildernessGrid
@@ -21,7 +21,7 @@ class TravelStep:
 
 class TravelPath:
     def __init__(self, destination: Room = None):
-        self.steps: List[TravelStep] = []
+        self.steps: list[TravelStep] = []
         self.destination: Room = destination
 
     def add_step(self, step: TravelStep):
@@ -88,8 +88,8 @@ class TravelGuide:
         self,
         start_vnum: str,
         goal_vnum: str,
-        avoid_vnums: Set[str],
-        allowed_vnums: Set[str] = None,
+        avoid_vnums: set[str],
+        allowed_vnums: set[str] = None,
     ) -> TravelPath:
         try:
             if start_vnum not in self.world.rooms:
@@ -103,11 +103,11 @@ class TravelGuide:
     def get_nearest_rooms_in_set(
         self,
         start_vnum: str,
-        goal_vnums: Set[str],
-        avoid_vnums: Set[str] = None,
-        allowed_vnums: Set[str] = None,
+        goal_vnums: set[str],
+        avoid_vnums: set[str] = None,
+        allowed_vnums: set[str] = None,
         max_rooms: int = 1,
-    ) -> List[TravelPath]:
+    ) -> list[TravelPath]:
         if avoid_vnums is None:
             avoid_vnums = set()
 
@@ -120,7 +120,7 @@ class TravelGuide:
 
         return found
 
-    def _convert_came_from_to_path(self, dest_vnum: str, came_from: Dict) -> TravelPath:
+    def _convert_came_from_to_path(self, dest_vnum: str, came_from: dict) -> TravelPath:
         if dest_vnum not in self.world.rooms:
             return TravelPath()
 
@@ -143,7 +143,7 @@ class TravelGuide:
 
         return path
 
-    def _get_special_exits(self) -> List[SpecialExit]:
+    def _get_special_exits(self) -> list[SpecialExit]:
         def can_go_home(room: Room):
             if room.area_name == "The Wilderness":
                 return False
@@ -190,16 +190,16 @@ class TravelGuide:
     def _gen_nearest_rooms(
         self,
         start_vnum: str,
-        goal_vnums: Set[str],
-        avoid_vnums: Set[str],
-        allowed_vnums: Set[str] = None,
+        goal_vnums: set[str],
+        avoid_vnums: set[str],
+        allowed_vnums: set[str] = None,
     ) -> Generator[TravelPath, None, None]:
         # This is a priority queue using heapq, the lowest weight item will heappop() off the list
         frontier = []
         goal_vnums = goal_vnums.copy()
         heapq.heappush(frontier, (0, start_vnum))
 
-        came_from: Dict[str, (str, Exit, int)] = {start_vnum: (start_vnum, Exit(), 0)}
+        came_from: dict[str, (str, Exit, int)] = {start_vnum: (start_vnum, Exit(), 0)}
         cost_so_far = {start_vnum: 0}
 
         special_exits = self._get_special_exits()
@@ -288,7 +288,7 @@ class TravelGuide:
         self,
         start_vnum: str,
         area: Area,
-        allowed_rooms: Set[str] = None,
+        allowed_rooms: set[str] = None,
         max_steps: int = 999999,
         consider_locks_reachable: bool = False,
     ) -> set:

@@ -5,7 +5,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
 from importlib.util import find_spec
-from typing import TYPE_CHECKING, Dict, List
+from typing import TYPE_CHECKING
 
 from textual import log
 
@@ -20,7 +20,7 @@ class PluginModule:
     module_path: str
     absolute_filename: str
     relative_filename: str
-    context: Dict = field(default_factory=dict)
+    context: dict = field(default_factory=dict)
     modified_time: float = 0
     plugin_count: int = 0
     last_action: str = ""
@@ -37,9 +37,9 @@ class PluginLoader:
     """Loads all plugins and registers them"""
 
     def __init__(self):
-        self.module_paths_discovered: Dict[str, Dict] = {}
-        self.plugins: Dict[str, Plugin] = {}
-        self.plugin_modules: Dict[str, PluginModule] = {}
+        self.module_paths_discovered: dict[str, dict] = {}
+        self.plugins: dict[str, Plugin] = {}
+        self.plugin_modules: dict[str, PluginModule] = {}
         self.load_times = Counter()
         self.total_time = 0
 
@@ -141,7 +141,7 @@ class PluginLoader:
 
         return discovered
 
-    def load_plugins(self, module_paths: List[str], plugin_context: Dict) -> list[PluginModule]:
+    def load_plugins(self, module_paths: list[str], plugin_context: dict) -> list[PluginModule]:
         """Load/Reload plugins from module_paths"""
 
         start_time = datetime.utcnow()

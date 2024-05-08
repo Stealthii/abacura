@@ -3,7 +3,7 @@ import re
 import unicodedata
 from dataclasses import asdict, fields
 from itertools import takewhile
-from typing import List, Pattern
+from typing import Pattern
 
 from rich.console import Group
 from rich.text import Text
@@ -79,14 +79,14 @@ class RoomMessageParser:
         "your follower",
     }
 
-    def __init__(self, messages: List[OutputMessage]):
+    def __init__(self, messages: list[OutputMessage]):
         self.messages = messages
         self.has_quest: bool = False
         self.header: RoomHeader = RoomHeader("")
-        self.items: List[RoomItem] = []
-        self.players: List[RoomPlayer] = []
-        self.mobs: List[RoomMob] = []
-        self.corpses: List[RoomCorpse] = []
+        self.items: list[RoomItem] = []
+        self.players: list[RoomPlayer] = []
+        self.mobs: list[RoomMob] = []
+        self.corpses: list[RoomCorpse] = []
         self.blood_trail: str = ""
         self.hunt_tracks: str = ""
 
@@ -410,7 +410,7 @@ class RoomWatcher(LOKPlugin):
         self.debuglog(msg=f"Loaded area file '{filename}'")
         return new_area
 
-    def get_last_room_messages(self) -> List[OutputMessage]:
+    def get_last_room_messages(self) -> list[OutputMessage]:
         num_lines = self.output_history.entry_id - self.room_header_entry_id + 1
 
         if self.room_header_entry_id < 0 or 1 > num_lines > 100:
@@ -418,7 +418,7 @@ class RoomWatcher(LOKPlugin):
 
         return [m for m in self.output_history[-num_lines:] if type(m.message) in (str, "str")]
 
-    def get_minimap_messages(self) -> List[OutputMessage]:
+    def get_minimap_messages(self) -> list[OutputMessage]:
         n = self.output_history.entry_id - self.room_header_entry_id + 1
 
         if self.msdp.area_name == "The Wilderness":

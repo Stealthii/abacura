@@ -1,6 +1,5 @@
 import re
 from functools import lru_cache
-from typing import List
 
 SURVEY_TERRAIN = {
     ". 0 32": "Field",
@@ -90,10 +89,10 @@ class WildernessGrid:
     split_re = re.compile(r"(\x1b\[[^m]+m)")
     color_re = re.compile(r"\x1b\[(\d);(\d+)m")
 
-    def parse_minimap(self, lines, you_vnum: str = "") -> List[List[WildernessRoom]]:
+    def parse_minimap(self, lines, you_vnum: str = "") -> list[list[WildernessRoom]]:
         cur_color: int = 32
         cur_bright: bool = False
-        rows: List[List[WildernessRoom]] = []
+        rows: list[list[WildernessRoom]] = []
         you_row: int = 0
         you_col: int = 0
         if you_vnum == "" or you_vnum == "?" or int(you_vnum) < self.UPPER_LEFT:

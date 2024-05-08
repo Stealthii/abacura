@@ -2,7 +2,7 @@ import re
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from functools import lru_cache
-from typing import Dict, List, Optional, Set
+from typing import Optional
 
 from abacura.mud import OutputMessage
 from abacura.plugins.events import AbacuraMessage
@@ -31,14 +31,14 @@ class Exit:
 
     @classmethod
     @lru_cache()
-    def persistent_fields(cls) -> List[str]:
+    def persistent_fields(cls) -> list[str]:
         return [f.name for f in fields(cls) if not f.name.startswith("_")]
 
     @property
     def temporary(self) -> bool:
         return self._temporary
 
-    def get_commands(self) -> List[str]:
+    def get_commands(self) -> list[str]:
         if self.commands:
             return self.commands.split(";")
 
@@ -72,7 +72,7 @@ class Room:
     last_visited: Optional[datetime] = None
     last_harvested: Optional[datetime] = None
     # _exits should be last to make the simple db query work
-    _exits: Dict[str, Exit] = field(default_factory=dict)
+    _exits: dict[str, Exit] = field(default_factory=dict)
 
     @property
     def terrain(self) -> Terrain:
@@ -80,12 +80,12 @@ class Room:
 
     @classmethod
     @lru_cache()
-    def persistent_fields(cls) -> List[str]:
+    def persistent_fields(cls) -> list[str]:
         return [f.name for f in fields(cls) if not f.name.startswith("_")]
 
     @staticmethod
     @lru_cache(maxsize=100000)
-    def get_wilderness_temp_exits(vnum: str) -> Dict[str, Exit]:
+    def get_wilderness_temp_exits(vnum: str) -> dict[str, Exit]:
         wilderness_exits = {}
         grid = WildernessGrid()
         for direction, to_vnum in grid.get_exits(vnum).items():
@@ -95,7 +95,7 @@ class Room:
         return wilderness_exits
 
     @property
-    def exits(self) -> Dict[str, Exit]:
+    def exits(self) -> dict[str, Exit]:
         try:
             v = int(self.vnum)
         except ValueError:
@@ -110,10 +110,10 @@ class Room:
 
 
 class ScannedMiniMap:
-    def __init__(self, messages: List[OutputMessage] = None):
+    def __init__(self, messages: list[OutputMessage] = None):
         self.you: Optional[tuple] = None
-        self.grid: Dict[tuple, str] = {}
-        self.messages: List[OutputMessage] = messages or []
+        self.grid: dict[tuple, str] = {}
+        self.messages: list[OutputMessage] = messages or []
 
         if messages is None:
             return
@@ -137,8 +137,8 @@ class ScannedMiniMap:
 class RoomHeader:
     line: str = field(repr=False, default="")
     name: str = ""
-    exits: List[str] = field(default_factory=list)
-    flags: Set[str] = field(default_factory=set)
+    exits: list[str] = field(default_factory=list)
+    flags: set[str] = field(default_factory=set)
     compass: bool = False
     terrain_name: str = ""
     time: str = ""
@@ -150,7 +150,7 @@ class RoomPlayer:
     line: str = field(repr=False, default="")
     name: str = ""
     race: str = ""
-    flags: Set[str] = field(default_factory=set)
+    flags: set[str] = field(default_factory=set)
     # evil sanc (same list as mobs)
     riding: str = ""
 
@@ -162,7 +162,7 @@ class RoomItem:
     short: str = ""
     quantity: int = 1
     blue: bool = False
-    flags: Set[str] = field(default_factory=set)
+    flags: set[str] = field(default_factory=set)
 
 
 @dataclass
@@ -187,7 +187,7 @@ class RoomMob(Mob):
     fighting_you: bool = False
     following_you: bool = False
     ranged: bool = False
-    flags: Set[str] = field(default_factory=set)
+    flags: set[str] = field(default_factory=set)
 
     def copy_mob_properties(self, mob: Mob):
         for f in fields(Mob):
@@ -198,15 +198,15 @@ class RoomMob(Mob):
 class ScannedRoom(Room):
     header: RoomHeader = field(default_factory=RoomHeader)
     area: Area = field(default_factory=Area)
-    items: List[RoomItem] = field(default_factory=list)
-    corpses: List[RoomCorpse] = field(default_factory=list)
-    mobs: List[RoomMob] = field(default_factory=list)
-    players: List[RoomPlayer] = field(default_factory=list)
+    items: list[RoomItem] = field(default_factory=list)
+    corpses: list[RoomCorpse] = field(default_factory=list)
+    mobs: list[RoomMob] = field(default_factory=list)
+    players: list[RoomPlayer] = field(default_factory=list)
     minimap: ScannedMiniMap = field(default_factory=ScannedMiniMap)
     warded: bool = False
     blood_trail: str = ""
     hunt_tracks: str = ""
-    msdp_exits: Dict[str, str] = field(default_factory=dict)
+    msdp_exits: dict[str, str] = field(default_factory=dict)
 
     def identify_room_mobs(self):
         if len(self.area.mobs) == 0:

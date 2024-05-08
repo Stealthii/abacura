@@ -1,16 +1,13 @@
-from typing import Dict
-
-
 class ContextError(Exception):
     pass
 
 
 class PluginContextManager:
-    _session_contexts: Dict[str, Dict] = {}
-    current_context: Dict | None = None
+    _session_contexts: dict[str, dict] = {}
+    current_context: dict | None = None
 
     def __init__(self, session_name: str = "", **kwargs):
-        self.previous_context: Dict | None = None
+        self.previous_context: dict | None = None
         self.session_name = session_name
         PluginContextManager._session_contexts[session_name] = kwargs.copy()
 
@@ -41,7 +38,7 @@ class Plugin:
     def __init__(self, n: int):
         print(n)
 
-    def __new__(cls, context: Dict):
+    def __new__(cls, context: dict):
         instance = super().__new__(cls)
         instance._context = context
         print("context", context)
