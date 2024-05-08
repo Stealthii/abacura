@@ -9,22 +9,22 @@ from .world import World
 
 
 TINTIN_COLORS = {
-    'black': 'aaa',
-    'red': 'daa',
-    'green': 'ada',
-    'yellow': 'dda',
-    'blue': 'aad',
-    'magenta': 'dad',
-    'cyan': 'add',
-    'white': 'ddd',
-    'gray': 'ddd',
-    'bright_red': 'faa',
-    'bright_green': 'afa',
-    'bright_yellow': 'ffa',
-    'bright_blue': 'aaf',
-    'bright_magenta': 'ffa',
-    'bright_cyan': 'aff',
-    'bright_white': 'fff'
+    "black": "aaa",
+    "red": "daa",
+    "green": "ada",
+    "yellow": "dda",
+    "blue": "aad",
+    "magenta": "dad",
+    "cyan": "add",
+    "white": "ddd",
+    "gray": "ddd",
+    "bright_red": "faa",
+    "bright_green": "afa",
+    "bright_yellow": "ffa",
+    "bright_blue": "aaf",
+    "bright_magenta": "ffa",
+    "bright_cyan": "aff",
+    "bright_white": "fff",
 }
 
 
@@ -33,6 +33,7 @@ class WildernessMap:
     Used to create smaller, "down-sampled" maps of wilderness.
     Special care is taken with "landmark" terrain including water, peaks, lava, etc
     """
+
     def __init__(self, world: World):
         """
         :param world: The world with the list of all known rooms
@@ -42,8 +43,7 @@ class WildernessMap:
         self.sampled_you: bool = False
         self.sampled_gummton: bool = False
 
-    def sample(self, center_point, radii,
-               skill: str = '', since: datetime = None, you_vnum: str = '') -> (str, bool):
+    def sample(self, center_point, radii, skill: str = "", since: datetime = None, you_vnum: str = "") -> (str, bool):
         """
         Sample the terrain around a specific point in wilderness.
         Reduces that terrain to a single terrain value
@@ -72,13 +72,13 @@ class WildernessMap:
                 room = self.world.rooms.get(sample_vnum, None)
                 if room is not None:
                     if room.vnum == you_vnum and not self.sampled_you:
-                        counts['You'] += 1
+                        counts["You"] += 1
                     else:
                         counts[room.terrain_name] += 1
 
                     recently_harvested = False
                     skill_date = room.last_harvested
-                    if since is not None and skill_date is not None and skill_date != '':
+                    if since is not None and skill_date is not None and skill_date != "":
                         recently_harvested = skill_date >= since
 
                     if room.terrain_name in harvestable_terrain and not recently_harvested:
@@ -90,23 +90,30 @@ class WildernessMap:
         try:
             sample_terrain = mc[0][0]
         except IndexError:
-            sample_terrain = ''
+            sample_terrain = ""
 
         sampled_area = max(1, sum(counts.values()))
         harvestable = harvestable_count >= 0.4 * sampled_area
 
         # Override based on percent of area for specific terrain types to highlight certain features
         # Override percentages change with scale of map
-        terrain_pct = [('You', 0), ('Underground', 0),  # any of these and we override
-                       ('Lava', 100/sampled_area), ('Arctic', 200/sampled_area), ('Snow', 600/sampled_area),
-                       ('Water', max(12.0, sampled_area/10)), ('Peak', 400/sampled_area), ('Mountains', 35)]
+        terrain_pct = [
+            ("You", 0),
+            ("Underground", 0),  # any of these and we override
+            ("Lava", 100 / sampled_area),
+            ("Arctic", 200 / sampled_area),
+            ("Snow", 600 / sampled_area),
+            ("Water", max(12.0, sampled_area / 10)),
+            ("Peak", 400 / sampled_area),
+            ("Mountains", 35),
+        ]
 
-        if not self.sampled_gummton and 'Field Bridge' in counts:
+        if not self.sampled_gummton and "Field Bridge" in counts:
             self.sampled_gummton = True
-            sample_terrain = 'Field Bridge'
-        elif not self.sampled_you and 'You' in counts:
+            sample_terrain = "Field Bridge"
+        elif not self.sampled_you and "You" in counts:
             self.sampled_you = True
-            sample_terrain = 'You'
+            sample_terrain = "You"
         else:
             for t, pct in terrain_pct:
                 if counts[t] > sampled_area * pct / 100:
@@ -117,19 +124,19 @@ class WildernessMap:
 
     @staticmethod
     def get_bg_color_code(bright: int, bg_color: str) -> str:
-        bg_color = bg_color.replace('bright_', '')
+        bg_color = bg_color.replace("bright_", "")
 
         # return '<B%s>' % TINTIN_COLORS[bg_color]
-        return '<%s>' % TINTIN_COLORS[bg_color].upper()
+        return "<%s>" % TINTIN_COLORS[bg_color].upper()
 
     @staticmethod
     def get_fg_color_code(fg_color: str) -> str:
-        return '<%s>' % TINTIN_COLORS[fg_color]
+        return "<%s>" % TINTIN_COLORS[fg_color]
 
     def get_map(self, width: int, height: int, you_vnum: str, symbol_overrides: Dict[str, str]) -> List[str]:
         map_lines: List[str] = []
 
-        if you_vnum not in ['?', ''] and int(you_vnum) < 70000:
+        if you_vnum not in ["?", ""] and int(you_vnum) < 70000:
             return map_lines
 
         y_radius: int = (height - 1) // 2
@@ -137,15 +144,15 @@ class WildernessMap:
 
         for delta_y in range(-y_radius, y_radius + 1):
             map_line = ""
-            last_fg: str = ''
-            last_bg: str = ''
+            last_fg: str = ""
+            last_bg: str = ""
 
             for delta_x in range(-x_radius, x_radius + 1):
                 vnum = self.grid.get_vnum(you_vnum, delta_x, delta_y)
                 # print('%d, %d: %s' % (delta_x, delta_y, vnum))
-                terrain: str = ' '
+                terrain: str = " "
                 if vnum == you_vnum:
-                    terrain = 'You'
+                    terrain = "You"
                 elif vnum in self.world.rooms:
                     terrain = self.world.rooms[vnum].terrain_name
 
@@ -168,8 +175,15 @@ class WildernessMap:
 
         return map_lines
 
-    def get_scaled_map(self, scale_width: int = 100, scale_height: int = 30, ruler: bool = False, you_vnum: str = '',
-                       skill: str = '', since: datetime = None) -> List[str]:
+    def get_scaled_map(
+        self,
+        scale_width: int = 100,
+        scale_height: int = 30,
+        ruler: bool = False,
+        you_vnum: str = "",
+        skill: str = "",
+        since: datetime = None,
+    ) -> List[str]:
         scaled_map = []
         map_lines: List[str] = []
         self.sampled_you = False
@@ -180,7 +194,7 @@ class WildernessMap:
         x_radius = x_scale / 2
         y_radius = y_scale / 2
         radii = (x_radius, y_radius)
-        area = (2*x_radius+1)*(2*y_radius+1)
+        area = (2 * x_radius + 1) * (2 * y_radius + 1)
         print("scaled map: ", (scale_width, scale_height), (x_scale, y_scale), radii, area)
 
         for y in range(scale_height):
@@ -193,14 +207,14 @@ class WildernessMap:
             scaled_map.append(row)
 
         if ruler:
-            x_ruler = [u"\u001b[0;37m\u001b[48;5;0m  "] + ["%d" % (x % 10) for x in range(len(scaled_map[0]))]
+            x_ruler = ["\u001b[0;37m\u001b[48;5;0m  "] + ["%d" % (x % 10) for x in range(len(scaled_map[0]))]
             x_ruler = "".join(x_ruler)
             map_lines = [x_ruler]
 
         for y in range(len(scaled_map)):
-            s = ''
+            s = ""
             if ruler:
-                s = u"\u001b[38;5;7m\u001b[48;5;0m" + "%d " % (y % 10)
+                s = "\u001b[38;5;7m\u001b[48;5;0m" + "%d " % (y % 10)
 
             for x in range(len(scaled_map[0])):
                 terrain_name, harvestable = scaled_map[y][x]
@@ -208,9 +222,9 @@ class WildernessMap:
                 # if terrain_name not in TERRAIN:
                 #     terrain_name = '?'
 
-                bg_color_override = ''
-                if skill != '' and harvestable and terrain_name in SKILL_TERRAIN[skill]:
-                    bg_color_override = 'magenta'
+                bg_color_override = ""
+                if skill != "" and harvestable and terrain_name in SKILL_TERRAIN[skill]:
+                    bg_color_override = "magenta"
 
                 fg, bg = self.get_terrain_color_codes(terrain_name, bg_color_override)
                 s += fg + bg + TERRAIN[terrain_name].symbol
@@ -220,16 +234,15 @@ class WildernessMap:
         return map_lines
 
     @lru_cache(100)
-    def get_terrain_color_codes(self, terrain_name: str, bg_color_override: str = '') -> (str, str):
-
+    def get_terrain_color_codes(self, terrain_name: str, bg_color_override: str = "") -> (str, str):
         terrain = TERRAIN[terrain_name]
         fg_color = terrain.color
-        bg_color = fg_color if terrain.bg_color == '' else terrain.bg_color
+        bg_color = fg_color if terrain.bg_color == "" else terrain.bg_color
 
         if bg_color_override:
             bg_color = bg_color_override
 
-        bright = 1 if fg_color.startswith('bright') else 0
+        bright = 1 if fg_color.startswith("bright") else 0
 
         bg_color_code = self.get_bg_color_code(bright, bg_color)
         fg_color_code = self.get_fg_color_code(fg_color)

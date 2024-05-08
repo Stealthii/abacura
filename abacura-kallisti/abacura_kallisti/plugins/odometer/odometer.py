@@ -12,6 +12,7 @@ from abacura.utils.renderables import tabulate, AbacuraPanel
 
 class OdometerController(LOKPlugin):
     """Track and view metrics, start odometers"""
+
     def __init__(self):
         super().__init__()
         self.last_kill = ""
@@ -33,7 +34,7 @@ class OdometerController(LOKPlugin):
             return
 
         if _start:
-            if _mission == '':
+            if _mission == "":
                 _mission = self.msdp.area_name
 
             self.odometer.start(mission=_mission)
@@ -47,20 +48,24 @@ class OdometerController(LOKPlugin):
 
         rows = []
         for i, m in enumerate(reversed(self.odometer.metric_history)):
-            rows.append((len(self.odometer.metric_history) - i,
-                         m.mission,
-                         m.start_time.strftime("%H:%M:%S"),
-                         datetime.utcfromtimestamp(m.elapsed).strftime('%H:%M:%S'),
-                         m.kills_per_hour,
-                         human_format(m.xp_per_hour), human_format(m.gold_per_hour)
-                         ))
+            rows.append(
+                (
+                    len(self.odometer.metric_history) - i,
+                    m.mission,
+                    m.start_time.strftime("%H:%M:%S"),
+                    datetime.utcfromtimestamp(m.elapsed).strftime("%H:%M:%S"),
+                    m.kills_per_hour,
+                    human_format(m.xp_per_hour),
+                    human_format(m.gold_per_hour),
+                ),
+            )
 
         headers = ["#", "Mission", "Start", "Elapsed", "Kills/h", "XP/h", "$/h"]
         self.output(AbacuraPanel(tabulate(rows, headers=headers), title="Odometers"))
 
     @ticker(seconds=1, name="Odometer")
     def odometer_ticker(self):
-        if len(self.odometer.metric_history) == 0 and self.msdp.character_name != '':
+        if len(self.odometer.metric_history) == 0 and self.msdp.character_name != "":
             self.debuglog("Starting initial odometer")
             self.odometer.start(mission=self.msdp.area_name)
 
@@ -75,33 +80,35 @@ class OdometerController(LOKPlugin):
 
     @event("core.prompt")
     def got_prompt(self, _: AbacuraMessage):
-        self.last_kill = ''
-        self.last_skill = ''
+        self.last_kill = ""
+        self.last_skill = ""
 
     @action(r"^You gain (\d+) experience for mastering a skill.")
     def skill_exp(self, xp: int):
-        self.metrics.earn_xp('practice', xp, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
+        self.metrics.earn_xp("practice", xp, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^You receive a reduced reward for a frequent kill, only (\d+) experience points.")
     def killed_reduced_exp(self, xp: int):
-        self.metrics.earn_xp('kill-reduced', xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
+        self.metrics.earn_xp("kill-reduced", xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^You receive your reward for the kill, (\d+) experience points\.")
     def killed_exp(self, xp: int):
-        self.metrics.earn_xp('kill', xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
+        self.metrics.earn_xp("kill", xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^You receive your reward for the kill, (\d+) experience points plus (\d+) bonus experience for a rare")
     def killed_rare_exp(self, kill_xp: int, rare_xp: int):
-        self.metrics.earn_xp('kill', kill_xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
-        self.metrics.earn_xp('kill-rare', rare_xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
+        self.metrics.earn_xp("kill", kill_xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
+        self.metrics.earn_xp("kill-rare", rare_xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^There were (\d+) coins")
     def coins(self, gold: int):
         source = "kill" if self.last_kill else ""
         self.metrics.earn_gold(source, gold, self.last_kill, self.msdp.area_name, self.msdp.room_vnum)
 
-    @action(r"^You (mine|gather|chop down|catch|skin|butcher|extract) some (.*) " +
-            "(herbs|cotton|silk|ore|wood|fish|meat|hide|bone)")
+    @action(
+        r"^You (mine|gather|chop down|catch|skin|butcher|extract) some (.*) "
+        + "(herbs|cotton|silk|ore|wood|fish|meat|hide|bone)",
+    )
     def harvested(self, skill: str, quality: str, _material: str):
         self.metrics.craft_attempted += 1
         self.metrics.craft_successful += 1
@@ -118,7 +125,7 @@ class OdometerController(LOKPlugin):
 
     @action(r"^You deposit (.*) coins.")
     def deposit_coins(self, coins: int):
-        self.metrics.counters['deposit'] += coins
+        self.metrics.counters["deposit"] += coins
 
     @event("core.msdp.EXPERIENCE")
     def msdp_xp(self, _: AbacuraMessage):

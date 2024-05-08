@@ -8,11 +8,12 @@ from abacura_kallisti.plugins import LOKPlugin
 @dataclass
 class CorpseMessage(AbacuraMessage):
     """Message when a room is viewed"""
+
     size: str = ""
     weight: int = 0
     value: int = 0
-    corpse_type: str = ''
-    race: str = ''
+    corpse_type: str = ""
+    race: str = ""
     level: int = 0
     event_type: str = "lok.corpse"
 
@@ -22,7 +23,7 @@ class CorpseScanner(LOKPlugin):
 
     def __init__(self):
         super().__init__()
-        self.last_size = ''
+        self.last_size = ""
         self.last_weight = 0
         self.last_value = 0
 
@@ -35,5 +36,13 @@ class CorpseScanner(LOKPlugin):
     @action(r"^Corpse type: (.*), Race of deceased: (.*), Level: (\d+)")
     def corpse(self, corpse_type: str, race: str, level: int):
         # self.debuglog(msg="Corpse")
-        self.dispatch(CorpseMessage(race=race, level=level, size=self.last_size,
-                                    weight=self.last_weight, value=self.last_value, corpse_type=corpse_type))
+        self.dispatch(
+            CorpseMessage(
+                race=race,
+                level=level,
+                size=self.last_size,
+                weight=self.last_weight,
+                value=self.last_value,
+                corpse_type=corpse_type,
+            ),
+        )

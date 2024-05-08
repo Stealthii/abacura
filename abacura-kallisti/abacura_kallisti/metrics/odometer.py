@@ -27,11 +27,17 @@ class Odometer:
             self.metrics.end_bank = self.msdp.bank_gold
             self.metrics.stop_time = datetime.now()
 
-        self.metrics = MudMetrics(mission=mission, character_name=self.msdp.character_name,
-                                  start_time=datetime.now(),
-                                  start_xp=self.msdp.experience, end_xp=self.msdp.experience,
-                                  start_gold=self.msdp.gold, end_gold=self.msdp.gold,
-                                  start_bank=self.msdp.bank_gold, end_bank=self.msdp.bank_gold)
+        self.metrics = MudMetrics(
+            mission=mission,
+            character_name=self.msdp.character_name,
+            start_time=datetime.now(),
+            start_xp=self.msdp.experience,
+            end_xp=self.msdp.experience,
+            start_gold=self.msdp.gold,
+            end_gold=self.msdp.gold,
+            start_bank=self.msdp.bank_gold,
+            end_bank=self.msdp.bank_gold,
+        )
 
         self.metric_history.append(self.metrics)
 
@@ -42,14 +48,34 @@ class Odometer:
 
     @staticmethod
     def get_quality_number(quality: str):
-        qualities = {'junk': 1, 'rough': 2, 'average': 4, 'good': 6, 'excellent': 7,
-                     'superior': 8, 'pristine': 9, 'exquisite': 10, 'flawless': 11,
-                     'divine': 12, 'divine quality': 12}
+        qualities = {
+            "junk": 1,
+            "rough": 2,
+            "average": 4,
+            "good": 6,
+            "excellent": 7,
+            "superior": 8,
+            "pristine": 9,
+            "exquisite": 10,
+            "flawless": 11,
+            "divine": 12,
+            "divine quality": 12,
+        }
         return qualities.get(quality, 0)
 
     @staticmethod
     def get_quality_value(quality: str) -> int:
-        qualities = {'junk': 0, 'rough': 0, 'average': 4500, 'good': 10800, 'excellent': 17150,
-                     'superior': 25600, 'pristine': 36450, 'exquisite': 50000, 'flawless': 66550,
-                     'divine': 86400, 'divine quality': 86400}
-        return qualities.get(quality, 0) * .75
+        qualities = {
+            "junk": 0,
+            "rough": 0,
+            "average": 4500,
+            "good": 10800,
+            "excellent": 17150,
+            "superior": 25600,
+            "pristine": 36450,
+            "exquisite": 50000,
+            "flawless": 66550,
+            "divine": 86400,
+            "divine quality": 86400,
+        }
+        return qualities.get(quality, 0) * 0.75

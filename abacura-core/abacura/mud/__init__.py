@@ -1,21 +1,21 @@
 """
 The mud module contains Session objects and protocol handlers
 """
+
 import re
 import traceback
 from rich.traceback import Traceback
 from abacura.utils.renderables import AbacuraError, AbacuraWarning, Panel, box
 
 
-ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 
 class OutputMessage:
-
     def __init__(self, message: str, gag: bool = False):
         self.message: str = message
         if type(message) is str:
-            self.stripped = ansi_escape.sub('', message)
+            self.stripped = ansi_escape.sub("", message)
         else:
             self.stripped = message
         self.gag: bool = gag

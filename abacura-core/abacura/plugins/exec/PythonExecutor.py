@@ -18,16 +18,17 @@ class PythonExecutor(Plugin):
         self.exec_locals = {}
 
     def provide_core_globals(self) -> Dict:
-        return {"session": self.session,
-                "plugins": self.session.plugin_loader.plugins,
-                "respond": self.add_response,
-                "action": self.add_action,
-                "ticker": self.add_ticker,
-                "output": self.output,
-                "send": self.send,
-                "input": self.session.player_input,
-                "history": self.output_history
-                }
+        return {
+            "session": self.session,
+            "plugins": self.session.plugin_loader.plugins,
+            "respond": self.add_response,
+            "action": self.add_action,
+            "ticker": self.add_ticker,
+            "output": self.output,
+            "send": self.send,
+            "input": self.session.player_input,
+            "history": self.output_history,
+        }
 
     def get_globals(self) -> Dict:
         _globals = {}
@@ -46,6 +47,7 @@ class PythonExecutor(Plugin):
         def do_response():
             self.send(message)
             self.remove_action(name)
+
         self.add_action(pattern, do_response, flags=flags, name=name)
 
     @command
@@ -101,7 +103,7 @@ class PythonExecutor(Plugin):
             # result = eval(compiled, self.get_globals(), self.exec_locals)
 
             exec("__result = " + text, self.get_globals(), self.exec_locals)
-            result = self.exec_locals.get('__result', None)
+            result = self.exec_locals.get("__result", None)
 
             if result is not None:
                 pretty = Pretty(result, max_length=100, max_depth=4)

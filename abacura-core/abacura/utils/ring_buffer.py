@@ -6,9 +6,13 @@ import time
 
 
 class RingBufferLogSql:
-    def __init__(self, db_filename: str = ':memory:', ring_size: int = 10000,
-                 wal: bool = True, commit_interval: int = 10):
-
+    def __init__(
+        self,
+        db_filename: str = ":memory:",
+        ring_size: int = 10000,
+        wal: bool = True,
+        commit_interval: int = 10,
+    ):
         self.db_filename = db_filename
         self.ring_size = ring_size
         self.commit_interval = commit_interval
@@ -42,13 +46,13 @@ class RingBufferLogSql:
     def log(self, message: OutputMessage):
         log_epoch_ns = time.time_ns()
 
-        if type(message.message) not in [str, 'str']:
+        if type(message.message) not in [str, "str"]:
             return
 
         if self.log_context_provider is not None:
             log_context = self.log_context_provider()
         else:
-            log_context = ''
+            log_context = ""
 
         values = (self.ring_number, log_epoch_ns, log_context, message.message, message.stripped)
         self.conn.execute("insert or replace into ring_log values(?, ?, ?, ?, ?)", values)
@@ -59,7 +63,7 @@ class RingBufferLogSql:
         if self.rows_logged % self.commit_interval == 0:
             self.conn.commit()
 
-    def query(self, like: str = '', clause: str = '', limit: int = 100, epoch_start: int = 0, grouped: bool = False):
+    def query(self, like: str = "", clause: str = "", limit: int = 100, epoch_start: int = 0, grouped: bool = False):
         select = "message, ring_number, epoch_ns, context"
         group_by = ""
         if grouped:
@@ -81,7 +85,7 @@ class RingBufferLogSql:
         logs = []
         for message, rb, ns, ctx in reversed(results):
             dt: datetime = datetime.fromtimestamp(ns / 1e9)
-            dts = dt.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3]
+            dts = dt.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]
             logs.append((dts, ctx, message))
 
         return logs
@@ -89,8 +93,8 @@ class RingBufferLogSql:
     def commit(self):
         self.conn.commit()
 
-    def checkpoint(self, method: str = 'truncate'):
+    def checkpoint(self, method: str = "truncate"):
         self.commit()
-        if method.lower() not in ['truncate', 'passive', 'full', 'restart']:
-            raise ValueError('Invalid checkpoint method %s' % method)
+        if method.lower() not in ["truncate", "passive", "full", "restart"]:
+            raise ValueError("Invalid checkpoint method %s" % method)
         self.conn.execute("pragma wal_checkpoint(%s)" % method)

@@ -29,7 +29,7 @@ class AliasManager:
         super().__init__()
         self.session = session
         self.aliases: List[Alias] = []
-        self.re_param = re.compile(r'^%([0-9]+)')
+        self.re_param = re.compile(r"^%([0-9]+)")
 
     @staticmethod
     def parse_alias(alias) -> (str, str):
@@ -77,7 +77,7 @@ class AliasManager:
         for c in self.get_categories():
             toml_structure[c] = {ali.cmd: ali.value for ali in self.get_category(c) if not ali.temporary}
 
-        with open(self.alias_filepath, 'w') as f:
+        with open(self.alias_filepath, "w") as f:
             tomlkit.dump(toml_structure, f)
 
     def load(self, file: str):
@@ -88,7 +88,7 @@ class AliasManager:
 
         if os.path.isfile(self.alias_filepath):
             self.session.debuglog(msg=f"Import aliases from '{self.alias_filepath}'")
-            with open(self.alias_filepath, 'r') as f:
+            with open(self.alias_filepath, "r") as f:
                 toml_structure = tomlkit.load(f)
             aliases: List[Alias] = []
             for c in toml_structure.keys():
@@ -102,22 +102,21 @@ class AliasManager:
         if alias:
             args = line.split()
             try:
-                command_list = csv.reader(io.StringIO(alias.value), delimiter=';', escapechar='\\')
+                command_list = csv.reader(io.StringIO(alias.value), delimiter=";", escapechar="\\")
                 lines = command_list.__next__()
                 for alias_line in lines:
-
                     file_like = io.StringIO(alias_line)
-                    parts = next(csv.reader(file_like, delimiter=' '))
+                    parts = next(csv.reader(file_like, delimiter=" "))
                     # self.session.output(f"[bold yellow] PREPARSE: {list(parts)}", markup = True)
                     parsed = []
                     for token in parts:
                         m = self.re_param.match(token)
                         if m:
-                            parsed.append(args[int(m.group(1))] if int(m.group(1)) < len(args) else r'')
+                            parsed.append(args[int(m.group(1))] if int(m.group(1)) < len(args) else r"")
                         else:
                             parsed.append(token)
                     # self.session.output(f"Parsed: {parsed}")
-                    parsed_alias = ' '.join(parsed)
+                    parsed_alias = " ".join(parsed)
 
                     # SEND
                     # self.session.output(f"[bold yellow] SEND: {parsed_alias}", markup = True)

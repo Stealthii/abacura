@@ -9,8 +9,15 @@ if TYPE_CHECKING:
 
 
 class Ticker:
-    def __init__(self, source: object, callback: Callable, seconds: float, repeats: int = -1,
-                 name: str = '', commands: str = ''):
+    def __init__(
+        self,
+        source: object,
+        callback: Callable,
+        seconds: float,
+        repeats: int = -1,
+        name: str = "",
+        commands: str = "",
+    ):
         self.source: object = source
         self.callback: Callable = callback
         self.commands: str = commands
@@ -34,7 +41,6 @@ class Ticker:
 
 
 class TickerManager:
-
     def __init__(self):
         self.tickers: List[Ticker] = []
 
@@ -42,8 +48,13 @@ class TickerManager:
         # self.unregister_object(obj)  # prevent duplicates
         for name, member in inspect.getmembers(obj, callable):
             if hasattr(member, "ticker_seconds"):
-                t = Ticker(source=obj, callback=member, seconds=getattr(member, "ticker_seconds"),
-                           repeats=getattr(member, "ticker_repeats"), name=getattr(member, "ticker_name"))
+                t = Ticker(
+                    source=obj,
+                    callback=member,
+                    seconds=getattr(member, "ticker_seconds"),
+                    repeats=getattr(member, "ticker_repeats"),
+                    name=getattr(member, "ticker_name"),
+                )
                 self.add(t)
 
     def unregister_object(self, obj: object):
@@ -54,7 +65,7 @@ class TickerManager:
         self.tickers.append(ticker)
 
     def remove(self, name: str):
-        self.tickers = [t for t in self.tickers if name == '' or t.name != name]
+        self.tickers = [t for t in self.tickers if name == "" or t.name != name]
 
     def process_tick(self):
         for ticker in self.tickers:

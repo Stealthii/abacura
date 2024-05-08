@@ -4,6 +4,7 @@ Command Queue running routines
 Tracks last command, calculates delay, and issues commands in priority order,
 depending on the combat situation.
 """
+
 from abacura.plugins import command, Plugin, ticker
 from abacura.plugins.task_queue import CQMessage
 
@@ -19,7 +20,7 @@ class QueueRunner(Plugin):
     def __init__(self):
         super().__init__()
         self.cq.set_command_inserter(self.insert_command)
-        #self.add_ticker(_RUNNER_INTERVAL, callback_fn=self.cq.run_tasks, repeats=-1, name="Queue Runner")
+        # self.add_ticker(_RUNNER_INTERVAL, callback_fn=self.cq.run_tasks, repeats=-1, name="Queue Runner")
 
     def insert_command(self, cmd: str):
         self.session.player_input(cmd, echo_color="orange1")
@@ -30,12 +31,25 @@ class QueueRunner(Plugin):
         for task in self.cq.tasks:
             if task.q.lower().startswith(q.lower()):
                 prior = f"{task.wait_prior.id}" if task.wait_prior is not None else ""
-                rows.append((task.id, task.q, task.cmd, prior,
-                             task.priority, float(task.dur), task.remaining_delay, task.insertable))
+                rows.append(
+                    (
+                        task.id,
+                        task.q,
+                        task.cmd,
+                        prior,
+                        task.priority,
+                        float(task.dur),
+                        task.remaining_delay,
+                        task.insertable,
+                    ),
+                )
 
-        tbl = tabulate(rows, headers=("ID", "Queue", "Command", "Prior", "Priority", "Duration", "Delay", "Insertable"),
-                       title=f"Queued Commands",
-                       float_format="4.1f")
+        tbl = tabulate(
+            rows,
+            headers=("ID", "Queue", "Command", "Prior", "Priority", "Duration", "Delay", "Insertable"),
+            title=f"Queued Commands",
+            float_format="4.1f",
+        )
         self.output(AbacuraPanel(tbl, title=f"{q or 'All Queues'}"))
 
     @ticker(seconds=_RUNNER_INTERVAL, name="Queue Runner", repeats=-1)
@@ -45,9 +59,15 @@ class QueueRunner(Plugin):
         self.dispatch(cqm)
 
     @command(name="queue")
-    def queue_info(self, queue_name: str = '', cmd: str = '', _flush: bool = False,
-                   _priority: int = _DEFAULT_PRIORITY, _duration: float = _DEFAULT_DURATION, _delay: int = 0):
-
+    def queue_info(
+        self,
+        queue_name: str = "",
+        cmd: str = "",
+        _flush: bool = False,
+        _priority: int = _DEFAULT_PRIORITY,
+        _duration: float = _DEFAULT_DURATION,
+        _delay: int = 0,
+    ):
         """
         Add commands to queues, display queue, or flush them
 
@@ -64,7 +84,7 @@ class QueueRunner(Plugin):
             self.output(f"[bold cyan]# QUEUE: flushed '{queue_name or 'all queues'}'", markup=True, highlight=True)
             return
 
-        if cmd == '':
+        if cmd == "":
             self.show_queues(q=queue_name)
             return
 

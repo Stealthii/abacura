@@ -16,8 +16,10 @@ from textual.geometry import Size, Region
 from textual.widget import Widget
 from textual.widgets import Placeholder, Static, OptionList, Input
 
+
 class SubMenu(OptionList):
     """A submenu"""
+
     COMPONENT_CLASSES = {
         "submenu--selected-item",
     }
@@ -26,9 +28,7 @@ class SubMenu(OptionList):
             padding: 0 0;
         }
     """
-    BINDINGS = [
-        ("escape", "remove", "close menu")
-    ]
+    BINDINGS = [("escape", "remove", "close menu")]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -54,6 +54,7 @@ class MenuItem(Static):
         padding: 0 1;
     }
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._submenu_items: dict[str, Callable] = {}
@@ -76,6 +77,7 @@ class MenuItem(Static):
         self.screen.mount(sub_menu)
         sub_menu.focus()
 
+
 class MenuBar(Static):
     """Menu widget, with drop downs and selections"""
 
@@ -90,7 +92,8 @@ class MenuBar(Static):
             layer: above;
         }
     """
-    def __init__(self,  *args, **kwargs):
+
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._menu_items: list[MenuItem] = []
 
@@ -103,6 +106,7 @@ class MenuBar(Static):
         """Add an item to the menu"""
         self._menu_items.append(menu_item)
 
+
 class MenuApp(App):
     """A simple app to show our widget."""
 
@@ -113,9 +117,7 @@ class MenuApp(App):
         }
 
     """
-    BINDINGS = [
-        ("ctrl+q", "quit", "Quit")
-    ]
+    BINDINGS = [("ctrl+q", "quit", "Quit")]
 
     def __init__(self):
         super().__init__()
@@ -137,12 +139,16 @@ class MenuApp(App):
 
     def test_called(self, *args, **kwargs):
         self.static.update("You clicked test")
+
     def best_called(self, *args, **kwargs):
         self.static.update("You clicked best")
+
     def woop_called(self, *args, **kwargs):
         self.static.update("You clicked woop")
+
     def womp_called(self, *args, **kwargs):
         self.static.update("You clicked wonp")
+
 
 if __name__ == "__main__":
     app = MenuApp()

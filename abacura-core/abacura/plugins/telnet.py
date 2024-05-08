@@ -7,15 +7,17 @@ from abacura.mud.options.ttype import TerminalTypeOption
 from abacura.plugins import Plugin
 from abacura.plugins.events import AbacuraMessage
 
+
 class TelnetPlugin(Plugin):
     """Handles telnet connectivity"""
+
     def __init__(self):
         super().__init__()
         self.options: dict[int, TelnetOption] = {}
         self.poll_timeout = 0.001
         self.go_ahead = self.config.get_specific_option(self.session.name, "ga")
         self.connected = False
-        self.outb = b''
+        self.outb = b""
 
     # TODO: Need a better way of handling this, possibly an autoloader
     def register_options(self, handlers: list[TelnetOption]):
@@ -48,9 +50,7 @@ class TelnetPlugin(Plugin):
 
         self.register_options(handlers)
 
-
         while self.connected is True:
-
             # We read one character at a time so that we can find IAC sequences
             # We use wait_for() so we can work with muds that don't use GA
             try:
@@ -72,8 +72,11 @@ class TelnetPlugin(Plugin):
                 return
             except asyncio.TimeoutError:
                 if len(self.outb) > 0:
-                    self.output(self.outb.decode("UTF-8", errors="ignore").replace("\r", " ").replace("\t", "        "), ansi=True)
-                    self.outb = b''
+                    self.output(
+                        self.outb.decode("UTF-8", errors="ignore").replace("\r", " ").replace("\t", "        "),
+                        ansi=True,
+                    )
+                    self.outb = b""
                     self.poll_timeout = 0.001
                 else:
                     if self.poll_timeout < 0.05:
@@ -82,43 +85,46 @@ class TelnetPlugin(Plugin):
                 continue
 
             # Empty string means we lost our connection
-            if data == b'':
+            if data == b"":
                 self.session.show_error("Lost connection to server.")
                 self.connected = False
 
             # End of a MUD line in buffer, send for processing
-            elif data == b'\n':
-                self.output(self.outb.decode("UTF-8", errors="ignore").replace("\r", " ").replace("\t", "        "), ansi=True)
-                self.outb = b''
+            elif data == b"\n":
+                self.output(
+                    self.outb.decode("UTF-8", errors="ignore").replace("\r", " ").replace("\t", "        "),
+                    ansi=True,
+                )
+                self.outb = b""
 
             # handle IAC sequences
-            elif data == b'\xff':
+            elif data == b"\xff":
                 data = await reader.read(1)
 
                 # IAC DO
-                if data == b'\xfd':
+                if data == b"\xfd":
                     data = await reader.read(1)
 
                     if ord(data) in self.options:
                         log.debug(f"IAC DO for {self.options[ord(data)].name}")
                         self.options[ord(data)].do()
                     else:
-                        if data == b'\x1f':
+                        if data == b"\x1f":
                             # IAC WON'T NAWS
-                            writer.write(b'\xff\xfc\x1f')
-                            #self.output("IAC WON'T NAWS")
+                            writer.write(b"\xff\xfc\x1f")
+                            # self.output("IAC WON'T NAWS")
                         else:
                             pass
-                            #self.output(f"IAC DO {ord(data)}")
+                            # self.output(f"IAC DO {ord(data)}")
 
                 # IAC DONT
-                if data == b'\xfe':
+                if data == b"\xfe":
                     data = await reader.read(1)
                     if ord(data) in self.options:
                         log.debug(f"IAC DONT for {self.options[ord(data)].name}")
                         self.options[ord(data)].dont()
                 # IAC WILL
-                elif data == b'\xfb':
+                elif data == b"\xfb":
                     data = await reader.read(1)
                     if ord(data) in self.options:
                         log.debug(f"IAC WILL for {self.options[ord(data)].name}")
@@ -126,24 +132,24 @@ class TelnetPlugin(Plugin):
                     elif ord(data) == 1:
                         self.dispatch(AbacuraMessage(event_type="core.password_mode", value="on"))
                     else:
-                        writer.write(b'\xff\xfb' + data)
+                        writer.write(b"\xff\xfb" + data)
                         log.debug(f"IAC WILL for Unknown ({ord(data)})")
 
                 # IAC WONT
-                elif data == b'\xfc':
+                elif data == b"\xfc":
                     data = await reader.read(1)
-                    #self.output(f"IAC WONT {data}")
+                    # self.output(f"IAC WONT {data}")
                     if ord(data) in self.options:
                         log.debug(f"IAC WILL for {self.options[ord(data)].name}")
                         self.options[ord(data)].wont()
                     elif ord(data) == 1:
                         self.dispatch(AbacuraMessage(event_type="core.password_mode", value="off"))
                 # SB
-                elif data == b'\xfa':
+                elif data == b"\xfa":
                     c = await reader.read(1)
                     data = c
-                    buf = b''
-                    while c != b'\xf0':
+                    buf = b""
+                    while c != b"\xf0":
                         buf = buf + c
                         c = await reader.read(1)
                     if ord(data) in self.options:
@@ -153,13 +159,13 @@ class TelnetPlugin(Plugin):
                         log.debug(f"IAC SB for Unknown ({ord(data)})")
 
                 # TTYPE
-                #elif data == b'\x18':
+                # elif data == b'\x18':
                 #    writer.write(b'{IAC}')
                 #    #self.output(f"IAC TTYPE")
 
                 # NAWS
-                elif data == b'\x1f':
-                    #self.output(f"IAC NAWS")
+                elif data == b"\x1f":
+                    # self.output(f"IAC NAWS")
                     pass
 
                 # telnet GA sequence, likely end of prompt
@@ -168,12 +174,12 @@ class TelnetPlugin(Plugin):
                     self.dispatch(AbacuraMessage("core.prompt", self.outb.decode("UTF-8", errors="ignore")))
                     # self.output("")
 
-                    self.outb = b''
+                    self.outb = b""
 
                 # IAC UNKNOWN
                 else:
                     log.debug(f"IAC unknown {data}")
-                    #self.output(f"IAC UNKNOWN {ord(data)}")
+                    # self.output(f"IAC UNKNOWN {ord(data)}")
 
             # Catch everything else in our buffer and hold it
             else:

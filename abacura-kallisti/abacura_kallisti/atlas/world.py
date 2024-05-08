@@ -10,7 +10,7 @@ from .wilderness import WildernessGrid
 
 
 # TODO: Use the abacura methods for strip_ansi_codes
-ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 
 class World:
@@ -27,6 +27,7 @@ class World:
         self.create_tables()
 
         from datetime import datetime
+
         start_time = datetime.utcnow()
         self.load()
         # Future - optimization
@@ -42,7 +43,7 @@ class World:
         :return: A string with the color codes stripped
         """
         # ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
-        return ansi_escape.sub('', s)
+        return ansi_escape.sub("", s)
 
     def del_exit(self, vnum: str, direction: str):
         if vnum not in self.rooms:
@@ -55,7 +56,7 @@ class World:
         del room.exits[direction]
         self.save_room(vnum)
 
-    def set_exit(self, vnum: str, direction: str, door: str = '', to_vnum: str = None, commands: str = ''):
+    def set_exit(self, vnum: str, direction: str, door: str = "", to_vnum: str = None, commands: str = ""):
         if vnum not in self.rooms:
             return
 
@@ -88,13 +89,20 @@ class World:
     #     if vnum in self.tracking:
     #         self.tracking[vnum].kills += 1
 
-    def visited_room(self, area_name: str, name: str, vnum: str, terrain: str,
-                     room_exits: Dict, scan_room: ScannedRoom):
-        if area_name == 'The Wilderness':
+    def visited_room(
+        self,
+        area_name: str,
+        name: str,
+        vnum: str,
+        terrain: str,
+        room_exits: Dict,
+        scan_room: ScannedRoom,
+    ):
+        if area_name == "The Wilderness":
             self.load_wilderness()
 
         # can't do much with a '?' vnum for now
-        if vnum == '?' or vnum == '':
+        if vnum == "?" or vnum == "":
             return
 
         if vnum in self.rooms:
@@ -108,17 +116,17 @@ class World:
         new_exits = existing_exits.copy()
 
         for d, to_vnum in room_exits.items():
-            locks = to_vnum == 'L'
-            closes = to_vnum in ['L', 'C']
-            to_vnum_check = ''
+            locks = to_vnum == "L"
+            closes = to_vnum in ["L", "C"]
+            to_vnum_check = ""
 
-            if to_vnum and to_vnum not in ['C', 'L', '?']:
+            if to_vnum and to_vnum not in ["C", "L", "?"]:
                 # only update existing exit vnum if we didn't see a '?' here
                 to_vnum_check = to_vnum
 
             if d in existing_exits:
                 e = existing_exits[d]
-                if to_vnum_check == '' and e.to_vnum != '':
+                if to_vnum_check == "" and e.to_vnum != "":
                     to_vnum_check = e.to_vnum
 
                 # keep existing lock/closes flags
@@ -134,41 +142,67 @@ class World:
         terrain = self.strip_ansi_codes(terrain)
 
         # TODO: Should we really be creating a new room, or just updating the existing one with new values
-        new_room = Room(area_name=area_name, vnum=vnum, name=name, terrain_name=terrain,
-                        _exits=new_exits,
-                        bank=scan_room.bank, set_recall=scan_room.set_recall, wild_magic=scan_room.wild_magic,
-                        regen_hp=scan_room.regen_hp, regen_mp=scan_room.regen_mp, regen_sp=scan_room.regen_sp,
-                        no_magic=existing_room.no_magic or scan_room.no_magic,
-                        # Note we track no_recall which is sometimes from being warded but not always
-                        no_recall=existing_room.no_recall or scan_room.warded,
-                        deathtrap=existing_room.deathtrap,
-                        peaceful=existing_room.peaceful,
-                        silent=existing_room.silent,
-                        last_visited=str(datetime.utcnow()),
-                        last_harvested=existing_room.last_harvested)
+        new_room = Room(
+            area_name=area_name,
+            vnum=vnum,
+            name=name,
+            terrain_name=terrain,
+            _exits=new_exits,
+            bank=scan_room.bank,
+            set_recall=scan_room.set_recall,
+            wild_magic=scan_room.wild_magic,
+            regen_hp=scan_room.regen_hp,
+            regen_mp=scan_room.regen_mp,
+            regen_sp=scan_room.regen_sp,
+            no_magic=existing_room.no_magic or scan_room.no_magic,
+            # Note we track no_recall which is sometimes from being warded but not always
+            no_recall=existing_room.no_recall or scan_room.warded,
+            deathtrap=existing_room.deathtrap,
+            peaceful=existing_room.peaceful,
+            silent=existing_room.silent,
+            last_visited=str(datetime.utcnow()),
+            last_harvested=existing_room.last_harvested,
+        )
 
         self.rooms[vnum] = new_room
         self.save_room(vnum)
 
     def create_tables(self):
-
         sql_updates = [
             (1, "alter table exits add column commands"),
             (1, "update exits set commands = portal_method where portal_method != ''"),
-            (1, """update exits set commands = portal_method || ' ' || portal where portal_method != ''
-                               and portal_method not like '%down' and portal_method not like '%up'
-                               and portal_method not like '%east' and portal_method not like '%west'
-                               and portal_method not like '%north' and portal_method not like '%south'"""),
+            (
+                1,
+                """update exits set commands = portal_method || ' ' || portal
+                where portal_method != ''
+                and portal_method not like '%down' and portal_method not like '%up'
+                and portal_method not like '%east' and portal_method not like '%west'
+                and portal_method not like '%north' and portal_method not like '%south'
+                """,
+            ),
             (1, "alter table exits drop column portal"),
             (1, "alter table exits drop column portal_method"),
             (1, "create index exits_n1 on exits(to_vnum)"),
             (1, "alter table rooms drop column navigable"),
             (1, "alter table rooms add column last_visited"),
             (1, "alter table rooms add column last_harvested"),
-            (1, "update rooms set last_visited = (select last_visited from room_tracking where room_tracking.vnum = rooms.vnum)"),
-            (1, "update rooms set last_harvested = (select last_harvested from room_tracking where room_tracking.vnum = rooms.vnum)"),
+            (
+                1,
+                "update rooms set last_visited = (select last_visited from room_tracking where room_tracking.vnum = rooms.vnum)",
+            ),
+            (
+                1,
+                """update rooms set last_harvested =
+                (select last_harvested from room_tracking where room_tracking.vnum = rooms.vnum)
+                """,
+            ),
             (2, "alter table rooms rename column terrain to terrain_name"),
-            (2, "update rooms set terrain_name = 'Ocean' where vnum in ('87546', '87897', '88248', '88599', '88950', '89301')")
+            (
+                2,
+                """update rooms set terrain_name = 'Ocean'
+                where vnum in ('87546', '87897', '88248', '88599', '88950', '89301')
+                """,
+            ),
         ]
 
         max_sql_version = max([version for version, sql in sql_updates])
@@ -228,7 +262,7 @@ class World:
             if room_exit.temporary:
                 continue
             exit_fields = [getattr(room_exit, pf) for pf in room_exit.persistent_fields()]
-            exit_binds = ','.join('?' * len(exit_fields))
+            exit_binds = ",".join("?" * len(exit_fields))
             self.db_conn.execute(f"INSERT INTO exits VALUES({exit_binds})", exit_fields)
 
         self.db_conn.commit()

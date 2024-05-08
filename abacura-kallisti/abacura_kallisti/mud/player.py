@@ -3,6 +3,7 @@ Player structure
 
 Includes current player information, and preferences
 """
+
 from dataclasses import dataclass, field, fields
 import os
 from typing import Dict

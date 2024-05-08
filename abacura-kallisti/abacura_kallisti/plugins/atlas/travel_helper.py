@@ -11,6 +11,7 @@ from abacura.utils.renderables import tabulate, AbacuraPanel, Group, Text, Outpu
 
 class TravelHelper(LOKPlugin):
     """Provides #go and #path commands"""
+
     def __init__(self):
         super().__init__()
 
@@ -35,7 +36,6 @@ class TravelHelper(LOKPlugin):
 
         title = f"Path to [ {destination.vnum } ] - {destination.name}"
         if not detailed:
-
             self.output(AbacuraPanel(f"{speedwalk}", title=title), highlight=True)
             return
 
@@ -45,16 +45,27 @@ class TravelHelper(LOKPlugin):
                 terrain = self.world.rooms[step.exit.to_vnum].terrain_name
                 # area = self.world.rooms[step.exit.to_vnum].area_name
 
-                row = (step.vnum, step.exit.to_vnum, step.exit.get_commands(), step.exit.direction, step.exit.door,
-                       bool(step.exit.closes), bool(step.exit.locks), step.cost, terrain)
+                row = (
+                    step.vnum,
+                    step.exit.to_vnum,
+                    step.exit.get_commands(),
+                    step.exit.direction,
+                    step.exit.door,
+                    bool(step.exit.closes),
+                    bool(step.exit.locks),
+                    step.cost,
+                    terrain,
+                )
                 rows.append(row)
 
         speedwalk = Text.assemble(("Speedwalk\n\n", OutputColors.section), (speedwalk, OutputColors.value))
-        tbl = tabulate(rows, headers=("_Vnum", "_To Vnum", "Commands", "Direction", "Door",
-                                      "Closes", "Locks", "Cost", "Terrain"),
-                       title=f"Steps",
-                       caption=f" Path computed in {1000 * path_elapsed_time:.1f}ms",
-                       show_footer=True)
+        tbl = tabulate(
+            rows,
+            headers=("_Vnum", "_To Vnum", "Commands", "Direction", "Door", "Closes", "Locks", "Cost", "Terrain"),
+            title=f"Steps",
+            caption=f" Path computed in {1000 * path_elapsed_time:.1f}ms",
+            show_footer=True,
+        )
 
         tbl.columns[7].footer = str(nav_path.get_travel_cost())
         g = Group(speedwalk, Text(), tbl)

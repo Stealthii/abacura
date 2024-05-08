@@ -93,12 +93,12 @@ class MudMetrics:
         gold_gained = max(self.end_gold - self.start_gold + self.end_bank - self.start_bank, self.earned_gold)
         return gold_gained / (secs / 3600)
 
-    def earn_xp(self, source: str, xp: int, victim: str = '', area: str = '', vnum: str = ''):
+    def earn_xp(self, source: str, xp: int, victim: str = "", area: str = "", vnum: str = ""):
         if self.stop_time is None:
             self.xp_events.append(EarnedXP(source=source, xp=xp, victim=victim, area=area, vnum=vnum))
             self.earned_xp += xp
 
-    def earn_gold(self, source: str, gold: int, victim: str = '', area: str = '', vnum: str = ''):
+    def earn_gold(self, source: str, gold: int, victim: str = "", area: str = "", vnum: str = ""):
         if self.stop_time is None:
             self.gold_events.append(EarnedGold(source=source, gold=gold, victim=victim, area=area, vnum=vnum))
             self.earned_gold += gold

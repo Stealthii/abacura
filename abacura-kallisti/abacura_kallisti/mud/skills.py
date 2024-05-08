@@ -5,17 +5,17 @@ from typing import Dict, List
 @dataclass
 class Skill:
     skill_name: str
-    command: str = ''
-    affect_name: str = ''
-    renewal: str = ''
+    command: str = ""
+    affect_name: str = ""
+    renewal: str = ""
     train: Dict[str, int] = field(default_factory=dict)
     sp_base: int = 0
     sp_level_mult: float = 0
     sp_rank_mult: int = 0
     delay: int = 2
     offensive: bool = False
-    follower: str = ''
-    group: bool = False # can take "group" argument if grouped
+    follower: str = ""
+    group: bool = False  # can take "group" argument if grouped
 
     def __post_init__(self):
         self.command = self.command or self.skill_name
@@ -29,10 +29,25 @@ SKILL_LIST: List[Skill] = [
     Skill("bifrost", train={"Valkyrie": 75}),
     Skill("deathknell", train={"Dreadlord": 33}, delay=2),
     Skill("layhands", train={"Paladin": 11}),
-    Skill("kick", train={"Monastic": 1, "Samurai": 1, "Monk": 1,
-                         "Fighter": 1, "Barbarian": 1,  "Paladin": 1,
-                         "Valkyrie": 1, "Dreadlord": 1, "Ranger": 1,
-                         "Rogue": 4, "Demoniac": 4, "Bard": 4, "Assassin": 4}, delay=2),
+    Skill(
+        "kick",
+        train={
+            "Monastic": 1,
+            "Samurai": 1,
+            "Monk": 1,
+            "Fighter": 1,
+            "Barbarian": 1,
+            "Paladin": 1,
+            "Valkyrie": 1,
+            "Dreadlord": 1,
+            "Ranger": 1,
+            "Rogue": 4,
+            "Demoniac": 4,
+            "Bard": 4,
+            "Assassin": 4,
+        },
+        delay=2,
+    ),
     Skill("heal", train={"Templar": 1, "Priest": 1, "Druid": 1, "Prophet": 1}, delay=2),
     Skill("power heal", command="pheal", train={"Templar": 33, "Prophet": 33}),
     Skill("full heal", command="fheal", train={"Prophet": 58, "Templar": 60}),
@@ -44,9 +59,13 @@ SKILL_LIST: List[Skill] = [
     Skill("refresh", train={"Druid": 4, "Prophet": 4, "Priest": 4, "Templar": 4}),
     Skill("dehydrate", train={"Druid": 27, "Necromancer": 20}),
     Skill("bless", renewal="renew", group=True, train={"Templar": 7, "Prophet": 7, "Druid": 7, "Priest": 7}),
-    Skill("tale of valor", command="tale of valor", renewal="expire", group=False, train={"Bard":70, "Valkyrie":58}),
-    Skill("true seeing", command="truesee", renewal="renew",
-          train={"Templar": 8, "Prophet": 8, "Druid": 8, "Priest": 8, "Valkyrie": 50}),
+    Skill("tale of valor", command="tale of valor", renewal="expire", group=False, train={"Bard": 70, "Valkyrie": 58}),
+    Skill(
+        "true seeing",
+        command="truesee",
+        renewal="renew",
+        train={"Templar": 8, "Prophet": 8, "Druid": 8, "Priest": 8, "Valkyrie": 50},
+    ),
     Skill("blade barrier", command="blade", renewal="renew", train={"Templar": 53}),
     Skill("barkskin", renewal="renew", group=True, train={"Druid": 11}),
     Skill("spiritual guardian", command="spirit", renewal="expire", train={"Templar": 51, "Prophet": 39}),
@@ -70,8 +89,18 @@ SKILL_LIST: List[Skill] = [
     Skill("impale", train={"Ranger": 33, "Valkyrie": 36, "Samurai": 37}),
     Skill("prayer", "Prayer", "", train={"Paladin": 40}),
     Skill("Spirit of bushido", "bushido", affect_name="spirit of bushido", train={"Samurai": 55}),
-    Skill("charge", train={"Valkyrie": 42, "Fighter": 42, "Dreadlord": 42, "Ranger": 42, "Paladin": 42,
-                           "Barbarian": 42, "Samurai": 50}),
+    Skill(
+        "charge",
+        train={
+            "Valkyrie": 42,
+            "Fighter": 42,
+            "Dreadlord": 42,
+            "Ranger": 42,
+            "Paladin": 42,
+            "Barbarian": 42,
+            "Samurai": 50,
+        },
+    ),
     Skill("werewolf", affect_name="shapechange"),
     Skill("call mount", train={"Dreadlord": 21, "Paladin": 21, "Ranger": 23, "Valkyrie": 27}),
     Skill("sanctuary", renewal="renew", group=True, train={"Paladin": 70, "Prophet": 16, "Templar": 17}),
@@ -89,9 +118,20 @@ SKILL_LIST: List[Skill] = [
     # focus dex , for wilderness especially
     Skill("grim ward", "grimward", renewal="renew", train={"Demoniac": 60}),
     Skill("demonform fire", affect_name="Shapechange.*", renewal="expire", train={"Demoniac": 49}),
-    Skill("focus", renewal="renew", train={"Monk": 18, "Monastic": 18, "Samurai": 18,
-                                           "Ranger": 40, "Barbarian": 36, "Valkyrie": 34,
-                                           "Assassin": 75, "Bard": 75}),
+    Skill(
+        "focus",
+        renewal="renew",
+        train={
+            "Monk": 18,
+            "Monastic": 18,
+            "Samurai": 18,
+            "Ranger": 40,
+            "Barbarian": 36,
+            "Valkyrie": 34,
+            "Assassin": 75,
+            "Bard": 75,
+        },
+    ),
     # Druid shapechanges that are useful in wilderness
     Skill("shapechange plant", affect_name="shapechange", renewal="renew", train={"Druid": 42}),
     Skill("shapechange mammoth", affect_name="shapechange", renewal="renew", train={"Druid": 49}),
@@ -111,11 +151,11 @@ SKILL_LIST: List[Skill] = [
     Skill("butcher", "", sp_base=40, sp_level_mult=1, sp_rank_mult=5),
     Skill("tan", "", sp_base=0, sp_level_mult=1.7, sp_rank_mult=5),
     Skill("mill", "", sp_base=0, sp_level_mult=1.7, sp_rank_mult=5),
-    Skill("forge", "", sp_base=0, sp_level_mult=1.7, sp_rank_mult=5)
-    ]
+    Skill("forge", "", sp_base=0, sp_level_mult=1.7, sp_rank_mult=5),
+]
 
 # create a lookup dictionary
 SKILLS: Dict[str, Skill] = {s.skill_name: s for s in SKILL_LIST}
 SKILL_COMMANDS: Dict[str, Skill] = {s.command: s for s in SKILL_LIST}
 
-BUTCHER_SKILL_ITEMS = {'extract': 'bone', 'skin': 'hide', 'butcher': 'meat'}
+BUTCHER_SKILL_ITEMS = {"extract": "bone", "skin": "hide", "butcher": "meat"}

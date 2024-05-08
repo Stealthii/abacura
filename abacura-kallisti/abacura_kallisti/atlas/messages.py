@@ -9,7 +9,7 @@ from typing import Optional
 @dataclass
 class MapUpdateMessage(AbacuraMessage):
     start_room: Optional[Room] = None
-    current_vnum: str = ''
+    current_vnum: str = ""
     world: Optional[World] = None
     traveling: bool = False
     wilderness: bool = False

@@ -5,8 +5,16 @@ from abacura.plugins import Plugin, command, CommandError
 
 class AliasCommand(Plugin):
     """Provides #alias command"""
+
     @command(name="alias")
-    def alias_cmd(self, alias: str = None, value: str = None, _add: bool = False, _delete: bool = False, _temporary: bool = False):
+    def alias_cmd(
+        self,
+        alias: str = None,
+        value: str = None,
+        _add: bool = False,
+        _delete: bool = False,
+        _temporary: bool = False,
+    ):
         """
         Add an alias that automatically replace text with a value in the inputbar
 
@@ -24,19 +32,19 @@ class AliasCommand(Plugin):
 
         s = alias.split(".")
         if len(s) > 2:
-            raise CommandError('Alias should be of the format <category>.<name>')
+            raise CommandError("Alias should be of the format <category>.<name>")
 
         if _add and _delete:
-            raise CommandError('Cannot specify both add and delete')
+            raise CommandError("Cannot specify both add and delete")
 
         category = s[0]
 
         if len(s) == 1:
             if _add or _delete:
-                raise CommandError('Cannot add or delete category directly, use <category>.<name>')
+                raise CommandError("Cannot add or delete category directly, use <category>.<name>")
 
             if category not in self.director.alias_manager.get_categories():
-                raise CommandError(f'Unknown category {category}')
+                raise CommandError(f"Unknown category {category}")
 
             aliases = []
 

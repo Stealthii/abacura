@@ -1,4 +1,5 @@
 """Common stuff for mud.events module"""
+
 import inspect
 from dataclasses import dataclass, field
 from queue import PriorityQueue
@@ -7,9 +8,11 @@ from collections import Counter
 
 from textual import log
 
+
 @dataclass
 class AbacuraMessage:
     """Base message object to pass into events"""
+
     event_type: str
     value: str = ""
 
@@ -17,14 +20,16 @@ class AbacuraMessage:
 @dataclass(order=True)
 class EventTask:
     """Task for the event PriorityQueue"""
+
     priority: int
     source: object = field(compare=False)
     handler: Callable = field(compare=False)
     trigger: str
 
 
-def event(trigger: str = '', priority: int = 5):
+def event(trigger: str = "", priority: int = 5):
     """Decorator for event functions"""
+
     def add_event(fn):
         fn.event_trigger = trigger
         fn.event_priority = priority
@@ -48,7 +53,7 @@ class EventManager:
 
         # Look for listeners in the plugin
         for member_name, member in inspect.getmembers(obj, callable):
-            if hasattr(member, 'event_trigger'):
+            if hasattr(member, "event_trigger"):
                 log(f"Appending listener function '{member_name}'")
                 self.add_listener(member, source=obj)
 
@@ -60,8 +65,7 @@ class EventManager:
     def add_listener(self, listener: Callable, source: object = None):
         """Add an event listener"""
         trigger: str = getattr(listener, "event_trigger")
-        task = EventTask(handler=listener, source=source, trigger=trigger,
-                         priority=getattr(listener, "event_priority"))
+        task = EventTask(handler=listener, source=source, trigger=trigger, priority=getattr(listener, "event_priority"))
 
         self.events.setdefault(trigger, PriorityQueue()).put(task)
 

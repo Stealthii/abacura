@@ -9,7 +9,7 @@ class PluginContextManager:
     _session_contexts: Dict[str, Dict] = {}
     current_context: Dict | None = None
 
-    def __init__(self, session_name: str = '', **kwargs):
+    def __init__(self, session_name: str = "", **kwargs):
         self.previous_context: Dict | None = None
         self.session_name = session_name
         PluginContextManager._session_contexts[session_name] = kwargs.copy()
@@ -38,11 +38,10 @@ class PluginContextManager:
 
 
 class Plugin:
-
     def __init__(self, n: int):
         print(n)
 
-    def __new__(cls , context: Dict):
+    def __new__(cls, context: Dict):
         instance = super().__new__(cls)
         instance._context = context
         print("context", context)
@@ -58,8 +57,8 @@ class Plugin:
 
     @property
     def world(self) -> str:
-        return self._context['world']
+        return self._context["world"]
 
     @property
     def session(self) -> str:
-        return self._context['session']
+        return self._context["session"]

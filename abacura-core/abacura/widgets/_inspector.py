@@ -37,6 +37,7 @@ from rich.markup import escape
 from rich.style import Style
 from rich.text import Text
 from rich.highlighter import ReprHighlighter
+
 # from rich.syntax import Syntax
 from textual import events
 from textual.app import ComposeResult
@@ -57,24 +58,32 @@ from textual.widgets.tree import TreeNode
 # from textual.css._style_properties import BorderDefinition
 
 from abacura.widgets.resizehandle import ResizeHandle
-#from launch_editor import launch_editor
+# from launch_editor import launch_editor
 
 # Instrument style setting in order to link to the source code where inline styles are set.
 inline_style_call_stacks: dict[DOMNode, dict[str, list[inspect.FrameInfo]]] = {}
 original_set_rule = Styles.set_rule
+
+
 def set_rule(self: Styles, rule: str, value: object | None) -> bool:
     if self.node and self.node.styles.inline is self:
         if self.node not in inline_style_call_stacks:
             inline_style_call_stacks[self.node] = {}
         inline_style_call_stacks[self.node][rule] = inspect.stack()
     return original_set_rule.__get__(self)(rule, value)
+
+
 Styles.set_rule = set_rule
 
 rule_set_call_stacks: dict[RuleSet, list[inspect.FrameInfo]] = {}
 original_rule_set_init = RuleSet.__init__
+
+
 def rule_set_init(self: RuleSet, *args, **kwargs):
     original_rule_set_init.__get__(self)(*args, **kwargs)
     rule_set_call_stacks[self] = inspect.stack()
+
+
 RuleSet.__init__ = rule_set_init
 
 
@@ -83,22 +92,12 @@ def subtract_regions(a: Region, b: Region) -> list[Region]:
     result: list[Region] = []
 
     # Check for no overlap or complete containment
-    if (
-        b.x >= a.x + a.width or
-        b.x + b.width <= a.x or
-        b.y >= a.y + a.height or
-        b.y + b.height <= a.y
-    ):
+    if b.x >= a.x + a.width or b.x + b.width <= a.x or b.y >= a.y + a.height or b.y + b.height <= a.y:
         result.append(a)
         return result
 
     # Check for complete overlap
-    if (
-        b.x >= a.x and
-        b.x + b.width <= a.x + a.width and
-        b.y >= a.y and
-        b.y + b.height <= a.y + a.height
-    ):
+    if b.x >= a.x and b.x + b.width <= a.x + a.width and b.y >= a.y and b.y + b.height <= a.y + a.height:
         return result
 
     # Calculate remaining regions
@@ -113,6 +112,7 @@ def subtract_regions(a: Region, b: Region) -> list[Region]:
 
     return result
 
+
 def subtract_multiple_regions(base: Region, negations: Iterable[Region]) -> list[Region]:
     """Subtract multiple regions from a base region."""
     result: list[Region] = [base]
@@ -122,6 +122,7 @@ def subtract_multiple_regions(base: Region, negations: Iterable[Region]) -> list
             new_result.extend(subtract_regions(region, negation))
         result = new_result
     return result
+
 
 class DOMTree(Tree[DOMNode]):
     """A widget that displays the widget hierarchy."""
@@ -133,7 +134,10 @@ class DOMTree(Tree[DOMNode]):
         """
 
         def __init__(
-            self, tree: "DOMTree", tree_node: TreeNode[DOMNode] | None, dom_node: DOMNode | None
+            self,
+            tree: "DOMTree",
+            tree_node: TreeNode[DOMNode] | None,
+            dom_node: DOMNode | None,
         ) -> None:
             """Initialise the Hovered message.
 
@@ -166,7 +170,10 @@ class DOMTree(Tree[DOMNode]):
         """
 
         def __init__(
-            self, tree: "DOMTree", tree_node: TreeNode[DOMNode], dom_node: DOMNode
+            self,
+            tree: "DOMTree",
+            tree_node: TreeNode[DOMNode],
+            dom_node: DOMNode,
         ) -> None:
             """Initialise the Selected message.
 
@@ -246,7 +253,9 @@ class DOMTree(Tree[DOMNode]):
         node: TreeNode[DOMNode] | None = self._get_node(hover_line) if hover_line > -1 else None
         # print("watch_hover_line", previous_hover_line, hover_line, node)
         if node is not None:
-            assert isinstance(node.data, DOMNode), "All nodes in DOMTree should have DOMNode data, got: " + repr(node.data)
+            assert isinstance(node.data, DOMNode), "All nodes in DOMTree should have DOMNode data, got: " + repr(
+                node.data,
+            )
             self.post_message(self.Hovered(self, node, node.data))
         else:
             self.post_message(self.Hovered(self, None, None))
@@ -260,14 +269,16 @@ class DOMTree(Tree[DOMNode]):
         tree_node = self.root
         # Expand nodes until we get to the one we want.
         for dom_node in reversed(dom_node.ancestors_with_self):
-            for node in (*tree_node.children, tree_node): # tree_node in case it's the root
+            for node in (*tree_node.children, tree_node):  # tree_node in case it's the root
                 if node.data == dom_node:
                     tree_node = node
                     tree_node.expand()
+
                     async def wait_for_expand() -> None:
                         # while not tree_node.is_expanded: # this is set immediately
                         #     await asyncio.sleep(0.01)
                         await asyncio.sleep(0.01)
+
                     task = asyncio.create_task(wait_for_expand())
                     self._wait_for_expand = task
                     await task
@@ -284,10 +295,14 @@ class DOMTree(Tree[DOMNode]):
         self.auto_expand = auto_expand
 
 
-class _ShowMoreSentinelType: pass
+class _ShowMoreSentinelType:
+    pass
+
+
 _ShowMoreSentinel = _ShowMoreSentinelType()
 """A sentinel that represents an ellipsis that can be clicked to load more properties."""
 del _ShowMoreSentinelType
+
 
 class PropertiesTree(Tree[object]):
     """A widget for exploring the attributes/properties of an object."""
@@ -343,6 +358,7 @@ class PropertiesTree(Tree[object]):
         from enum import Enum
         from typing import NamedTuple
         import traceback
+
         return {
             "a_string": "DEAL WITH IT 😎",
             "an_int": 42,
@@ -406,7 +422,7 @@ class PropertiesTree(Tree[object]):
             self._already_loaded[node] = set()
             self._num_keys_accessed[node] = 0
 
-        max_keys = 100 # Max keys to load at once; may add less nodes due to filtering
+        max_keys = 100  # Max keys to load at once; may add less nodes due to filtering
         if load_more:
             max_keys += self._num_keys_accessed[node]
 
@@ -428,7 +444,8 @@ class PropertiesTree(Tree[object]):
             # TODO: handle DynamicClassAttributes like inspect.getmembers does
             for key in dir(obj):
                 if only_counting:
-                    # Optimization: don't call getattr(); otherwise it would partially defeat the purpose of eliding nodes
+                    # Optimization: don't call getattr(); otherwise it would partially defeat
+                    # the purpose of eliding nodes
                     yield (key, None, None)
                     continue
                 try:
@@ -476,7 +493,13 @@ class PropertiesTree(Tree[object]):
             ellipsis_node.label = f"... +{count - max_keys} more"
 
     @classmethod
-    def _add_property_node(cls, parent_node: TreeNode[object], name: str, data: object, exception: Exception | None = None) -> None:
+    def _add_property_node(
+        cls,
+        parent_node: TreeNode[object],
+        name: str,
+        data: object,
+        exception: Exception | None = None,
+    ) -> None:
         """Adds data to a node.
 
         Based on https://github.com/Textualize/textual/blob/65b0c34f2ed6a69795946a0735a51a463602545c/examples/json_tree.py
@@ -491,13 +514,15 @@ class PropertiesTree(Tree[object]):
 
         def with_name(text: Text) -> Text:
             """Formats a key=value line."""
-            return Text.assemble(
-                Text.styled(name, "bold"), "=", text
-            )
+            return Text.assemble(Text.styled(name, "bold"), "=", text)
 
         if exception is not None:
             node.allow_expand = False
-            node.set_label(with_name(Text.from_markup(f"[i][#808080](getter error: [red]{escape(repr(exception))}[/red])[/#808080][/i]")))
+            node.set_label(
+                with_name(
+                    Text.from_markup(f"[i][#808080](getter error: [red]{escape(repr(exception))}[/red])[/#808080][/i]"),
+                ),
+            )
         elif isinstance(data, (list, set, frozenset, tuple)):
             length = len(data)  # type: ignore
             # node.set_label(Text(f"{name} ({length})"))
@@ -511,12 +536,14 @@ class PropertiesTree(Tree[object]):
             #     Text.from_markup(f" [#808080]({length})[/#808080]"),
             # ))
             # In the middle I think is best, although it's a little more complex:
-            node.set_label(Text.assemble(
-                Text.styled(name, "bold"),
-                Text.styled(f"({length})", "#808080"),
-                "=",
-                PropertiesTree.highlighter(repr(data))  # type: ignore
-            ))
+            node.set_label(
+                Text.assemble(
+                    Text.styled(name, "bold"),
+                    Text.styled(f"({length})", "#808080"),
+                    "=",
+                    PropertiesTree.highlighter(repr(data)),  # type: ignore
+                ),
+            )
             # Can I perhaps DRY with with_name() with with_name taking a length parameter? In other words:
             # Can I maybe DRY this with with_name with with_name with with_name(text, length) as the signature?
         elif isinstance(data, (str, bytes, int, float, bool, type(None))):
@@ -526,11 +553,13 @@ class PropertiesTree(Tree[object]):
             # Filtered out by default
             # TODO: allow expanding things like widget.log, which is callable but also has methods for each log type
             node.allow_expand = False
-            node.set_label(Text.assemble(
-                f"{type(data).__name__} ",
-                Text.styled(name, "bold"),
-                PropertiesTree.highlighter(str(inspect.signature(data))),
-            ))
+            node.set_label(
+                Text.assemble(
+                    f"{type(data).__name__} ",
+                    Text.styled(name, "bold"),
+                    PropertiesTree.highlighter(str(inspect.signature(data))),
+                ),
+            )
         elif hasattr(data, "__dict__") or hasattr(data, "__slots__") or isinstance(data, dict):
             # Pyright gives an error here due to the more specific "object | dict[Unknown, Unknown]"
             # even though object is a superclass of dict and repr takes an object.
@@ -540,11 +569,10 @@ class PropertiesTree(Tree[object]):
             node.set_label(with_name(PropertiesTree.highlighter(repr(data))))
 
 
-
 class NodeInfo(Container):
-
     class FollowLinkToNode(Message):
         """A message sent when a link is clicked, pointing to a DOM node."""
+
         def __init__(self, dom_node: DOMNode) -> None:
             super().__init__()
             self.dom_node = dom_node
@@ -560,7 +588,15 @@ class NodeInfo(Container):
         https://textual.textualize.io/guide/actions/#namespaces
         """
 
-        def __init__(self, node_info: "NodeInfo", *, name: str | None = None, id: str | None = None, classes: str | None = None, disabled: bool = False) -> None:
+        def __init__(
+            self,
+            node_info: "NodeInfo",
+            *,
+            name: str | None = None,
+            id: str | None = None,
+            classes: str | None = None,
+            disabled: bool = False,
+        ) -> None:
             super().__init__(name=name, id=id, classes=classes, disabled=disabled)
             self._node_info = node_info
 
@@ -575,13 +611,19 @@ class NodeInfo(Container):
         def action_open_file(self, path: str, line_number: int | None = None, column_number: int | None = None) -> None:
             """Open a file."""
             print("action_open_file", path, line_number, column_number)
-            #launch_editor(path, line_number, column_number)
-
+            # launch_editor(path, line_number, column_number)
 
     dom_node: var[DOMNode | None] = var[Optional[DOMNode]](None)
     """The DOM node being inspected."""
 
-    def __init__(self, *, name: str | None = None, id: str | None = None, classes: str | None = None, disabled: bool = False) -> None:
+    def __init__(
+        self,
+        *,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+        disabled: bool = False,
+    ) -> None:
         super().__init__(name=name, id=id, classes=classes, disabled=disabled)
 
         self._link_id_counter = 0
@@ -644,11 +686,12 @@ class NodeInfo(Container):
         # styles_static.update(dom_node.styles.css)
         # styles_static.update(Syntax(f"all styles {{\n{dom_node.styles.css}\n}}", "css"))
         # TODO: sort by specificity
-        # TODO: syntax highlight (`Syntax(css, "css")` almost works but is ugly/inconsistent because it assumes Web CSS flavor, not Textual CSS.)
+        # TODO: syntax highlight (`Syntax(css, "css")` almost works but is
+        #       ugly/inconsistent because it assumes Web CSS flavor, not Textual CSS.)
         # TODO: mark styles that don't apply because they're overridden
         # TODO: edit/toggle rules
 
-        stylesheet = dom_node.app.stylesheet # type: ignore
+        stylesheet = dom_node.app.stylesheet  # type: ignore
         rule_sets = stylesheet.rules
         applicable_rule_sets: list[RuleSet] = []
         for rule_set in rule_sets:
@@ -657,7 +700,7 @@ class NodeInfo(Container):
                 applicable_rule_sets.append(rule_set)
 
         to_ignore = [
-            ("inspector.py", "set_rule"), # inspector's instrumentation
+            ("inspector.py", "set_rule"),  # inspector's instrumentation
             ("styles.py", "set_rule"),
             ("_style_properties.py", "__set__"),
             # framework style setter shortcuts
@@ -666,12 +709,14 @@ class NodeInfo(Container):
             ("dom.py", "visible"),
             ("widget.py", "offset"),
         ]
+
         def should_ignore(frame_info: inspect.FrameInfo) -> bool:
             """Filter out frames that are not relevant to the user."""
-            for (ignore_filename, ignore_func_name) in to_ignore:
+            for ignore_filename, ignore_func_name in to_ignore:
                 if frame_info.filename.endswith(ignore_filename) and frame_info.function == ignore_func_name:
                     return True
             return False
+
         def trace_inline_style(rule: str) -> tuple[str, int] | None:
             """Returns the location where a style is set, or None if it can't be found."""
             try:
@@ -693,7 +738,7 @@ class NodeInfo(Container):
                 # it may not be very useful, as it would only locate the helper function.
                 # The UI is only a single button, for now, but full stack traces could be exposed.
                 frame_info = frame_infos[0]
-            except IndexError: # just in case
+            except IndexError:  # just in case
                 return None
             return (frame_info.filename, frame_info.lineno)
 
@@ -715,6 +760,7 @@ class NodeInfo(Container):
         # in order to provide links to the source code.
         inline_styles = dom_node.styles.inline
         inline_rules = inline_styles.get_rules()
+
         def format_inline_style_line(rule: str) -> Text:
             """Formats a single CSS line for display, with a link to open the source code."""
             # Ugly hack for creating a string from a single rule,
@@ -729,11 +775,7 @@ class NodeInfo(Container):
             important: set[str] = set()
             if rule in inline_styles.important:
                 important.add(rule)
-            single_rule_styles = Styles(
-                node=inline_styles.node,
-                _rules=single_rule_rules_map,
-                important=important
-            )
+            single_rule_styles = Styles(node=inline_styles.node, _rules=single_rule_rules_map, important=important)
 
             css_line = single_rule_styles.css_lines[0]
             rule_hyphenated, value = css_line.split(":", 1)
@@ -747,12 +789,11 @@ class NodeInfo(Container):
                 " ",
                 format_location_info(trace_inline_style(rule)),
             )
+
         inline_style_text = Text.assemble(
             Text.styled("inline styles", "italic"),
             " {\n",
-            Text("\n").join(
-                format_inline_style_line(rule) for rule in inline_rules
-            ),
+            Text("\n").join(format_inline_style_line(rule) for rule in inline_rules),
             "\n}",
         )
 
@@ -803,7 +844,9 @@ class NodeInfo(Container):
         styles_static.update(styles_text)
 
         # key_bindings_static.update("\n".join(map(repr, dom_node.BINDINGS)) or "(None defined with BINDINGS)")
-        key_bindings_static.update(Text("\n").join(map(lambda binding: highlighter(repr(binding)), dom_node.BINDINGS)) or "(None defined with BINDINGS)")
+        key_bindings_static.update(
+            Text("\n").join(map(lambda binding: highlighter(repr(binding)), dom_node.BINDINGS)) or "(None defined with BINDINGS)",
+        )
 
         # For events, look for class properties that are subclasses of Message
         # to determine what events are available.
@@ -851,25 +894,29 @@ class NodeInfo(Container):
                         def_location = format_object_location_info(handler)
                         # Note: css_path_nodes is just like ancestors_with_self, but reversed; it's still DOM nodes
                         descendant_arrow = Text.styled(" > ", "#808080")
-                        dom_path = descendant_arrow.join([css_path_node.css_identifier_styled for css_path_node in ancestor.css_path_nodes])
+                        dom_path = descendant_arrow.join(
+                            [css_path_node.css_identifier_styled for css_path_node in ancestor.css_path_nodes],
+                        )
                         link_id = self._link_id_counter
                         self._link_id_counter += 1
                         self._link_id_to_node[link_id] = ancestor
                         dom_path.apply_meta({"@click": f"select_node({link_id})"})
                         handler_qualname = f"{defining_class.__qualname__}.{handler_name}"
-                        usages.append(Text.assemble(
-                            # "Listener on DOM node: ", # too verbose
-                            "🎯 ", # looks nice; different metaphor
-                            # "📥 ", fits mail metaphor
-                            # "📭 ", fits mail metaphor
-                            # Fitting the mail metaphor is not necessarily the best way to go since
-                            # a Message class delivered like a letter is. It bubbles up the DOM tree. 🫧🆙🌲
-                            dom_path,
-                            "\n\n",
-                            handler_qualname,
-                            " ",
-                            def_location,
-                        ))
+                        usages.append(
+                            Text.assemble(
+                                # "Listener on DOM node: ", # too verbose
+                                "🎯 ",  # looks nice; different metaphor
+                                # "📥 ", fits mail metaphor
+                                # "📭 ", fits mail metaphor
+                                # Fitting the mail metaphor is not necessarily the best way to go since
+                                # a Message class delivered like a letter is. It bubbles up the DOM tree. 🫧🆙🌲
+                                dom_path,
+                                "\n\n",
+                                handler_qualname,
+                                " ",
+                                def_location,
+                            ),
+                        )
             if usages:
                 usage_info = Text("\n\n").join(usages)
             else:
@@ -877,13 +924,13 @@ class NodeInfo(Container):
 
             def_location = format_object_location_info(message_class)
             qualname = message_class.__qualname__
-            doc = inspect.getdoc(message_class) or '(No docstring)'
+            doc = inspect.getdoc(message_class) or "(No docstring)"
             return Text.assemble(
                 # ✉️ doesn't show up as an emoji in VS Code at least
                 # 📨 shows with an inbox tray in Apple's emoji font
                 # "📩 ", is okay
                 # "📤 ", is too similar to 📥 for visual scanning
-                "📧 ", # represents email, but the E could be said to stand for "Event"
+                "📧 ",  # represents email, but the E could be said to stand for "Event"
                 Text.styled(qualname, "bold"),
                 " ",
                 def_location,
@@ -900,7 +947,6 @@ class NodeInfo(Container):
             events_static.update(f"(No message types exported by {type(dom_node).__name__!r} or its superclasses)")
 
 
-
 class OriginalStyles(NamedTuple):
     """The original styles of a widget before highlighting."""
 
@@ -913,8 +959,10 @@ class OriginalStyles(NamedTuple):
     tint: Color | None
     """The original tint of the widget."""
 
+
 ALLOW_INSPECTING_INSPECTOR = True
 """Whether widgets in the inspector can be picked for inspection."""
+
 
 class Inspector(Container):
     """UI for inspecting the layout of the application."""
@@ -969,7 +1017,7 @@ class Inspector(Container):
 
     def compose(self) -> ComposeResult:
         """Add sub-widgets."""
-        inspect_icon = "⇱" # Alternatives: 🔍 🎯 🮰 🮵 ⮹ ⇱ 🢄 🡴 🡤 🡔 🢰 (↖️ arrow emoji unreliable)
+        inspect_icon = "⇱"  # Alternatives: 🔍 🎯 🮰 🮵 ⮹ ⇱ 🢄 🡴 🡤 🡔 🢰 (↖️ arrow emoji unreliable)
         # expand_icon = "+" # Alternatives: + ⨁ 🪜 🎊 🐡 🔬 (↕️ arrow emoji unreliable)
         yield Button(f"{inspect_icon} Inspect Element", classes="inspect_button")
         # yield Button(f"{expand_icon} Expand All Visible", classes="expand_all_button")
@@ -1002,9 +1050,7 @@ class Inspector(Container):
     def get_widget_under_mouse(self, screen_offset: Offset) -> Widget | None:
         """Get the widget under the mouse, ignoring the inspector's highlights and (optionally) the inspector panel."""
         for widget, _ in self.screen.get_widgets_at(*screen_offset):  # type: ignore
-            if widget.has_class("inspector_highlight") or (
-                self in widget.ancestors_with_self and not ALLOW_INSPECTING_INSPECTOR
-            ):
+            if widget.has_class("inspector_highlight") or (self in widget.ancestors_with_self and not ALLOW_INSPECTING_INSPECTOR):
                 continue
             return widget
         return None
@@ -1033,6 +1079,7 @@ class Inspector(Container):
             self.query_one(DOMTree).focus()
             if hasattr(self, "_prevent_highlight"):
                 del self._prevent_highlight
+
         # self.call_later(clear_prevent_highlight) # Too early.
         # self.call_after_refresh(clear_prevent_highlight) # Too early.
         # self.set_timer(0.1, clear_prevent_highlight) # Not super happy with this...
@@ -1079,7 +1126,10 @@ class Inspector(Container):
             del self._highlight_styles[widget]
 
     def is_list_of_widgets(self, value: Any) -> TypeGuard[list[Widget]]:
-        """Test whether a value is a list of widgets. The TypeGuard tells the type checker that this function ensures the type."""
+        """Test whether a value is a list of widgets.
+
+        The TypeGuard tells the type checker that this function ensures the type.
+        """
         if not isinstance(value, list):
             return False
         for item in value:  # type: ignore
@@ -1091,6 +1141,7 @@ class Inspector(Container):
         """Highlight a DOM node."""
         print("highlight")
         import traceback
+
         traceback.print_stack(limit=2)
 
         if hasattr(self, "_prevent_highlight") and dom_node is not None:
@@ -1125,7 +1176,9 @@ class Inspector(Container):
 
         # Tint highlight of hovered widget, and descendants, since the tint of a parent isn't inherited.
         widgets = dom_node.walk_children(with_self=True)
-        assert self.is_list_of_widgets(widgets), "walk_children should return a list of widgets, but got: " + repr(widgets)
+        assert self.is_list_of_widgets(widgets), "walk_children should return a list of widgets, but got: " + repr(
+            widgets,
+        )
         self.reset_highlight(except_widgets=widgets)
         for widget in widgets:
             if widget in self._highlight_styles:
@@ -1141,15 +1194,18 @@ class Inspector(Container):
         # Highlight the clipped region of the hovered widget.
         # TODO: Highlight the metrics of the hovered widget: padding, border, margin.
 
-        if "inspector_highlight" not in self.app.styles.layers: # type: ignore
-            self.app.styles.layers += ("inspector_highlight",) # type: ignore
+        if "inspector_highlight" not in self.app.styles.layers:  # type: ignore
+            self.app.styles.layers += ("inspector_highlight",)  # type: ignore
 
         if dom_node not in self._highlight_boxes:
             self._highlight_boxes[dom_node] = {}
         used_boxes: list[Container] = []
+
         def show_box(name: str, region: Region, color: str) -> None:
             """Draw a box to the screen, re-using an old one if possible."""
-            assert isinstance(dom_node, Widget), "dom_node needed for association with highlight box, but got: " + repr(dom_node)
+            assert isinstance(dom_node, Widget), "dom_node needed for association with highlight box, but got: " + repr(
+                dom_node,
+            )
             try:
                 box = self._highlight_boxes[dom_node][name]
             except KeyError:
@@ -1165,14 +1221,14 @@ class Inspector(Container):
             # box.styles.dock = "top" # "Literal['top']" is incompatible with "str | None"
             # box.styles.dock = cast(str, "top") # "str" is incompatible with "str | None"
             # box.styles.dock = cast(str | None, "top") # "str | None" is incompatible with "str | None"
-            box.styles.dock = "top" # type: ignore
-            self.app.mount(box) # type: ignore
+            box.styles.dock = "top"  # type: ignore
+            self.app.mount(box)  # type: ignore
             used_boxes.append(box)
 
         # show_box("region", dom_node.region, "blue")
         # show_box("scrollable_content_region", dom_node.scrollable_content_region, "red")
         try:
-            map_geometry = self.screen.find_widget(dom_node) # type: ignore
+            map_geometry = self.screen.find_widget(dom_node)  # type: ignore
         except NoWidget:
             return
         # Show the hovered widget's region, as it extends OUTSIDE of the clip region

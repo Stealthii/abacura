@@ -17,7 +17,6 @@ if TYPE_CHECKING:
 
 
 class ContextProvider:
-
     def __init__(self, config: Config, session_name: str):
         pass
 
@@ -27,17 +26,18 @@ class ContextProvider:
 
 class Plugin:
     """Generic Plugin Class"""
+
     _context: Dict = {}
 
     def __init__(self):
         # super().__init__()
-        self._source_filename: str = ''
-        self.session: Session = self._context['session']
-        self.config: Config = self._context['config']
-        self.director: Director = self._context['director']
-        self.core_msdp: MSDP = self._context['core_msdp']
-        self.cq: TaskManager = self._context['cq']
-        self.output_history: FIFOBuffer[OutputMessage] = self._context['buffer']
+        self._source_filename: str = ""
+        self.session: Session = self._context["session"]
+        self.config: Config = self._context["config"]
+        self.director: Director = self._context["director"]
+        self.core_msdp: MSDP = self._context["core_msdp"]
+        self.cq: TaskManager = self._context["cq"]
+        self.output_history: FIFOBuffer[OutputMessage] = self._context["buffer"]
         self.output = self.session.output
         self.debuglog = self.session.debuglog
         self.dispatch = self.director.event_manager.dispatch
@@ -51,30 +51,30 @@ class Plugin:
         return self.__class__.__name__
 
     def get_help(self):
-        doc = getattr(self, '__doc__', None)
+        doc = getattr(self, "__doc__", None)
         return doc
 
-    def add_action(self, pattern: str, callback_fn: Callable, flags: int = 0, name: str = '', color: bool = False):
+    def add_action(self, pattern: str, callback_fn: Callable, flags: int = 0, name: str = "", color: bool = False):
         act = Action(source=self, pattern=pattern, callback=callback_fn, flags=flags, name=name, color=color)
         self.director.action_manager.add(act)
 
     def remove_action(self, name: str):
         self.director.action_manager.remove(name)
 
-    def add_ticker(self, seconds: float, callback_fn: Callable, repeats: int = -1, name: str = '', commands: str = ''):
+    def add_ticker(self, seconds: float, callback_fn: Callable, repeats: int = -1, name: str = "", commands: str = ""):
         t = Ticker(source=self, seconds=seconds, callback=callback_fn, repeats=repeats, name=name, commands=commands)
         self.director.ticker_manager.add(t)
 
     def remove_ticker(self, name: str):
         self.director.ticker_manager.remove(name)
 
-    def add_substitute(self, pattern: str, repl: str, name: str = ''):
+    def add_substitute(self, pattern: str, repl: str, name: str = ""):
         pass
 
     def remove_substitute(self, name: str):
         pass
 
-    def send(self, message: str, raw: bool = False, echo_color: str = 'orange1'):
+    def send(self, message: str, raw: bool = False, echo_color: str = "orange1"):
         self.session.send(message, raw=raw, echo_color=echo_color)
 
 
@@ -89,7 +89,7 @@ def action(pattern: str, flags: int = 0, color: bool = False, priority: int = 0)
     return add_action
 
 
-def command(function=None, name: str = '', hide: bool = False, override: bool = False):
+def command(function=None, name: str = "", hide: bool = False, override: bool = False):
     def add_command(fn):
         fn.command_name = name or fn.__name__
         fn.command_hide = hide

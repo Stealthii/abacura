@@ -39,7 +39,7 @@ class LogSearchWindow(AbacuraWindow):
         ("pageup", "pageup", "PageUp"),
         ("pagedown", "pagedown", "PageDown"),
         ("shift+end", "scroll_end", ""),
-        ("shift+home", "scroll_home", "")
+        ("shift+home", "scroll_home", ""),
     ]
 
     # CSS_PATH = "css/kallisti.css"
@@ -62,7 +62,7 @@ class LogSearchWindow(AbacuraWindow):
         self.msdp_checkbox.can_focus = False
         self.row_limit.can_focus = False
 
-    async def run_search(self, find: str = '%'):
+    async def run_search(self, find: str = "%"):
         if self.populate_timer:
             self.populate_timer.stop()
         start = time.monotonic()
@@ -139,7 +139,6 @@ class LogSearchWindow(AbacuraWindow):
 
 
 class LogSearch(Plugin):
-
     @command
     def log(self, find: str = "%", limit: int = 40, dump: bool = False, msdp: bool = False):
         """
@@ -172,6 +171,7 @@ class LogSearch(Plugin):
             headers = ["Time", "Context", "Line"]
             caption = f" {len(logs)} logs found"
             from rich.table import Table
+
             tbl = Table()
             tbl.add_column("Time")
             tbl.add_column("Context")

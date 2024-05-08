@@ -1,4 +1,5 @@
 """MSDP telnet option processor"""
+
 from dataclasses import dataclass
 import re
 from typing import Any
@@ -9,15 +10,16 @@ from abacura.mud.options import IAC, SE, SB, TelnetOption
 from abacura.mud import OutputMessage
 from abacura.plugins.events import AbacuraMessage
 
-VAR = b'\x01'
-VAL = b'\x02'
-TABLE_OPEN = b'\x03'
-TABLE_CLOSE= b'\x04'
-ARRAY_OPEN = b'\x05'
-ARRAY_CLOSE= b'\x06'
+VAR = b"\x01"
+VAL = b"\x02"
+TABLE_OPEN = b"\x03"
+TABLE_CLOSE = b"\x04"
+ARRAY_OPEN = b"\x05"
+ARRAY_CLOSE = b"\x06"
 
-#TODO: Move ansi_escape somewhere else, we'll need it for triggers
-ansi_escape = re.compile(r'\x1b(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+# TODO: Move ansi_escape somewhere else, we'll need it for triggers
+ansi_escape = re.compile(r"\x1b(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+
 
 @dataclass
 class MSDPMessage(AbacuraMessage):
@@ -28,7 +30,8 @@ class MSDPMessage(AbacuraMessage):
     :param value: the new value of the MSDP variable
     :param oldvalue: the original value of the MSDP variable
     """
-    event_type:str = "core.msdp"
+
+    event_type: str = "core.msdp"
     subtype: str = ""
     value: str = ""
     oldvalue: str = ""
@@ -37,11 +40,12 @@ class MSDPMessage(AbacuraMessage):
 # TODO all these need to use the regular socket to trap send instead of calling writer directly
 class MSDP(TelnetOption):
     """Handle MSDP TelnetOptions"""
+
     code: int = 69
     name: str = "MSDP"
 
     def __init__(self, handler, writer, session):
-        self.hexcode = b'\x45'
+        self.hexcode = b"\x45"
         self.handler = handler
         self.writer = writer
         self.session = session
@@ -76,24 +80,24 @@ class MSDP(TelnetOption):
         """Kallisti-specifc parser for GROUP"""
 
         def parse_group_member(line) -> dict:
-            items = line.split(b'\x01')
+            items = line.split(b"\x01")
             member = {}
             items = items[1:]
             for item in items:
-                pair = item.split(b'\x02')
-                #try:
+                pair = item.split(b"\x02")
+                # try:
                 #    member[pair[0].decode("UTF-8")] = int(pair[1])
-                #except ValueError:
-                member[pair[0].decode("UTF-8")] = ansi_escape.sub('',pair[1].decode("UTF-8"))
+                # except ValueError:
+                member[pair[0].decode("UTF-8")] = ansi_escape.sub("", pair[1].decode("UTF-8"))
 
             return member
 
         # Empty group
-        if buf == b'':
+        if buf == b"":
             return []
 
         buf = buf[3:-2]
-        elements = buf.split(b'\x04\x02\x03')
+        elements = buf.split(b"\x04\x02\x03")
 
         log(elements)
 
@@ -107,20 +111,20 @@ class MSDP(TelnetOption):
 
     def parse_exits(self, buf) -> dict:
         """Kallisti-specific parser for ROOM_EXITS"""
-        if buf == b'':
+        if buf == b"":
             return {}
 
         buf = buf[2:-1]
 
-        items = buf.split(b'\x01')
+        items = buf.split(b"\x01")
 
         exits = {}
         for item in items:
-            pair = item.split(b'\x02')
-            #try:
+            pair = item.split(b"\x02")
+            # try:
             #    exits[pair[0].decode("UTF-8")] = int(pair[1])
-            #except ValueError:
-            exits[pair[0].decode("UTF-8")] = ansi_escape.sub('',pair[1].decode("UTF-8"))
+            # except ValueError:
+            exits[pair[0].decode("UTF-8")] = ansi_escape.sub("", pair[1].decode("UTF-8"))
 
         return exits
 
@@ -129,25 +133,25 @@ class MSDP(TelnetOption):
         buf = IAC + SB + self.hexcode + VAR + bytes("REPORT", "UTF-8") + VAL
         msdp_vals = [VAL + bytes(f, "UTF-8") for f in self.values["REPORTABLE_VARIABLES"]]
         buf += VAL.join(msdp_vals) + IAC + SE
-        self.writer(buf, echo_color='')
+        self.writer(buf, echo_color="")
 
     def will(self):
-        self.writer(b"\xff\xfd\x45", echo_color='')
-        response = [IAC,SB,self.hexcode,VAR,b"LIST",VAL,b"REPORTABLE_VARIABLES",IAC,SE]
-        self.writer(b''.join(response), echo_color='')
+        self.writer(b"\xff\xfd\x45", echo_color="")
+        response = [IAC, SB, self.hexcode, VAR, b"LIST", VAL, b"REPORTABLE_VARIABLES", IAC, SE]
+        self.writer(b"".join(response), echo_color="")
 
     def sb(self, sb):
         log.debug("MSDP SB parsing")
         sb = sb[1:]
         first = sb[0:1]
-        if first == b'\x01':
+        if first == b"\x01":
             varname, sb = self.msdpvar(sb)
             var = varname.decode("UTF-8")
             value, sb = self.msdpval(sb)
-            oldvalue = self.values.setdefault(var,None)
+            oldvalue = self.values.setdefault(var, None)
 
             if var == "REPORTABLE_VARIABLES":
-                #self.handler(f"MSDP: Requesting all variables from {var}")
+                # self.handler(f"MSDP: Requesting all variables from {var}")
                 self.values[var] = self.parse_reportable_variables(value)
                 if not self.initialized:
                     self.request_all_values()
@@ -161,10 +165,10 @@ class MSDP(TelnetOption):
             elif var == "AFFECTS":
                 self.values[var] = self.parse_exits(value)
             else:
-                self.values[var] = ansi_escape.sub('',value.decode("UTF-8"))
-                #try:
+                self.values[var] = ansi_escape.sub("", value.decode("UTF-8"))
+                # try:
                 #    self.values[var] = int(self.values[var])
-                #except ValueError:
+                # except ValueError:
                 #    pass
 
             # Write into the output log for debugging timing issues

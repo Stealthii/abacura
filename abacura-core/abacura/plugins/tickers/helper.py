@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 class TickerCommand(Plugin):
     """Provides #ticker command"""
+
     def show_tickers(self):
         rows = []
         for ticker in self.director.ticker_manager.tickers:
@@ -26,7 +27,7 @@ class TickerCommand(Plugin):
         self.output(AbacuraPanel(tbl, title="Registered Tickers"))
 
     @command
-    def ticker(self, name: str = '', commands: str = '', seconds: float = 0, repeats: int = -1, delete: bool = False):
+    def ticker(self, name: str = "", commands: str = "", seconds: float = 0, repeats: int = -1, delete: bool = False):
         """
         View/Create/delete tickers
 

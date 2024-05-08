@@ -1,4 +1,5 @@
 """Kallisti widget for displaying Group information"""
+
 from collections import OrderedDict
 from textual import log
 from textual.app import ComposeResult
@@ -11,8 +12,10 @@ from abacura.utils import percent_color
 from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
 
+
 class LOKGroup(Static):
     """Group information Widget"""
+
     can_focus_children = False
 
     group = []
@@ -23,7 +26,13 @@ class LOKGroup(Static):
         self.expand = True
 
         self.group_title = Static(classes="WidgetTitle")
-        self.group_block = DataTable(id="group_detail", zebra_stripes=True, show_header=False, show_row_labels=False, show_cursor=False)
+        self.group_block = DataTable(
+            id="group_detail",
+            zebra_stripes=True,
+            show_header=False,
+            show_row_labels=False,
+            show_cursor=False,
+        )
         self.group_block.add_column("ClassLevel", key="classlevel")
         self.group_block.add_column("Name", key="name")
         self.group_block.add_column("H", key="health")
@@ -43,14 +52,14 @@ class LOKGroup(Static):
     def update_group(self, message: MSDPMessage):
         def with_color(g):
             buf = "white"
-            if g['is_leader'] == "1":
+            if g["is_leader"] == "1":
                 buf = "bold gold3"
-            elif g['is_subleader'] == "1":
+            elif g["is_subleader"] == "1":
                 buf = "gold3"
-            elif g['class'] in ["TEM", "DRU", "PRO"]:
+            elif g["class"] in ["TEM", "DRU", "PRO"]:
                 buf = "#48D1CC"
 
-            if not g['with_leader'] == "1":
+            if not g["with_leader"] == "1":
                 buf += " italic"
 
             return f"[{buf}]"
@@ -71,7 +80,7 @@ class LOKGroup(Static):
                     f"[{percent_color(int(g_member['health']))}]{g_member['health']}",
                     f"[{percent_color(int(g_member['mana']))}]{g_member['mana']}",
                     f"[{percent_color(int(g_member['stamina']))}]{g_member['stamina']}",
-                    g_member['flags']
+                    g_member["flags"],
                 ]
                 self.group_block.add_row(*row, label=g_member["name"])
             return

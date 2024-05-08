@@ -23,7 +23,7 @@ class HalfBlock:
     bg_color: Optional[Tuple[int, int, int]]
 
     @staticmethod
-    @lru_cache(maxsize=1024*16)
+    @lru_cache(maxsize=1024 * 16)
     def get_half_block(top_rgba: Tuple, bottom_rgba: Tuple) -> "HalfBlock":
         top_r, top_g, top_b, top_a = top_rgba
         bot_r, bot_g, bot_b, bot_a = bottom_rgba
@@ -42,7 +42,7 @@ class HalfBlock:
 
 
 class ImageWidget(Widget):
-    def __init__(self, image_path: str, show_debug: bool=False, *args, **kwargs) -> None:
+    def __init__(self, image_path: str, show_debug: bool = False, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.image_path = image_path
@@ -57,7 +57,7 @@ class ImageWidget(Widget):
         self.timer = None
 
         if len(self.frames) > 1:
-            frame_duration = self.frames[self.frame_number].info.get('duration', 100) / 1000
+            frame_duration = self.frames[self.frame_number].info.get("duration", 100) / 1000
             self.timer = self.set_timer(delay=frame_duration, callback=self.advance_frame)
 
     async def on_resize(self, e: events.Resize) -> None:
@@ -76,7 +76,7 @@ class ImageWidget(Widget):
         if self.loop_number >= self.loops > 0:
             return
 
-        frame_duration = self.frames[self.frame_number].info.get('duration', 100) / 1000
+        frame_duration = self.frames[self.frame_number].info.get("duration", 100) / 1000
         self.timer = self.set_timer(delay=frame_duration, callback=self.advance_frame)
         self.refresh()
 
@@ -125,12 +125,12 @@ class ImageWidget(Widget):
 
         if self.show_debug and y == 0:
             # show info in the first line
-            frame_duration = self.frames[self.frame_number].info.get('duration', 100) / 1000
+            frame_duration = self.frames[self.frame_number].info.get("duration", 100) / 1000
             header_text = f"Fr: {self.frame_number + 1:03d}/{len(self.frames):03d} "
             header_text += f"({self.size.width}x{self.size.height}) [{frame_duration:2.2}s]"
             header_text += " " * 400
 
-            return Strip([Segment(header_text[:self.size.width], Style(color="white", bold=True))])
+            return Strip([Segment(header_text[: self.size.width], Style(color="white", bold=True))])
 
         if y < len(strips):
             return strips[y]

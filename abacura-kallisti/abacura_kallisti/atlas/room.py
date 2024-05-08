@@ -14,18 +14,18 @@ from .terrain import TERRAIN, Terrain
 
 @dataclass(slots=True)
 class Exit:
-    from_vnum: str = ''
-    direction: str = ''
-    to_vnum: str = ''
-    door: str = ''
+    from_vnum: str = ""
+    direction: str = ""
+    to_vnum: str = ""
+    door: str = ""
     closes: bool = False
     locks: bool = False
-    key_name: str = ''
+    key_name: str = ""
     weight: int = 0
     max_level: int = 100
     min_level: int = 0
     deathtrap: bool = False
-    commands: str = ''
+    commands: str = ""
     _temporary: bool = False
 
     @classmethod
@@ -44,7 +44,7 @@ class Exit:
         if self.closes or self.door:
             return [f"open {self.door or 'door'} {self.direction}", self.direction]
 
-        if self.direction in ['home', 'depart', 'recall']:
+        if self.direction in ["home", "depart", "recall"]:
             return [self.direction]
 
         return [self.direction[0]]
@@ -119,9 +119,9 @@ class ScannedMiniMap:
 
         for y, msg in enumerate(self.messages):
             for x, symbol in enumerate(msg.stripped):
-                if symbol == '@':
+                if symbol == "@":
                     self.you = (x, y)
-                elif symbol != ' ':
+                elif symbol != " ":
                     self.grid[(x, y)] = symbol
 
         # recalculate points relative to the @ symbol
@@ -134,31 +134,31 @@ class ScannedMiniMap:
 
 @dataclass
 class RoomHeader:
-    line: str = field(repr=False, default='')
-    name: str = ''
+    line: str = field(repr=False, default="")
+    name: str = ""
     exits: List[str] = field(default_factory=list)
     flags: Set[str] = field(default_factory=set)
     compass: bool = False
-    terrain_name: str = ''
-    time: str = ''
-    weather: str = ''
+    terrain_name: str = ""
+    time: str = ""
+    weather: str = ""
 
 
 @dataclass(repr=True)
 class RoomPlayer:
-    line: str = field(repr=False, default='')
-    name: str = ''
-    race: str = ''
+    line: str = field(repr=False, default="")
+    name: str = ""
+    race: str = ""
     flags: Set[str] = field(default_factory=set)
     # evil sanc (same list as mobs)
-    riding: str = ''
+    riding: str = ""
 
 
 @dataclass
 class RoomItem:
-    line: str = field(repr=False, default='')
-    description: str = ''
-    short: str = ''
+    line: str = field(repr=False, default="")
+    description: str = ""
+    short: str = ""
     quantity: int = 1
     blue: bool = False
     flags: Set[str] = field(default_factory=set)
@@ -166,19 +166,19 @@ class RoomItem:
 
 @dataclass
 class RoomCorpse:
-    line: str = field(repr=False, default='')
-    description: str = ''
+    line: str = field(repr=False, default="")
+    description: str = ""
     quantity: int = 1
-    corpse_type: str = ''
+    corpse_type: str = ""
     # related mob from atlas/area
 
 
 @dataclass
 class RoomMob(Mob):
-    line: str = field(repr=False, default='')
-    description: str = ''
+    line: str = field(repr=False, default="")
+    description: str = ""
     quantity: int = 1
-    position: str = ''
+    position: str = ""
     has_quest: bool = False
     alert: bool = False
     paralyzed: bool = False
@@ -203,8 +203,8 @@ class ScannedRoom(Room):
     players: List[RoomPlayer] = field(default_factory=list)
     minimap: ScannedMiniMap = field(default_factory=ScannedMiniMap)
     warded: bool = False
-    blood_trail: str = ''
-    hunt_tracks: str = ''
+    blood_trail: str = ""
+    hunt_tracks: str = ""
     msdp_exits: Dict[str, str] = field(default_factory=dict)
 
     def identify_room_mobs(self):
@@ -213,7 +213,7 @@ class ScannedRoom(Room):
 
         for rm in self.mobs:
             for am in self.area.mobs:
-                if am.starts_with != '' and re.match(f"^{am.starts_with}[, ]", rm.description):
+                if am.starts_with != "" and re.match(f"^{am.starts_with}[, ]", rm.description):
                     rm.copy_mob_properties(am)
                     continue
 
@@ -225,6 +225,7 @@ class ScannedRoom(Room):
 @dataclass
 class RoomMessage(AbacuraMessage):
     """Message when a room is viewed"""
+
     vnum: str = ""
     room: ScannedRoom = None
     event_type: str = "lok.room"

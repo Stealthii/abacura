@@ -1,4 +1,5 @@
 """Main screen and widgets for abacura"""
+
 from __future__ import annotations
 
 # TODO: screen and widget definitions should go under the hierarchy, not in __init__
@@ -20,7 +21,6 @@ if TYPE_CHECKING:
 
 
 class SessionRichLog(RichLog):
-
     def on_resize(self, _e: events.Resize):
         # animate this to reduce "flicker" when toggling commslog, debuglog
         self.scroll_end(duration=0.1)
@@ -40,7 +40,7 @@ class SessionScreen(Screen):
         ("shift+end", "scroll_end", ""),
         ("shift+home", "scroll_home", ""),
         ("f2", "toggle_sidebar", "F2"),
-        ("f3", "toggle_commslog", "F3")
+        ("f3", "toggle_commslog", "F3"),
     ]
 
     AUTO_FOCUS = "InputBar"
@@ -52,9 +52,16 @@ class SessionScreen(Screen):
         self.id = f"screen-{name}"
         self.tlid = f"output-{name}"
         # TODO: wrap should be a config file field option
-        self.tl: SessionRichLog = SessionRichLog(highlight=False, markup=False, wrap=True, auto_scroll=False,
-                                                 name=self.tlid, classes="mudoutput", id=self.tlid,
-                                                 max_lines=self.MAX_LINES)
+        self.tl: SessionRichLog = SessionRichLog(
+            highlight=False,
+            markup=False,
+            wrap=True,
+            auto_scroll=False,
+            name=self.tlid,
+            classes="mudoutput",
+            id=self.tlid,
+            max_lines=self.MAX_LINES,
+        )
         self.tl.can_focus = False
         self.footer = None
 
@@ -73,6 +80,7 @@ class SessionScreen(Screen):
         yield AbacuraFooter(id="footer")
         if self.session.abacura.inspector:
             from abacura.widgets._inspector import Inspector
+
             inspector = Inspector()
             inspector.display = False
             yield inspector
@@ -96,7 +104,7 @@ class SessionScreen(Screen):
         sidebar = self.query_one("#sidebar")
         sidebar.display = not sidebar.display
 
-## session.abacura.screen.query_one("app-grid").query_one("playerinput").password
+    ## session.abacura.screen.query_one("app-grid").query_one("playerinput").password
 
     def action_toggle_commslog(self) -> None:
         commslog = self.query_one("#commslog")
@@ -111,8 +119,8 @@ class SessionScreen(Screen):
 
     def action_pagedown(self) -> None:
         # if self.tl.scroll_offset.y >= self.tl.virtual_size.height - self.tl.content_size.height:
-            # self.tl.auto_scroll = True
-            # self.tl.max_lines = self.MAX_LINES
+        # self.tl.auto_scroll = True
+        # self.tl.max_lines = self.MAX_LINES
 
         self.tl.scroll_page_down(duration=0.3)
 
@@ -130,9 +138,7 @@ class SessionScreen(Screen):
 
 
 class AbacuraWindow(Container):
-    BINDINGS = [
-        ("escape", "escape", "Close Window")
-    ]
+    BINDINGS = [("escape", "escape", "Close Window")]
 
     def __init__(self, title="Window", *args, **kwargs):
         super().__init__(*args, **kwargs)

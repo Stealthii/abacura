@@ -17,8 +17,8 @@ if TYPE_CHECKING:
     from abacura_kallisti.screens import KallistiScreen
     from typing import Self
 
-class LOKExperience(Static):
 
+class LOKExperience(Static):
     my_reactives = {
         "LEVEL": "c_level",
         "EXPERIENCE": "c_exp",
@@ -56,7 +56,6 @@ class LOKExperience(Static):
         yield Static("[cyan]XP to Cap", id="capxplabel")
         yield Static("[cyan]Heros to Level", id="herplabel")
 
-
     def on_mount(self):
         """Set up listeners, update visibility state"""
         self.screen.session.add_listener(self.update_reactives)
@@ -70,7 +69,9 @@ class LOKExperience(Static):
 
         if message.subtype in self.my_reactives:
             setattr(self, self.my_reactives[message.subtype], int(message.value))
-            self.remort_line.update(f"[cyan]Remorts: [white]{self.c_remorts} [cyan]In Class: [white]{self.c_laps_in_class}")
+            self.remort_line.update(
+                f"[cyan]Remorts: [white]{self.c_remorts} [cyan]In Class: [white]{self.c_laps_in_class}",
+            )
 
             if message.subtype in ["LEVEL"]:
                 self.pb_xp.remove()
@@ -92,7 +93,7 @@ class LOKExperience(Static):
                 if self.c_level > 19 and self.c_level < 95:
                     self.pb_xpsack.total = LEVEL_VALUES[self.c_level + 1].xp * 5
                 else:
-                    self.pb_xpsack.total = pow(2,32) - 1
+                    self.pb_xpsack.total = pow(2, 32) - 1
                 return
 
             if message.subtype in ["EXPERIENCE", "EXPERIENCE_TNL"]:

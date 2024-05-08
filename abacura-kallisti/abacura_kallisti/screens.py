@@ -1,4 +1,5 @@
 """Legends of Kallisti Test Screen"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -22,13 +23,13 @@ if TYPE_CHECKING:
 
 class KallistiScreen(SessionScreen):
     """Default Screen for sessions"""
-    BINDINGS = [
 
+    BINDINGS = [
         ("f2", "toggle_left_sidebar", "F2"),
         ("f3", "toggle_right_sidebar", "F3"),
         ("f4", "toggle_commslog", "F4"),
         ("f5", "toggle_debug", "F5"),
-        ("escape", "escape", "Close Windows")
+        ("escape", "escape", "Close Windows"),
     ]
 
     AUTO_FOCUS = "InputBar"
@@ -36,7 +37,6 @@ class KallistiScreen(SessionScreen):
     DEFAULT_CLASSES = "BKS"
 
     def __init__(self, name: str, session: Session):
-
         super().__init__(name, session)
         self._map_overlay = False
         self.can_focus_children = False
@@ -64,6 +64,7 @@ class KallistiScreen(SessionScreen):
 
         if self.session.abacura.inspector:
             from abacura.widgets._inspector import Inspector
+
             inspector = Inspector()
             inspector.display = False
             yield inspector
@@ -99,6 +100,7 @@ class BetterKallistiScreen(KallistiScreen):
     """
     This will eventually be the standard screen for the abacura-kallisti module
     """
+
     DEFAULT_CLASSES = "BKS"
 
 

@@ -1,4 +1,5 @@
 """Main screen and widgets for abacura"""
+
 from __future__ import annotations
 
 # TODO: screen and widget definitions should go under the hierarchy, not in __init__
@@ -18,6 +19,7 @@ if TYPE_CHECKING:
     from typing_extensions import Self
     from abacura.mud.session import Session
 
+
 class InputBar(Input):
     BINDINGS = [
         ("up", "history_scrollback", None),
@@ -27,18 +29,20 @@ class InputBar(Input):
     ]
 
     """player input line"""
+
     class UserCommand(Message):
         """Message object to bubble up inputs with"""
+
         def __init__(self, command: str, password: bool = False) -> None:
             self.command = command
             self.password: bool = password
             super().__init__()
 
-    def __init__(self, id: str=""):
+    def __init__(self, id: str = ""):
         super().__init__(id=id)
         self.history = []
         self.history_ptr = None
-        self.styles.padding = (0,0)
+        self.styles.padding = (0, 0)
 
     def on_mount(self):
         self.suggester = AbacuraSuggester(self.screen.session)
@@ -93,17 +97,18 @@ class InputBar(Input):
         self.value = ""
 
     def action_clear(self) -> None:
-        self.value=""
+        self.value = ""
+
 
 class AbacuraSuggester(Suggester):
     def __init__(self, session):
         super().__init__(use_cache=False)
         self.session = session
         self.history = []
-        self.command_char = self.session.config.get_specific_option(self.session.name, "command_char","#")
+        self.command_char = self.session.config.get_specific_option(self.session.name, "command_char", "#")
 
     def add_entry(self, value) -> None:
-        self.history.insert(0,value)
+        self.history.insert(0, value)
 
     async def get_suggestion(self, value: str) -> Coroutine[Any, Any, str] | None:
         if value.startswith(self.command_char):

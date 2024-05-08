@@ -19,7 +19,7 @@ class Timer(ContextDecorator):
     logger: Optional[Callable[[str], None]] = print
     _start_time: Optional[float] = field(default=None, init=False, repr=False)
 
-    def __init__(self, name: str = 'Elapsed'):
+    def __init__(self, name: str = "Elapsed"):
         self.name = name
         super().__init__()
 

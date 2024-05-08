@@ -9,12 +9,14 @@ from abacura.utils.renderables import tabulate, AbacuraPanel
 
 class SessionHelper(Plugin):
     """Provides commands related to the session"""
+
     def __init__(self):
         super().__init__()
         if self.session.ring_buffer:
             self.add_ticker(1, self.session.ring_buffer.commit, name="ring-autocommit")
 
     """Session specific commands"""
+
     @command(name="echo")
     def echo(self, text: str):
         """
@@ -38,7 +40,7 @@ class SessionHelper(Plugin):
         self.session.output(text, markup=True)
 
     @command(name="msdp")
-    def msdp_command(self, variable: str = '') -> None:
+    def msdp_command(self, variable: str = "") -> None:
         """
         Dump MSDP values for debugging
 

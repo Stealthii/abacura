@@ -18,6 +18,7 @@ from rich.style import Style
 from textual.timer import Timer
 from textual.widgets import Static
 
+
 @dataclass
 class HalfBlock:
     symbol: str
@@ -74,8 +75,12 @@ class RichImage:
         strips = []
         rgba_image = self.frames_rgba[self.frame_number]
         width, height = rgba_image.width, rgba_image.height
-        #segments.append(Segment(f"Frame: {self.frame_number + 1:03d}/{len(self.frames_rgba):03d} Size: {rgba_image.size}\n",
-        #                        Style(color="white", bold=True)))
+        # segments.append(
+        #     Segment(
+        #         f"Frame: {self.frame_number + 1:03d}/{len(self.frames_rgba):03d} Size: {rgba_image.size}\n",
+        #         Style(color="white", bold=True),
+        #     )
+        # )
 
         for y in range(0, height, 2):
             blocks: List[HalfBlock] = []
@@ -95,12 +100,11 @@ class RichImage:
 
         return segments
 
-
     def advance_frame(self) -> bool:
         if len(self.frames) == 1:
             return False
 
-        frame_duration = self.current_frame.info.get('duration', 100)
+        frame_duration = self.current_frame.info.get("duration", 100)
         frame_loops = self.current_frame.info.get("loops", 0)
         if (datetime.utcnow() - self.frame_start_time).total_seconds() * 1000 < frame_duration:
             return False
@@ -121,20 +125,20 @@ class RichImage:
         segments = self.get_frame_segments(self.frame_number)
         return segments
 
-class LOKGif(Static):
 
+class LOKGif(Static):
     progress_timer: Timer
 
-    def __init__(self, filename:str, width: int = 0, height: int = 0, **kwargs):
+    def __init__(self, filename: str, width: int = 0, height: int = 0, **kwargs):
         super().__init__(*kwargs)
         self.filename = filename
         self.image = RichImage.from_image_path(filename, (width, height))
-        #self.progress_timer = self.set_interval(1, self.make_progress)
+        # self.progress_timer = self.set_interval(1, self.make_progress)
 
     def render(self):
         self.image.advance_frame()
         segments = self.image.get_frame_segments(self.image.frame_number)
-        yield(segments)
+        yield segments
 
 
 if __name__ == "__main__":
@@ -143,7 +147,7 @@ if __name__ == "__main__":
     # img = RichImage.from_image_path(images_path / "bulbasaur.png", (30, 60))
     # img = RichImage.from_image_path(images_path / "hydra.gif", (40, 40))
     # img = RichImage.from_image_path(images_path / "spaceship.gif", resize=(40, 40))
-    img = RichImage.from_image_path(images_path / "edm.gif", (50,50))
+    img = RichImage.from_image_path(images_path / "edm.gif", (50, 50))
     # img = RichImage.from_image_path(images_path / "ship.jpeg", resize=(64, 48))
     # img = RichImage.from_image_path(images_path / "scorpion.png")
 

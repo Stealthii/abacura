@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 
 class ActionCommand(Plugin):
     """Provides #ticker command"""
+
     def show_actions(self):
         rows = []
         for action in self.director.action_manager.actions.queue:
@@ -22,8 +23,11 @@ class ActionCommand(Plugin):
 
             rows.append((repr(action.pattern), callback_name, action.priority, action.flags))
 
-        tbl = tabulate(rows, headers=["Pattern", "Callback", "Priority", "Flags"],
-                       caption=f" {len(rows)} actions registered")
+        tbl = tabulate(
+            rows,
+            headers=["Pattern", "Callback", "Priority", "Flags"],
+            caption=f" {len(rows)} actions registered",
+        )
         self.output(AbacuraPanel(tbl, title="Registered Actions"))
 
     @command

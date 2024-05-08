@@ -1,4 +1,5 @@
 """Kallisti widget for displaying Combat information"""
+
 from collections import OrderedDict
 
 from rich.segment import Segment
@@ -13,6 +14,7 @@ from textual.widgets import Static, DataTable
 from abacura.utils import percent_color
 from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
+
 
 class LOKCombatTop(DataTable):
     c_position: reactive[str] = reactive("Standing")
@@ -29,6 +31,7 @@ class LOKCombatTop(DataTable):
         self.clear()
         self.add_row(self.c_position, self.c_alignment)
 
+
 class LOKCombatStatus(DataTable):
     c_ac: reactive[int] = reactive(0)
     c_damroll: reactive[int] = reactive(0)
@@ -44,14 +47,36 @@ class LOKCombatStatus(DataTable):
         self.show_header = False
         self.show_cursor = False
         self.show_row_labels = False
-        self.add_columns("r1","r2","r3","r4","r5","r6")
+        self.add_columns("r1", "r2", "r3", "r4", "r5", "r6")
         self.update()
 
     def update(self):
         self.clear()
-        self.add_row("[cyan] AC:",f"[white]{self.c_ac}","[cyan]Dam:",f"[white]{self.c_damroll}", "[cyan]Hit:", f"[white]{self.c_hitroll}")
-        self.add_row("[cyan]Wmp:",f"[white]{self.c_wimpy}","[cyan]Hun:",f"[white]{self.c_hunger}", "[cyan]Thi:", f"[white]{self.c_thirst}")
-        self.add_row("[cyan] HP:",f"[white]{self.c_hp}","[cyan] MP:",f"[white]{self.c_mp}", "[cyan] SP:", f"[white]{self.c_sp}")
+        self.add_row(
+            "[cyan] AC:",
+            f"[white]{self.c_ac}",
+            "[cyan]Dam:",
+            f"[white]{self.c_damroll}",
+            "[cyan]Hit:",
+            f"[white]{self.c_hitroll}",
+        )
+        self.add_row(
+            "[cyan]Wmp:",
+            f"[white]{self.c_wimpy}",
+            "[cyan]Hun:",
+            f"[white]{self.c_hunger}",
+            "[cyan]Thi:",
+            f"[white]{self.c_thirst}",
+        )
+        self.add_row(
+            "[cyan] HP:",
+            f"[white]{self.c_hp}",
+            "[cyan] MP:",
+            f"[white]{self.c_mp}",
+            "[cyan] SP:",
+            f"[white]{self.c_sp}",
+        )
+
 
 class LOKCombat(Static):
     """Combat information Widget"""
@@ -73,7 +98,7 @@ class LOKCombat(Static):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.combat_title = Static("Combat",classes="WidgetTitle")
+        self.combat_title = Static("Combat", classes="WidgetTitle")
         self.combat_top = LOKCombatTop()
         self.combat_stats = LOKCombatStatus()
         self.wield = Static("[cyan]Wld:")
@@ -81,11 +106,11 @@ class LOKCombat(Static):
         self.shield = Static("[cyan]Shi:")
         self.quick = Static("[cyan]Qck:")
         self.mount_name = Static("[cyan]Mount:")
-        self.mount_block = DataTable(show_header=False,show_cursor=False, show_row_labels=False)
-        self.mount_block.add_columns("H","hval","S","sval")
+        self.mount_block = DataTable(show_header=False, show_cursor=False, show_row_labels=False)
+        self.mount_block.add_columns("H", "hval", "S", "sval")
         self.opponent_name = Static("[cyan]Opp:")
-        self.opponent_block = DataTable(show_header=False,show_cursor=False, show_row_labels=False)
-        self.opponent_block.add_columns("H","hval","S","sval")
+        self.opponent_block = DataTable(show_header=False, show_cursor=False, show_row_labels=False)
+        self.opponent_block.add_columns("H", "hval", "S", "sval")
 
     def on_mount(self):
         self.screen.session.add_listener(self.update_combat_values)
@@ -107,7 +132,7 @@ class LOKCombat(Static):
 
     def healthpct(self, health: int = 0):
         if self.screen:
-            max = int(self.screen.session.core_msdp.values.get("HEALTH_MAX",health))
+            max = int(self.screen.session.core_msdp.values.get("HEALTH_MAX", health))
             if max > 0:
                 pct = int(health * 100 / max)
                 return f"[{percent_color(pct)}]{pct}%"
@@ -115,7 +140,7 @@ class LOKCombat(Static):
 
     def manapct(self, mana: int = 0):
         if self.screen:
-            max = int(self.screen.session.core_msdp.values.get("MANA_MAX",mana))
+            max = int(self.screen.session.core_msdp.values.get("MANA_MAX", mana))
             if max > 0:
                 pct = int(mana * 100 / max)
                 return f"[{percent_color(pct)}]{pct}%"
@@ -123,7 +148,7 @@ class LOKCombat(Static):
 
     def stampct(self, stam: int = 0):
         if self.screen:
-            max = int(self.screen.session.core_msdp.values.get("STAMINA_MAX",stam))
+            max = int(self.screen.session.core_msdp.values.get("STAMINA_MAX", stam))
             if max > 0:
                 pct = int(stam * 100 / max)
                 return f"[{percent_color(pct)}]{pct}%"
@@ -137,16 +162,14 @@ class LOKCombat(Static):
             if self.c_mount_stamina_max == 0:
                 self.c_mount_stamina_max = 100
 
-            hpct = int(self.c_mount_health * 100/ self.c_mount_health_max)
-            spct = int(self.c_mount_stamina * 100/ self.c_mount_stamina_max)
+            hpct = int(self.c_mount_health * 100 / self.c_mount_health_max)
+            spct = int(self.c_mount_stamina * 100 / self.c_mount_stamina_max)
 
             self.mount_block.add_row(
                 "[cyan] HP:",
-                f"[{percent_color(hpct)}]{hpct}%"
-                "[cyan] SP:",
-                f"[{percent_color(spct)}]{spct}%"
+                f"[{percent_color(hpct)}]{hpct}%" "[cyan] SP:",
+                f"[{percent_color(spct)}]{spct}%",
             )
-
 
     def opponent_block_update(self):
         self.opponent_block.clear()
@@ -157,23 +180,22 @@ class LOKCombat(Static):
                 self.c_opponent_stamina_max = 100
 
             if self.c_opponent_health_max > 0:
-                hpct = int(self.c_opponent_health * 100/ self.c_opponent_health_max)
+                hpct = int(self.c_opponent_health * 100 / self.c_opponent_health_max)
             else:
                 hpct = 0
 
             if self.c_opponent_stamina_max > 0:
-                spct = int(self.c_opponent_stamina * 100/ self.c_opponent_stamina_max)
+                spct = int(self.c_opponent_stamina * 100 / self.c_opponent_stamina_max)
             else:
                 spct = 0
 
             self.opponent_block.add_row(
                 "[cyan] HP:",
-                f"[{percent_color(hpct)}]{hpct}%"
-                "[cyan] SP:",
-                f"[{percent_color(spct)}]{spct}%"
+                f"[{percent_color(hpct)}]{hpct}%" "[cyan] SP:",
+                f"[{percent_color(spct)}]{spct}%",
             )
         else:
-            self.opponent_block.add_row("", "", "",  "")
+            self.opponent_block.add_row("", "", "", "")
 
     @event("core.msdp")
     def update_combat_values(self, msg: MSDPMessage):

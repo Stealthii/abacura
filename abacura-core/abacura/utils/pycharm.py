@@ -9,4 +9,5 @@ class PycharmDebugger:
 
     def connect(self, host: str, port: int):
         import pydevd_pycharm
+
         pydevd_pycharm.settrace(host, port=port, stdoutToServer=True, stderrToServer=True, suspend=False)

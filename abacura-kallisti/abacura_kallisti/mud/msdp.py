@@ -117,7 +117,6 @@ class TypedMSDP:
 
     @property
     def hp_max(self) -> int:
-
         return self.health_max
 
     @property
@@ -190,7 +189,7 @@ class TypedMSDP:
 
     def get_affect_hours(self, name: str) -> int:
         # lowercase and drop anything after the first space to handle 'focus dex', 'warpaint crimson', etc
-        name = name.split(' ')[0].lower()
+        name = name.split(" ")[0].lower()
 
         # allow lookup by exact affect name, by a skill name (valmeyjar), or by a skill command (darmor)
         affect_pattern = name
@@ -208,6 +207,7 @@ class TypedMSDP:
                 return int(a.hours)
 
         return 0
+
     #
     # def get_exits(self) -> Dict:
     #     e = tintin.parse_table(self.room_exits)

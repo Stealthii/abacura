@@ -1,4 +1,5 @@
 """Legends of Kallisti Specific Widgets"""
+
 from __future__ import annotations
 
 import sys
@@ -23,26 +24,23 @@ if TYPE_CHECKING:
     from .lokcomms import LOKComms
 
 
-__all__ = [
-    "LOKComms",
-    "LOKPlugin"
-]
+__all__ = ["LOKComms", "LOKPlugin"]
 
 __LOCAL_CLASSES__ = ["LOKPlugin"]
 
 
 class LOKPlugin(Plugin):
-    """Subclass of standard Plugin with additional Kallisti Specifics """
+    """Subclass of standard Plugin with additional Kallisti Specifics"""
 
     def __init__(self):
         super().__init__()
 
-        self.msdp: TypedMSDP = self._context['msdp']
-        self.world: World = self._context['world']
-        self.pc: PlayerCharacter = self._context['pc']
-        self.locations: LocationList = self._context['locations']
-        self.room: ScannedRoom = self._context['room']
-        self.odometer: Odometer = self._context['odometer']
+        self.msdp: TypedMSDP = self._context["msdp"]
+        self.world: World = self._context["world"]
+        self.pc: PlayerCharacter = self._context["pc"]
+        self.locations: LocationList = self._context["locations"]
+        self.room: ScannedRoom = self._context["room"]
+        self.odometer: Odometer = self._context["odometer"]
 
     @property
     def metrics(self) -> MudMetrics:
@@ -118,6 +116,4 @@ def __getattr__(widget_class: str) -> type[Widget]:
     return class_
 
 
-__all__ = [
-
-]
+__all__ = []

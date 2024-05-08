@@ -1,4 +1,5 @@
 """LOK MSDP plugin"""
+
 from __future__ import annotations
 
 from dataclasses import asdict, fields
@@ -17,13 +18,14 @@ from abacura.plugins.events import event
 # TODO: disable the abacura @msdp command and let's implement it here
 class LOKMSDPController(LOKPlugin):
     """Converts core MSDP into typed LOK MSDP variables"""
+
     def __init__(self):
         super().__init__()
         self.msdp_types = {f.name: f.type for f in fields(self.msdp)}
         print(self.msdp_types)
 
     @command(name="msdp", override=True)
-    def lok_msdp_command(self, variable: str = '', reportable: bool = False, core: bool = False) -> None:
+    def lok_msdp_command(self, variable: str = "", reportable: bool = False, core: bool = False) -> None:
         """
         Show MSDP values using typed LOK structure
 
@@ -54,10 +56,10 @@ class LOKMSDPController(LOKPlugin):
         # self.msdp.values[message.type] = message.value
         attr_name = message.subtype.lower()
 
-        renames = {'class': 'cls', 'str': 'str_', 'int': 'int_'}
+        renames = {"class": "cls", "str": "str_", "int": "int_"}
         attr_name = renames.get(attr_name, attr_name)
 
-        if attr_name == 'ranged':
+        if attr_name == "ranged":
             pass
 
         # if not hasattr(self.msdp, attr_name):
@@ -70,10 +72,10 @@ class LOKMSDPController(LOKPlugin):
         elif self.msdp_types[attr_name] == str:
             value = str(message.value)
 
-        if attr_name == 'group':
+        if attr_name == "group":
             self.msdp.group.update_members_from_msdp(value)
             self.msdp.group.update_members_from_msdp(value)
-        elif attr_name == 'affects' and type(value) is dict:
+        elif attr_name == "affects" and type(value) is dict:
             self.msdp.affects = sorted([Affect(name, int(hrs)) for name, hrs in value.items()], key=lambda a: a.name)
         else:
             setattr(self.msdp, attr_name, value)

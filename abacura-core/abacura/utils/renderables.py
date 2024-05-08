@@ -14,7 +14,7 @@ from typing import Union
 @dataclass
 class OutputColors:
     output: str = "#101018"
-    panel: str = "#334455"    # Charcoal
+    panel: str = "#334455"  # Charcoal
     border: str = "#DDEEFF"
     section: str = "#11EEFF"  # Cyan
     title: str = section
@@ -23,7 +23,7 @@ class OutputColors:
     caption: str = "gray50"
     success: str = "#11FF22"  # green
     exception: str = "#FF1133"  # Red
-    error: str = "#FF7711"   # Orange
+    error: str = "#FF7711"  # Orange
     warning: str = "#FFDD55"  # Yellow
 
 
@@ -51,15 +51,17 @@ class AbacuraPropertyGroup(Group):
         for k, v in obj.items():
             if exclude and k in exclude:
                 continue
-            text = Text.assemble((f"{k:>{kl}.{kl}}: ", Style(color=OutputColors.field, bold=True)),
-                                 (str(v), OutputColors.value))
+            text = Text.assemble(
+                (f"{k:>{kl}.{kl}}: ", Style(color=OutputColors.field, bold=True)),
+                (str(v), OutputColors.value),
+            )
             lines.append(text)
 
         super().__init__(*lines)
 
 
 class AbacuraPanel(Panel):
-    def __init__(self, renderable, title: str = '', *args, **kwargs):
+    def __init__(self, renderable, title: str = "", *args, **kwargs):
         kwargs.setdefault("highlight", True)
         kwargs.setdefault("expand", False)
         kwargs.setdefault("border_style", Style(bold=True, bgcolor=OutputColors.panel))
@@ -130,7 +132,7 @@ def tabulate(tabular_data, headers=(), float_format="9.3f", row_styler=None, **k
     for h, ct in zip_longest(headers, column_types):
         if h and h.startswith("_"):
             justify = "right"
-        elif ct in (int, 'int', float, 'float'):
+        elif ct in (int, "int", float, "float"):
             justify = "right"
         else:
             justify = "left"

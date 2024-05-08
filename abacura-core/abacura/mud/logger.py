@@ -9,8 +9,8 @@ from rich.text import Text
 
 from abacura import Config
 
-class AbacuraLogger:
 
+class AbacuraLogger:
     def __init__(self, name: str, config: Config):
         if config.get_specific_option(name, "log_dir"):
             logfile = Path(config.get_specific_option(name, "log_dir")).expanduser()
@@ -19,11 +19,7 @@ class AbacuraLogger:
             self.logfile = None
 
         if self.logfile:
-            logging.basicConfig(
-                filename=self.logfile,
-                filemode="a",
-                level=logging.DEBUG
-            )
+            logging.basicConfig(filename=self.logfile, filemode="a", level=logging.DEBUG)
             self.logger = logging.getLogger("abacura-kallisti")
         else:
             self.logger = None

@@ -1,4 +1,3 @@
-
 import importlib
 import io
 
@@ -26,6 +25,7 @@ class Profiler(Plugin):
 
         if gc:
             import gc
+
             gc.collect()
             self.session.output("Garbage collected")
 
@@ -41,7 +41,7 @@ class Profiler(Plugin):
 
         if baseline:
             self.heap.setref()
-            self.session.output('Memory profiler baselined')
+            self.session.output("Memory profiler baselined")
         else:
             self.session.output(str(self.heap.heap()))
 
@@ -71,13 +71,20 @@ class Profiler(Plugin):
 
         rows = []
         for pfn in sorted(stats_dict.values(), key=lambda x: x.self_time, reverse=True)[:num_functions]:
-            rows.append((pfn.function.get_location(), pfn.call_count,
-                         pfn.elapsed_time / 1E9, pfn.cpu_time, pfn.self_time / 1E9))
+            rows.append(
+                (
+                    pfn.function.get_location(),
+                    pfn.call_count,
+                    pfn.elapsed_time / 1e9,
+                    pfn.cpu_time,
+                    pfn.self_time / 1e9,
+                ),
+            )
         tbl = tabulate(rows, headers=("Function", "Calls", "Elapsed", "CPU", "Self Time"))
         self.output(AbacuraPanel(tbl, title="Profiler Results"))
 
     @command(hide=True)
-    def profile(self, num_functions: int = 40, disable: bool = False, callers: bool = False, _sort: str = 'time'):
+    def profile(self, num_functions: int = 40, disable: bool = False, callers: bool = False, _sort: str = "time"):
         """
         Profile CPU usage by method
 
@@ -106,7 +113,7 @@ class Profiler(Plugin):
 
         stream = io.StringIO()
 
-        sort_by = [s for s in ('time', 'calls', 'cumulative_time') if s.startswith(_sort.lower())]
+        sort_by = [s for s in ("time", "calls", "cumulative_time") if s.startswith(_sort.lower())]
         if len(sort_by) == 0:
             raise CommandError("Invalid sort option.  Valid values are time, calls, cumulative")
         sort_by = sort_by[0]

@@ -1,4 +1,5 @@
-""" Automatic application of Buffs"""
+"""Automatic application of Buffs"""
+
 from time import monotonic
 from typing import Dict, Optional
 
@@ -15,6 +16,7 @@ from abacura.utils.renderables import AbacuraPanel, tabulate, Group, Text, Outpu
 
 class AutoBuff(LOKPlugin):
     """Handle application of buffs"""
+
     _RUNNER_INTERVAL: float = 2.0
 
     def __init__(self):
@@ -24,8 +26,7 @@ class AutoBuff(LOKPlugin):
         self.last_attempt: Dict[str, float] = {}
         # Gods don't need buffs :)
         if self.msdp.level < 200:
-            self.add_ticker(self._RUNNER_INTERVAL,
-                            callback_fn=self.buff_check, repeats=-1, name="autobuff")
+            self.add_ticker(self._RUNNER_INTERVAL, callback_fn=self.buff_check, repeats=-1, name="autobuff")
 
     def get_player_buffs(self) -> set[Skill]:
         buffs: set[Skill] = set()
@@ -66,7 +67,7 @@ class AutoBuff(LOKPlugin):
             return
 
         for buff in self.get_player_buffs():
-            hours = 2 if buff.renewal == 'renew' else 1
+            hours = 2 if buff.renewal == "renew" else 1
             if self.msdp.get_affect_hours(buff.affect_name or buff.skill_name) < hours:
                 self.acquire_buff(buff)
 
@@ -93,7 +94,7 @@ class AutoBuff(LOKPlugin):
                     method += " group"
 
                 self.cq.add(cmd=method, dur=1.0, q="NCO")
-            #else:
+            # else:
             #    self.output(f"[bold red]# No method of acquisition for {buf}!", markup=True)
 
     def acquisition_method(self, buff: Skill) -> Optional[str]:
@@ -127,10 +128,12 @@ class AutoBuff(LOKPlugin):
                 color = "green" if remaining > 5 else "yellow"
                 remaining = f"{remaining:2}"
 
-            row = {"Buff": buff.skill_name,
-                   "Hours Left": f"[{color}]{remaining}",
-                   "Acquisition Method": acq,
-                   "Affect": buff.affect_name}
+            row = {
+                "Buff": buff.skill_name,
+                "Hours Left": f"[{color}]{remaining}",
+                "Acquisition Method": acq,
+                "Affect": buff.affect_name,
+            }
 
             rows.append(row)
 
@@ -146,8 +149,17 @@ class AutoBuff(LOKPlugin):
             self.player_skills = {}
 
     @action(r"^([a-z]+ *[a-z]*) +(\d+)* +(?:\[([^]]+)\])* +(\d+)% +(\d+)/(\d+) +\( \+*(\d+)* +\) *(\{locked\})*")
-    def got_skill(self, skill: str, clevel: int, mp_sp: int, skilled: int, rank: int, trained_rank: int,
-                  bonus: int, locked: str):
+    def got_skill(
+        self,
+        skill: str,
+        clevel: int,
+        mp_sp: int,
+        skilled: int,
+        rank: int,
+        trained_rank: int,
+        bonus: int,
+        locked: str,
+    ):
         if self.getting_skills:
             locked = locked is not None
 

@@ -1,4 +1,5 @@
 """Main Textual App and Entrypoint"""
+
 import sys
 from collections import OrderedDict
 from pathlib import Path
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
 
 class Abacura(App):
     """A Textual mudclient"""
+
     AUTO_FOCUS = "InputBar"
     CSS_PATH = ["./css/abacura.css"]
     SCREENS = {}
@@ -29,7 +31,7 @@ class Abacura(App):
         Binding("ctrl+c", "null", "Toggle Dark Mode"),
         Binding("f3", "reload_config", "f3"),
         Binding("f12", "toggle_inspector", "Toggle Inspector"),
-        Binding("f10", "screenshot", "")
+        Binding("f10", "screenshot", ""),
     ]
 
     def __init__(self, config: Config, inspector: bool = False):
@@ -56,7 +58,7 @@ class Abacura(App):
     def set_session(self, id: str) -> None:
         self.session = id
         self.push_screen(id)
-        #self.query_one("#footer").session = id
+        # self.query_one("#footer").session = id
 
     def action_reload_config(self) -> None:
         tl = self.sessions[self.session].tl
@@ -68,13 +70,15 @@ class Abacura(App):
     def action_toggle_inspector(self) -> None:
         if self.inspector:
             from abacura.widgets._inspector import Inspector
+
             insp = self.query_one(Inspector)
             insp.display = not insp.display
             if not insp.display:
                 insp.picking = False
 
+
 @click.command()
-@click.option("-c","--config", 'config')
+@click.option("-c", "--config", "config")
 @click.option("-d", "--debug", "debug", type=str)
 @click.option("-s", "--start", "start", type=str)
 @click.option("-i", "--inspector", "inspector", is_flag=True, default=False)
@@ -86,7 +90,7 @@ def main(config, debug, start, inspector):
     """Entry point for client"""
     _config = Config(config=config)
 
-    mods_to_load = _config.get_specific_option("global","module_paths")
+    mods_to_load = _config.get_specific_option("global", "module_paths")
     if mods_to_load:
         if isinstance(mods_to_load, list):
             for path in mods_to_load:
@@ -108,5 +112,6 @@ def main(config, debug, start, inspector):
 
     app.run()
 
-if getattr(sys, 'frozen', False):
+
+if getattr(sys, "frozen", False):
     main(sys.argv[1:])

@@ -16,8 +16,8 @@ except ImportError:
 
 @dataclass(slots=True, frozen=True, eq=True)
 class Function:
-    co_name: str = ''
-    co_filename: str = ''
+    co_name: str = ""
+    co_filename: str = ""
     co_first_lineno: int = 0
 
     def get_location(self) -> str:
@@ -58,7 +58,7 @@ p_profiling = False
 
 def profiler(frame, event, _arg):
     global p_stats
-    if event not in ('call', 'return'):
+    if event not in ("call", "return"):
         return profiler
 
     # gather stats
@@ -76,7 +76,7 @@ def profiler(frame, event, _arg):
         p_stack = ct.p_stack
 
     # handle call and return #
-    if event == 'call':
+    if event == "call":
         p_stack.append(FunctionCall(function, perf_counter_ns(), t_cpu))
         return profiler
 

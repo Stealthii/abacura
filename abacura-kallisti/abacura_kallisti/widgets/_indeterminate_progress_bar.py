@@ -13,14 +13,12 @@ from abacura.widgets.resizehandle import ResizeHandle
 
 
 class IndeterminateProgressBar(Widget):
-
     progress_timer: Timer
     """Timer to simulate progress happening."""
 
     def compose(self) -> ComposeResult:
         yield Static("Remort Progress", classes="WidgetTitle")
         yield ProgressBar(show_eta=True, show_percentage=True)
-
 
     def on_mount(self) -> None:
         """Set up a timer to simulate progess happening."""
@@ -30,7 +28,7 @@ class IndeterminateProgressBar(Widget):
     def make_progress(self) -> None:
         """Called automatically to advance the progress bar."""
         pb = self.query_one(ProgressBar)
-        pb.progress = random.randint(1,99)
+        pb.progress = random.randint(1, 99)
         if pb.percentage == 100:
             pb.update(total=pb.total + pb.total)
             pb.progress = 0

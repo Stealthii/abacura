@@ -20,7 +20,7 @@ class BigMapWindow(AbacuraWindow):
         ("pageup", "pageup", "PageUp"),
         ("pagedown", "pagedown", "PageDown"),
         ("shift+end", "scroll_end", ""),
-        ("shift+home", "scroll_home", "")
+        ("shift+home", "scroll_home", ""),
     ]
 
     CSS_PATH = "css/kallisti.css"
@@ -40,7 +40,6 @@ class BigMapWindow(AbacuraWindow):
 
 
 class BigMap(Plugin):
-
     @command
     def map(self):
         """

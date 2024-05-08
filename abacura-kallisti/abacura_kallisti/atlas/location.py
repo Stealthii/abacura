@@ -15,7 +15,6 @@ class Location:
 
 
 class LocationList:
-
     def __init__(self, loc_file: str):
         self.locations: List[Location] = []
         self.loc_filepath = Path(loc_file)
@@ -27,16 +26,15 @@ class LocationList:
         for c in self.get_categories().keys():
             toml_structure[c] = {loc.name: loc.vnum for loc in self.get_category(c) if not loc.temporary}
 
-        with open(self.loc_filepath, 'w') as f:
+        with open(self.loc_filepath, "w") as f:
             tomlkit.dump(toml_structure, f)
 
     def load(self):
-
         if not self.loc_filepath.exists():
             self.loc_filepath.parent.mkdir(parents=True, exist_ok=True)
             self.loc_filepath.touch()
 
-        with open(self.loc_filepath, 'r') as f:
+        with open(self.loc_filepath, "r") as f:
             toml_structure = tomlkit.load(f)
             locations: List[Location] = []
             for c in toml_structure.keys():

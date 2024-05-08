@@ -1,4 +1,5 @@
 """Kallisti widget for displaying Task Queue information"""
+
 from textual.app import ComposeResult
 from textual.widgets import Static, DataTable
 
@@ -9,7 +10,6 @@ from abacura.mud.options.msdp import MSDPMessage
 
 
 class LOKTaskQueue(Static):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.queue_display = DataTable(show_cursor=False)
@@ -64,8 +64,10 @@ class LOKTaskQueue(Static):
             elif delay > 0:
                 wait = get_delay_str(delay)
 
-            self.queue_display.add_row(f"[{color}]{prefix + task.cmd:15.15s}",
-                                       f"[{color}]{wait}",
-                                       f"[{color}]{task.dur:3.1f}",
-                                       f"[{color}]{task.q}[/{color}]")
+            self.queue_display.add_row(
+                f"[{color}]{prefix + task.cmd:15.15s}",
+                f"[{color}]{wait}",
+                f"[{color}]{task.dur:3.1f}",
+                f"[{color}]{task.q}[/{color}]",
+            )
         self.refresh()

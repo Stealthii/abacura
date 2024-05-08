@@ -12,8 +12,8 @@ from .mob import Mob
 class Area:
     name: str = ""
     include_areas: Optional[List] = field(default_factory=list)
-    route: str = 'LRV'
-    room_range: str = '-'
+    route: str = "LRV"
+    room_range: str = "-"
     room_min_level: Dict[str, int] = field(default_factory=dict)
     room_max_level: Dict[str, int] = field(default_factory=dict)
     rooms_to_scout: Set[str] = field(default_factory=set)
@@ -43,7 +43,7 @@ class Area:
                 yield s[0], s[1]
 
     def is_allowed_vnum(self, vnum: str, char_level: int) -> bool:
-        if vnum in ['L', 'C', '?', ''] or not vnum.isnumeric():
+        if vnum in ["L", "C", "?", ""] or not vnum.isnumeric():
             return False
 
         ranges = self.get_allowed_ranges()
@@ -69,14 +69,14 @@ class Area:
         with open(filename, "r") as f:
             doc = tomlkit.load(f)
 
-        for attribute, value in doc['area'].items():
+        for attribute, value in doc["area"].items():
             if hasattr(new_area, attribute):
                 setattr(new_area, attribute, value)
 
         new_area.room_exclude = set(new_area.room_exclude)
         new_area.rooms_to_scout = set(new_area.rooms_to_scout)
 
-        for mob_name, mob_dict in doc['mobs'].items():
+        for mob_name, mob_dict in doc["mobs"].items():
             mob = Mob(name=mob_name)
             for attribute, value in mob_dict.items():
                 if hasattr(mob, attribute):

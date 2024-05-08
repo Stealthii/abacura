@@ -8,7 +8,6 @@ from textual.strip import Strip
 from textual.widget import Widget
 
 
-
 from typing import TYPE_CHECKING, Literal
 
 
@@ -43,7 +42,7 @@ class ResizeHandle(Widget):
         name: str | None = None,
         id: str | None = None,
         classes: str | None = None,
-        disabled: bool = False
+        disabled: bool = False,
     ) -> None:
         super().__init__(name=name, id=id, classes=classes, disabled=disabled)
         self._target = target
@@ -52,7 +51,7 @@ class ResizeHandle(Widget):
         self._start_mouse_position: Offset | None = None
         self._side: Literal["left", "right", "top", "bottom"] = side
         self._horizontal_resize = side in ("left", "right")
-        self.styles.dock = side # type: ignore
+        self.styles.dock = side  # type: ignore
 
     def on_mouse_down(self, event: events.MouseDown) -> None:
         if self.disabled or self._resizing:

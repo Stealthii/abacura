@@ -22,7 +22,13 @@ class LOKContextProvider(ContextProvider):
         self.odometer: Odometer = Odometer(self.msdp)
 
     def get_injections(self) -> dict:
-        lok_context = {"world": self.world, "msdp": self.msdp, "pc": self.pc, "odometer": self.odometer,
-                       "locations": self.locations, "room": self.room}
+        lok_context = {
+            "world": self.world,
+            "msdp": self.msdp,
+            "pc": self.pc,
+            "odometer": self.odometer,
+            "locations": self.locations,
+            "room": self.room,
+        }
 
         return lok_context

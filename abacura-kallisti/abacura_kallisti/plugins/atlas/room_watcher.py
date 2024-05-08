@@ -20,7 +20,6 @@ from abacura_kallisti.plugins import LOKPlugin
 
 
 class RoomMessageParser:
-
     re_item_qty = re.compile("\\(([0-9]+)\\)")
     re_mob_qty = re.compile("\\[([0-9]+)\\]")
 
@@ -29,30 +28,59 @@ class RoomMessageParser:
     re_mob = re.compile("^(?:\\x1b\\[1;37m|\\x1b\\[0;37m\\x1b\\[1;3[0-9]m)+.*")
     re_quest = re.compile("\\x1b\\[0;37m\\.\\.\\..*may have a \\x1b\\[22;36mquest\\x1b\\[0m for you")
     re_followers = re.compile(
-        r"(\w+) (?:(?:sneaks|flies|swims|crawls|stumbles|rides|arrives) (?:in)?)+(?: on(.*))? from")
+        r"(\w+) (?:(?:sneaks|flies|swims|crawls|stumbles|rides|arrives) (?:in)?)+(?: on(.*))? from",
+    )
 
     re_player = re.compile("^(?:\\x1b\\[[01](?:;[0-9]+)*m)+\\x1b\\[1;33m([A-Z]\\w+)\\x1b\\[0m")
     re_race_ride_fight = re.compile(r"^[A-Za-z]+ the (.*) is .*here(?:, riding (.*)(?:\.|and))*")
 
     ITEM_FLAGS = {"glows", "magic", "damaged"}
 
-    MOB_FLAGS = {"ranged", "sneaking", "hiding", "evil", "good",
-                 "grim ward", "fireshield", "acidshield", "iceshield", "shockshield", "blades",
-                 "mount", "blur", "wraith", "sanc", "unholy aura", "invis", "trainer"}
+    MOB_FLAGS = {
+        "ranged",
+        "sneaking",
+        "hiding",
+        "evil",
+        "good",
+        "grim ward",
+        "fireshield",
+        "acidshield",
+        "iceshield",
+        "shockshield",
+        "blades",
+        "mount",
+        "blur",
+        "wraith",
+        "sanc",
+        "unholy aura",
+        "invis",
+        "trainer",
+    }
 
-    KEYWORDS = {"mortally wounded", "fighting YOU", "fighting", "resting", "incapacitated",
-                "standing", "sitting", "lying", "stunned", "hovering", "your follower"}
+    KEYWORDS = {
+        "mortally wounded",
+        "fighting YOU",
+        "fighting",
+        "resting",
+        "incapacitated",
+        "standing",
+        "sitting",
+        "lying",
+        "stunned",
+        "hovering",
+        "your follower",
+    }
 
     def __init__(self, messages: List[OutputMessage]):
         self.messages = messages
         self.has_quest: bool = False
-        self.header: RoomHeader = RoomHeader('')
+        self.header: RoomHeader = RoomHeader("")
         self.items: List[RoomItem] = []
         self.players: List[RoomPlayer] = []
         self.mobs: List[RoomMob] = []
         self.corpses: List[RoomCorpse] = []
-        self.blood_trail: str = ''
-        self.hunt_tracks: str = ''
+        self.blood_trail: str = ""
+        self.hunt_tracks: str = ""
 
         self._parse_messages()
 
@@ -70,13 +98,13 @@ class RoomMessageParser:
     def _parse_junk(msg):
         if msg.stripped.startswith("You find yourself"):
             return "recall"
-        elif msg.stripped.strip() == '':
+        elif msg.stripped.strip() == "":
             return "blank"
-        elif msg.stripped.startswith('>'):
+        elif msg.stripped.startswith(">"):
             return "junk"
-        elif msg.stripped.startswith('<'):
+        elif msg.stripped.startswith("<"):
             return "prompt"
-        elif msg.stripped.startswith('WARNING!  You have entered a HARDCORE zone'):
+        elif msg.stripped.startswith("WARNING!  You have entered a HARDCORE zone"):
             return "hardcore"
 
         return False
@@ -89,7 +117,6 @@ class RoomMessageParser:
             return p
 
     def _parse_player(self, msg):
-
         m = self.re_player.match(msg.message)
         if m:
             flags = {k for k in self.KEYWORDS if msg.stripped.find(k) >= 0}
@@ -106,7 +133,6 @@ class RoomMessageParser:
             return p
 
     def _parse_mob(self, msg: OutputMessage):
-
         # TODO: Test as Imm
         # starts with bold white, or starts with white followed by bold color
 
@@ -129,11 +155,18 @@ class RoomMessageParser:
             fighting = "fighting" in flags or "fighting YOU" in flags
             alert = "alert" in flags or fighting
 
-            mob = RoomMob(line=msg.message,
-                          description=msg.stripped, has_quest=self.has_quest, flags=flags, quantity=qty,
-                          fighting=fighting, fighting_you="fighting YOU" in flags,
-                          following_you="your follower" in flags,
-                          alert=alert, paralyzed="paralyzed" in flags)
+            mob = RoomMob(
+                line=msg.message,
+                description=msg.stripped,
+                has_quest=self.has_quest,
+                flags=flags,
+                quantity=qty,
+                fighting=fighting,
+                fighting_you="fighting YOU" in flags,
+                following_you="your follower" in flags,
+                alert=alert,
+                paralyzed="paralyzed" in flags,
+            )
 
             self.has_quest = False
             self.mobs.append(mob)
@@ -163,10 +196,16 @@ class RoomMessageParser:
 
             item_flags = {f for f in re.findall("\\(([^\\)]+)\\)", msg.stripped) if f in self.ITEM_FLAGS}
 
-            blue = msg.message.find('\x1b[22;36m') >= 0
+            blue = msg.message.find("\x1b[22;36m") >= 0
             short = self.re_item_qty.sub(msg.stripped, "")
-            item = RoomItem(line=msg.message, description=msg.stripped, short=short, blue=blue,
-                            quantity=qty, flags=item_flags)
+            item = RoomItem(
+                line=msg.message,
+                description=msg.stripped,
+                short=short,
+                blue=blue,
+                quantity=qty,
+                flags=item_flags,
+            )
             self.items.append(item)
             return item
 
@@ -219,10 +258,10 @@ class RoomMessageParser:
             if m0 := re.match(re_header, self.messages[0].stripped):
                 name, flags, exits = m0.groups()
 
-        weather = weather or ''
-        time = time or ''
-        terrain_name = terrain_name or ''
-        flags = flags or ''
+        weather = weather or ""
+        time = time or ""
+        terrain_name = terrain_name or ""
+        flags = flags or ""
 
         if exits.lower().find("no exits") >= 0:
             exit_list = []
@@ -234,16 +273,29 @@ class RoomMessageParser:
         # "Entry", "Throneroom", "Altar", "Inn"
 
         flag_set = {f for f in header_flags if flags.find(f) >= 0}
-        self.header = RoomHeader(line=self.messages[0].message, name=name.strip(), exits=exit_list,
-                                 flags=flag_set, compass=compass,
-                                 terrain_name=terrain_name.strip(), weather=weather.strip(), time=time.strip())
+        self.header = RoomHeader(
+            line=self.messages[0].message,
+            name=name.strip(),
+            exits=exit_list,
+            flags=flag_set,
+            compass=compass,
+            terrain_name=terrain_name.strip(),
+            weather=weather.strip(),
+            time=time.strip(),
+        )
         return 3 if compass else 1
 
     def _parse_messages(self):
         header_lines = self._parse_header()
 
-        parsers = [self._parse_junk, self._parse_tracks, self._parse_player_mob,
-                   self._parse_item, self._parse_blood, self._parse_any]
+        parsers = [
+            self._parse_junk,
+            self._parse_tracks,
+            self._parse_player_mob,
+            self._parse_item,
+            self._parse_blood,
+            self._parse_any,
+        ]
 
         # process messages from bottom up
         for msg in reversed(self.messages[header_lines:]):
@@ -268,6 +320,7 @@ class RoomMessageParser:
 
 class RoomWatcher(LOKPlugin):
     """Watches for LOK rooms and parses them into ScannedRoom objects"""
+
     def __init__(self):
         super().__init__()
 
@@ -287,7 +340,7 @@ class RoomWatcher(LOKPlugin):
             if not r.no_magic or not r.no_recall:
                 r.no_magic = True
                 r.no_recall = True
-                self.output(f'[orange1]Marked room no recall/magic [{r.vnum}]', markup=True)
+                self.output(f"[orange1]Marked room no recall/magic [{r.vnum}]", markup=True)
                 self.world.save_room(r.vnum)
 
     @action("^Your lips move,* but no sound")
@@ -296,7 +349,7 @@ class RoomWatcher(LOKPlugin):
             r = self.world.rooms[self.msdp.room_vnum]
             if not r.silent:
                 r.silent = True
-                self.output(f'[orange1]Marked room silent [{r.vnum}]', markup=True)
+                self.output(f"[orange1]Marked room silent [{r.vnum}]", markup=True)
                 self.world.save_room(r.vnum)
 
     @action(r"^\[\* You see your target's tracks leading (\w+)\.")
@@ -317,8 +370,14 @@ class RoomWatcher(LOKPlugin):
         room_no_compass = self.re_room_no_compass.match(message.stripped) is not None
         room_compass = self.re_room_compass.match(message.stripped) is not None
         room_no_exits = self.re_room_no_exits.match(message.stripped) is not None
-        room_wilderness = all([self.msdp.area_name == 'The Wilderness', len(message.stripped) <= 40,
-                               message.message.find("\x1b[1;35m") <= 5, message.stripped.find(" - ") == -1])
+        room_wilderness = all(
+            [
+                self.msdp.area_name == "The Wilderness",
+                len(message.stripped) <= 40,
+                message.message.find("\x1b[1;35m") <= 5,
+                message.stripped.find(" - ") == -1,
+            ],
+        )
 
         if any([room_compass, room_no_compass, room_no_exits, room_wilderness]):
             self.room_header_entry_id = self.output_history.entry_id
@@ -329,12 +388,12 @@ class RoomWatcher(LOKPlugin):
         Normalizes string, converts to lowercase, removes non-alpha characters,
         and converts spaces to hyphens.
         """
-        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
-        value = re.sub(r'[^\w\s-]', '', value.lower())
-        return re.sub(r'[-\s]+', '-', value).strip('-_')
+        value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
+        value = re.sub(r"[^\w\s-]", "", value.lower())
+        return re.sub(r"[-\s]+", "-", value).strip("-_")
 
     def load_area(self, area_name: str) -> Area:
-        if area_name.lower() == 'Unknown':
+        if area_name.lower() == "Unknown":
             return Area()
 
         data_dir = self.config.data_directory(self.session.name)
@@ -349,20 +408,20 @@ class RoomWatcher(LOKPlugin):
         if self.room_header_entry_id < 0 or 1 > num_lines > 100:
             return []
 
-        return [m for m in self.output_history[-num_lines:] if type(m.message) in (str, 'str')]
+        return [m for m in self.output_history[-num_lines:] if type(m.message) in (str, "str")]
 
     def get_minimap_messages(self) -> List[OutputMessage]:
         n = self.output_history.entry_id - self.room_header_entry_id + 1
 
-        if self.msdp.area_name == 'The Wilderness':
-            minimap_lines = takewhile(lambda m: m.stripped.startswith(" "), self.output_history[-n + 1:])
+        if self.msdp.area_name == "The Wilderness":
+            minimap_lines = takewhile(lambda m: m.stripped.startswith(" "), self.output_history[-n + 1 :])
             return list(minimap_lines)
 
         # traverse lines above room header in reverse order
-        past_50_lines = [m for m in self.output_history[-n - 1:-n - 50:-1] if type(m.message) in (str, 'str')]
+        past_50_lines = [m for m in self.output_history[-n - 1 : -n - 50 : -1] if type(m.message) in (str, "str")]
 
         # if compass is on, first line above room header will be blank, skip it
-        if len(past_50_lines) > 0 and past_50_lines[0].stripped.strip(" ") == '':
+        if len(past_50_lines) > 0 and past_50_lines[0].stripped.strip(" ") == "":
             past_50_lines = past_50_lines[1:]
 
         def looks_like_minimap(m):
@@ -386,13 +445,22 @@ class RoomWatcher(LOKPlugin):
 
             self.room_header_entry_id = -1
 
-            sr = ScannedRoom(vnum=self.msdp.room_vnum, name=self.msdp.room_name, minimap=minimap,
-                             terrain_name=self.msdp.room_terrain, msdp_exits=self.msdp.room_exits,
-                             blood_trail=rmp.blood_trail, hunt_tracks=rmp.hunt_tracks,
-                             header=rmp.header, items=rmp.items, mobs=rmp.mobs,
-                             corpses=rmp.corpses, players=rmp.players)
+            sr = ScannedRoom(
+                vnum=self.msdp.room_vnum,
+                name=self.msdp.room_name,
+                minimap=minimap,
+                terrain_name=self.msdp.room_terrain,
+                msdp_exits=self.msdp.room_exits,
+                blood_trail=rmp.blood_trail,
+                hunt_tracks=rmp.hunt_tracks,
+                header=rmp.header,
+                items=rmp.items,
+                mobs=rmp.mobs,
+                corpses=rmp.corpses,
+                players=rmp.players,
+            )
 
-            if self.msdp.area_name == 'The Wilderness':
+            if self.msdp.area_name == "The Wilderness":
                 self.world.load_wilderness()
 
             # Copy the saved room attributes into the new ScanndRoom instance
@@ -411,9 +479,14 @@ class RoomWatcher(LOKPlugin):
             sr.warded = "Warded" in sr.header.flags
             sr.no_magic = "NoMagic" in sr.header.flags
 
-            self.world.visited_room(area_name=self.msdp.area_name, name=self.msdp.room_name, vnum=self.msdp.room_vnum,
-                                    terrain=self.msdp.room_terrain, room_exits=self.msdp.room_exits,
-                                    scan_room=sr)
+            self.world.visited_room(
+                area_name=self.msdp.area_name,
+                name=self.msdp.room_name,
+                vnum=self.msdp.room_vnum,
+                terrain=self.msdp.room_terrain,
+                room_exits=self.msdp.room_exits,
+                scan_room=sr,
+            )
 
             if sr.vnum in self.world.rooms:
                 room = self.world.rooms[self.msdp.room_vnum]
@@ -451,6 +524,7 @@ class RoomWatcher(LOKPlugin):
     def test_room_messages(self, vnum: str):
         from pathlib import Path
         import pickle
+
         data_dir = Path(self.config.data_directory(self.session.name)).expanduser()
         file = data_dir / f"{vnum}.pkl"
 
@@ -491,33 +565,46 @@ class RoomWatcher(LOKPlugin):
             self.test_room_messages(_load)
             return
 
-        properties = {'vnum': self.room.vnum, 'area': self.room.area.name}
+        properties = {"vnum": self.room.vnum, "area": self.room.area.name}
         properties.update(asdict(self.room.header))
-        properties['blood'] = self.room.blood_trail
-        properties['hunt'] = self.room.hunt_tracks
+        properties["blood"] = self.room.blood_trail
+        properties["hunt"] = self.room.hunt_tracks
 
         rows = []
         for corpse in self.room.corpses:
-            rows.append(("corpse", f"{corpse.description}", corpse.quantity, "", corpse.corpse_type, ''))
+            rows.append(("corpse", f"{corpse.description}", corpse.quantity, "", corpse.corpse_type, ""))
 
         for item in self.room.items:
-            rows.append(("item", f"{item.description}", item.quantity,
-                         f"{'blue item' if item.blue else ''}", item.flags, ''))
+            rows.append(
+                ("item", f"{item.description}", item.quantity, f"{'blue item' if item.blue else ''}", item.flags, ""),
+            )
 
         for mob in self.room.mobs:
             details = {}
             if mob.level > 0:
                 details = {"level": mob.level, "race": mob.race}
 
-            rows.append(("mob", f"{mob.description}", mob.quantity,
-                         f"{'has_quest' if mob.has_quest else ''}", mob.flags, details))
+            rows.append(
+                (
+                    "mob",
+                    f"{mob.description}",
+                    mob.quantity,
+                    f"{'has_quest' if mob.has_quest else ''}",
+                    mob.flags,
+                    details,
+                ),
+            )
 
         for player in self.room.players:
-            rows.append(("player", f"{player.name:}", '', player.race, player.flags, ''))
+            rows.append(("player", f"{player.name:}", "", player.race, player.flags, ""))
 
         property_view = AbacuraPropertyGroup(properties, "Properties", exclude={"line"})
-        table = tabulate(rows, headers=["Type", "Description", "Qty", "Misc", "Flags", "Details"],
-                         title="Contents", caption=f"count: {len(rows)}")
+        table = tabulate(
+            rows,
+            headers=["Type", "Description", "Qty", "Misc", "Flags", "Details"],
+            title="Contents",
+            caption=f"count: {len(rows)}",
+        )
         group = Group(property_view, Text(""), table)
         panel = AbacuraPanel(group, title=f"Scanned Room [ {self.room.vnum} ]")
         self.output(panel, highlight=True)

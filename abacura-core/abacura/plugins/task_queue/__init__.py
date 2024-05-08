@@ -66,11 +66,12 @@ class Task:
 
     @property
     def insertable(self):
-        checks = [self.remaining_delay == 0,
-                  self._queue.insertable,
-                  self.insert_check(),
-                  self._wait_prior is None or self._wait_prior._inserted
-                  ]
+        checks = [
+            self.remaining_delay == 0,
+            self._queue.insertable,
+            self.insert_check(),
+            self._wait_prior is None or self._wait_prior._inserted,
+        ]
 
         return all(checks)
 
@@ -169,8 +170,8 @@ class TaskManager:
             log(f"Sent {task.cmd} inserted at {monotonic()}")
             self._NEXT_COMMAND_TIME = monotonic() + task.dur
 
-    def flush(self, q: str = ''):
-        if q == '':
+    def flush(self, q: str = ""):
+        if q == "":
             self.tasks = []
             return
 
@@ -203,8 +204,15 @@ class TaskManager:
 
         self.run_tasks()
 
-    def add(self, cmd: str, q: str = "any",
-            priority: int = _DEFAULT_PRIORITY, dur: float = _DEFAULT_DURATION, delay: float = 0, timeout: float = 0):
+    def add(
+        self,
+        cmd: str,
+        q: str = "any",
+        priority: int = _DEFAULT_PRIORITY,
+        dur: float = _DEFAULT_DURATION,
+        delay: float = 0,
+        timeout: float = 0,
+    ):
         self.add_task(Task(cmd=cmd, priority=priority, dur=dur, delay=delay, q=q, timeout=timeout))
 
     def remove(self, cmd: str):

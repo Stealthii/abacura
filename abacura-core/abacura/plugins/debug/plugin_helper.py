@@ -17,17 +17,30 @@ class PluginHelper(Plugin):
             counts = Counter([r.registration_type for r in registrations])
 
             base = plugin.__class__.__base__.__name__
-            indicator = '✓' if plugin.register_actions else 'x'
-            indicator_color = "bold green" if plugin.register_actions else 'bold red'
-            plugin_rows.append((base, plugin.get_name(), plugin.get_help() or '',
-                                Text(indicator, style=indicator_color), counts))
+            indicator = "✓" if plugin.register_actions else "x"
+            indicator_color = "bold green" if plugin.register_actions else "bold red"
+            plugin_rows.append(
+                (base, plugin.get_name(), plugin.get_help() or "", Text(indicator, style=indicator_color), counts),
+            )
 
         rows = []
         for base, name, doc, indicator, counts in sorted(plugin_rows):
-            rows.append((base, name, doc, indicator,
-                         counts["action"], counts["command"], counts["event"], counts["ticker"]))
-        tbl = tabulate(rows, headers=["Type", "Name", "Description", "Register Actions",
-                                      "# Actions", "# Commands", "# Events", "# Tickers"])
+            rows.append(
+                (base, name, doc, indicator, counts["action"], counts["command"], counts["event"], counts["ticker"]),
+            )
+        tbl = tabulate(
+            rows,
+            headers=[
+                "Type",
+                "Name",
+                "Description",
+                "Register Actions",
+                "# Actions",
+                "# Commands",
+                "# Events",
+                "# Tickers",
+            ],
+        )
         self.output(AbacuraPanel(tbl, title="Loaded Plugins"))
 
     def show_failures(self):
@@ -40,7 +53,7 @@ class PluginHelper(Plugin):
         self.output(AbacuraWarning(tbl, title="Failed Package Loads"))
 
     @command
-    def plugins(self, name: str = '') -> None:
+    def plugins(self, name: str = "") -> None:
         """
         Get information about plugins
 

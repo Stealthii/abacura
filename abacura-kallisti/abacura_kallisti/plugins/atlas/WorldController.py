@@ -28,18 +28,24 @@ class WorldController(LOKPlugin):
         wilderness = room is not None and room.area_name == "The Wilderness"
 
         ships = {
-            'Aboard a Rundown Fishing Boat',
-            'Aboard a Decrepit Old Warship',
-            'Aboard the Good Ship Shantille',
-            'Aboard the Good Ship Francesca',
-            'Aboard the Good Ship Vilaquia',
-            'Aboard the Good Ship Diala',
+            "Aboard a Rundown Fishing Boat",
+            "Aboard a Decrepit Old Warship",
+            "Aboard the Good Ship Shantille",
+            "Aboard the Good Ship Francesca",
+            "Aboard the Good Ship Vilaquia",
+            "Aboard the Good Ship Diala",
         }
 
         ship = room is not None and room.name in ships
 
-        msg = MapUpdateMessage(start_room=room, world=self.world, current_vnum=vnum,
-                               traveling=self.traveling, wilderness=wilderness, ship=ship)
+        msg = MapUpdateMessage(
+            start_room=room,
+            world=self.world,
+            current_vnum=vnum,
+            traveling=self.traveling,
+            wilderness=wilderness,
+            ship=ship,
+        )
 
         self.dispatch(msg)
 
@@ -64,25 +70,58 @@ class WorldController(LOKPlugin):
             terrain = ""
             if known:
                 to_room = self.world.rooms[e.to_vnum]
-                visited = to_room.last_visited not in ['', None]
+                visited = to_room.last_visited not in ["", None]
                 terrain = to_room.terrain_name
 
-            exits.append((e.direction, e.to_vnum, e.door, e.commands,
-                          bool(e.closes), bool(e.locks), bool(e.deathtrap), known, visited, terrain))
+            exits.append(
+                (
+                    e.direction,
+                    e.to_vnum,
+                    e.door,
+                    e.commands,
+                    bool(e.closes),
+                    bool(e.locks),
+                    bool(e.deathtrap),
+                    known,
+                    visited,
+                    terrain,
+                ),
+            )
 
         exits = sorted(exits)
         caption = ""
         if vnum == self.msdp.room_vnum:
             caption = f" MSDP_EXITS: {str(self.msdp.room_exits)}"
 
-        return tabulate(exits, caption=caption, headers=["Direction", "_To", "Door", "Commands", "Closes",
-                                                         "Locks", "Deathtrap", "Known", "Visited", "Terrain"],
-                        title="Exits")
+        return tabulate(
+            exits,
+            caption=caption,
+            headers=[
+                "Direction",
+                "_To",
+                "Door",
+                "Commands",
+                "Closes",
+                "Locks",
+                "Deathtrap",
+                "Known",
+                "Visited",
+                "Terrain",
+            ],
+            title="Exits",
+        )
 
     @command(name="room")
-    def room_command(self, location: Room = None, delete: bool = False,
-                     silent: bool = False, deathtrap: bool = False, peaceful: bool = False,
-                     norecall: bool = False, nomagic: bool = False):
+    def room_command(
+        self,
+        location: Room = None,
+        delete: bool = False,
+        silent: bool = False,
+        deathtrap: bool = False,
+        peaceful: bool = False,
+        norecall: bool = False,
+        nomagic: bool = False,
+    ):
         """
         Display information about a room
 
@@ -121,19 +160,21 @@ class WorldController(LOKPlugin):
             txt = Text.assemble(
                 ("Flag toggled\n\n", OutputColors.success),
                 ("Flags: ", Style(color=OutputColors.field, bold=True)),
-                (str(self.get_room_flags(location)), OutputColors.value))
+                (str(self.get_room_flags(location)), OutputColors.value),
+            )
             self.output(AbacuraPanel(txt, title=f"Room [ {location.vnum} ] Flags"))
             self.world.save_room(location.vnum)
             return
 
-        properties = {"Area": location.area_name,
-                      "Terrain": location.terrain_name,
-                      "Weight": location.terrain.weight,
-                      "Flags": self.get_room_flags(location),
-                      "Visited": location.last_visited
-                      }
+        properties = {
+            "Area": location.area_name,
+            "Terrain": location.terrain_name,
+            "Weight": location.terrain.weight,
+            "Flags": self.get_room_flags(location),
+            "Visited": location.last_visited,
+        }
 
-        if location.area_name == 'The Wilderness':
+        if location.area_name == "The Wilderness":
             x, y = self.wild_grid.get_point(location.vnum)
             ox, oy = self.wild_grid.get_orienteering_point(location.vnum)
             properties["x, y"] = f"{x}, {y} [{ox}, {oy}]"
@@ -141,7 +182,7 @@ class WorldController(LOKPlugin):
 
         location_names = [f"{a.category}.{a.name}" for a in self.locations.get_locations_for_vnum(location.vnum)]
         if len(location_names) > 0:
-            properties["Locations"] = ', '.join(location_names)
+            properties["Locations"] = ", ".join(location_names)
 
         pview = AbacuraPropertyGroup(properties)
         table = self.get_table_of_exits(location.vnum)
@@ -155,10 +196,22 @@ class WorldController(LOKPlugin):
 
     @staticmethod
     def get_room_flags(room: Room) -> str:
-        flags = ['wild_magic', 'silent', 'set_recall', 'no_recall', 'no_magic', 'narrow',
-                 'peaceful', 'deathtrap', 'regen_hp', 'regen_mp', 'regen_sp', 'bank']
-        flags = [f.replace('_', ' ') for f in flags if getattr(room, f, False)]
-        return ','.join(flags)
+        flags = [
+            "wild_magic",
+            "silent",
+            "set_recall",
+            "no_recall",
+            "no_magic",
+            "narrow",
+            "peaceful",
+            "deathtrap",
+            "regen_hp",
+            "regen_mp",
+            "regen_sp",
+            "bank",
+        ]
+        flags = [f.replace("_", " ") for f in flags if getattr(room, f, False)]
+        return ",".join(flags)
 
     # @command()
     # def roomflags(self, peaceful: bool = False, silent: bool = False,
@@ -182,7 +235,7 @@ class WorldController(LOKPlugin):
     #     self.session.output("Flags: %s" % self.get_room_flags(room))
 
     @command()
-    def exits(self, direction: str = '', to_vnum: str = '', _door: str = '', _commands: str = '', delete: bool = False):
+    def exits(self, direction: str = "", to_vnum: str = "", _door: str = "", _commands: str = "", delete: bool = False):
         """View and modify exits in current room
 
         :param direction: Direction of exit to view or modify
@@ -213,7 +266,7 @@ class WorldController(LOKPlugin):
 
             # #exits goliath 60254 --commands="visit goliath"
 
-        if _door != '' or _commands != '' or to_vnum != '':
+        if _door != "" or _commands != "" or to_vnum != "":
             self.world.set_exit(vnum, direction, door=_door, to_vnum=to_vnum, commands=_commands)
             txt = Text(f"Set [ {vnum} ] {direction} to={to_vnum}, door={_door}, commands={_commands}")
             tbl = self.get_table_of_exits(vnum)

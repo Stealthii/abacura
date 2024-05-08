@@ -18,7 +18,7 @@ class TourDemo(LOKPlugin):
         self.steps_taken: int = 0
 
     @command
-    def tour(self, start: bool = False, stop: bool = False, _route: str = '', reach: bool = False):
+    def tour(self, start: bool = False, stop: bool = False, _route: str = "", reach: bool = False):
         """
         Visit rooms in current area according to area .toml file
 
@@ -44,7 +44,7 @@ class TourDemo(LOKPlugin):
 
         raise CommandError("Please specify --start or --stop")
 
-    def show_reach(self, route: str = ''):
+    def show_reach(self, route: str = ""):
         tg = TourGuide(self.room.area, self.world, self.pc, self.msdp.level, route)
         response = tg.get_next_step(self.room)
         if response.error:
@@ -52,9 +52,12 @@ class TourDemo(LOKPlugin):
             return
 
         rooms = sorted(list(response.reachable_rooms))
-        tbl = Table(title=f"Reachable rooms in {self.room.area_name} using {response.route}",
-                    caption=f"{len(rooms)} rooms reachable",
-                    title_justify="left", caption_justify="left")
+        tbl = Table(
+            title=f"Reachable rooms in {self.room.area_name} using {response.route}",
+            caption=f"{len(rooms)} rooms reachable",
+            title_justify="left",
+            caption_justify="left",
+        )
 
         tbl.add_column("Vnum")
         tbl.add_column("Name")

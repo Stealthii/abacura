@@ -2,25 +2,25 @@
 Handle MSP
 """
 
-
 from abacura.mud import OutputMessage
 from abacura.plugins import Plugin, action
 
 
 class SoundPlugin(Plugin):
     """Handle MSP sound"""
-    @action(r'^!!SOUND\((.*)\)')
+
+    @action(r"^!!SOUND\((.*)\)")
     def msp(self, wav: str, msg: OutputMessage):
         msg.gag = True
 
         try:
             from playsound import playsound
         except ModuleNotFoundError as exc:
-            pkg = 'pip install playsound PyGObject'
+            pkg = "pip install playsound PyGObject"
             self.session.show_warning(f"Unable to play sounds without playsound module. Use '{pkg}' ")
             return
 
-        if not self.config.get_specific_option(self.session.name, 'sound_dir', None):
+        if not self.config.get_specific_option(self.session.name, "sound_dir", None):
             return
         try:
             playsound(f"{self.config.get_specific_option(self.session.name, 'sound_dir')}/{wav}", block=False)

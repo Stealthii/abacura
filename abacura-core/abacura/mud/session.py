@@ -1,4 +1,5 @@
 """MUD session handler"""
+
 from __future__ import annotations
 
 import asyncio
@@ -34,8 +35,8 @@ if TYPE_CHECKING:
     from abacura.abacura import Abacura
     from asyncio import StreamWriter
 
-speedwalk_pattern = r'^(\d*[neswud])+$'
-speedwalk_step_pattern = r'\d*[neswud]'
+speedwalk_pattern = r"^(\d*[neswud])+$"
+speedwalk_step_pattern = r"\d*[neswud]"
 
 
 def load_class(class_name: str, default=None):
@@ -92,10 +93,16 @@ class Session(BaseSession):
         self.dispatch = self.director.event_manager.dispatch
         self.add_listener = self.director.event_manager.add_listener
 
-        core_injections = {"config": self.config, "session": self, "app": self.abacura,
-                           "sessions": self.abacura.sessions, "core_msdp": self.core_msdp,
-                           "cq": TaskManager(),
-                           "director": self.director, "buffer": self.output_history}
+        core_injections = {
+            "config": self.config,
+            "session": self,
+            "app": self.abacura,
+            "sessions": self.abacura.sessions,
+            "core_msdp": self.core_msdp,
+            "cq": TaskManager(),
+            "director": self.director,
+            "buffer": self.output_history,
+        }
         self.core_plugin_context = core_injections
 
         additional_injections = {}
@@ -135,7 +142,7 @@ class Session(BaseSession):
 
         num_failed = len(self.plugin_loader.get_failed_modules())
         if num_failed:
-            s = 's' if num_failed > 1 else ''
+            s = "s" if num_failed > 1 else ""
             self.show_error(f"{num_failed} plugin{s} failed to load. See #plugin for details.", title="Plugin Error")
 
         telnet_client = getattr(self.plugin_loader.plugins["TelnetPlugin"], "telnet_client")
@@ -144,8 +151,10 @@ class Session(BaseSession):
             log.warning(f"Attempting connection to {self.host} and {self.port} for {self.name}")
             self.abacura.run_worker(
                 telnet_client(self.host, self.port, handlers=[self.core_msdp]),
-                name=f"socket-{self.name}", group=self.name,
-                description=f"Mud connection for {self.name} ({self.host}:{self.port})")
+                name=f"socket-{self.name}",
+                group=self.name,
+                description=f"Mud connection for {self.name} ({self.host}:{self.port})",
+            )
         else:
             log(f"Session: {self.name} created in disconnected state due to no host or port")
 
@@ -156,11 +165,11 @@ class Session(BaseSession):
             token: str = line[0]
             line = line[1:]
 
-            if token == '\\':
+            if token == "\\":
                 if len(line) > 0:
                     buf += str(line[0])
                     line = line[1:]
-            elif token == ';':
+            elif token == ";":
                 yield buf
                 buf = ""
             else:
@@ -191,12 +200,12 @@ class Session(BaseSession):
             if self.speedwalk_re.match(sl) and self.connected:
                 for walk in self.speedwalk_step_re.findall(sl):
                     # We're keeping delimiters so without a preceding number, first part is ''
-                    parts = re.split('([neswud])', walk)
-                    if parts[0] == '':
+                    parts = re.split("([neswud])", walk)
+                    if parts[0] == "":
                         self.send(parts[1] + "\n", echo_color=echo_color)
                     else:
                         for _ in range(int(parts[0])):
-                            self.send(parts[1] + "\n", echo_color='')
+                            self.send(parts[1] + "\n", echo_color="")
                 continue
 
             if self.director.alias_manager.handle(cmd, sl):
@@ -279,10 +288,16 @@ class Session(BaseSession):
         self.logger.info(message.message)
         self.ring_buffer.log(message)
 
-    def output(self, msg,
-               markup: bool = False, highlight: bool = False, ansi: bool = False, actionable: bool = True,
-               gag: bool = False, loggable: bool = True):
-
+    def output(
+        self,
+        msg,
+        markup: bool = False,
+        highlight: bool = False,
+        ansi: bool = False,
+        actionable: bool = True,
+        gag: bool = False,
+        loggable: bool = True,
+    ):
         """Write to RichLog for this screen"""
         if self.tl is None:
             log.warning(f"Attempt to write to nonexistent RichLog: {msg}")
@@ -292,12 +307,10 @@ class Session(BaseSession):
         self.output_history.append(message)
 
         if actionable:
-
             if self.director and self.director.action_manager:
                 self.director.action_manager.process_output(message)
 
         if not message.gag:
-
             self.tl.markup = markup
             self.tl.highlight = highlight
 
@@ -318,7 +331,7 @@ class Session(BaseSession):
                 self.tl.scroll_end(animate=False)
 
     @command
-    def connect(self, name: str, host: str = '', port: int = 0) -> None:
+    def connect(self, name: str, host: str = "", port: int = 0) -> None:
         """
         Connect to a mud and create a session
 
@@ -360,7 +373,7 @@ class Session(BaseSession):
             # buf = "[bold red]# Current Sessions:\n"
             rows = []
             for session_name, session in self.abacura.sessions.items():
-                active =f"[bold green]> [/bold green]" if session.name == self.abacura.session else "  "
+                active = f"[bold green]> [/bold green]" if session.name == self.abacura.session else "  "
                 if session.name == "null":
                     host = "Main Session"
                     status = ""
@@ -368,10 +381,7 @@ class Session(BaseSession):
                     host = f"{session.host}:{session.port}"
                     status = "connected" if session.connected else "[red]disconnected[/red]"
 
-                row = {"Name": f"{active}{session.name}",
-                       "Host": host,
-                       "Status": status
-                       }
+                row = {"Name": f"{active}{session.name}", "Host": host, "Status": status}
 
                 rows.append(row)
 

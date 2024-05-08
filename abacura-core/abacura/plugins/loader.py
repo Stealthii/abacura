@@ -56,8 +56,12 @@ class PluginLoader:
             plugin_module.exceptions = []
 
         except Exception as exc:
-            session = plugin_module.context['session']
-            session.show_exception(exc, msg=f"ERROR UNLOADING PLUGIN {plugin_module}", to_debuglog=True)
+            session = plugin_module.context["session"]
+            session.show_exception(
+                exc,
+                msg=f"ERROR UNLOADING PLUGIN {plugin_module}",
+                to_debuglog=True,
+            )
             plugin_module.exceptions.append(exc)
 
     def load_plugin_module(self, plugin_module: PluginModule, reload: bool = False):
@@ -75,8 +79,12 @@ class PluginLoader:
             self.plugin_modules[plugin_module.absolute_filename] = plugin_module
 
         except Exception as exc:
-            session = plugin_module.context['session']
-            session.show_exception(exc, msg=f"ERROR LOADING PLUGIN {plugin_module}", to_debuglog=True)
+            session = plugin_module.context["session"]
+            session.show_exception(
+                exc,
+                msg=f"ERROR LOADING PLUGIN {plugin_module}",
+                to_debuglog=True,
+            )
             plugin_module.exceptions.append(exc)
             return
 
@@ -88,10 +96,12 @@ class PluginLoader:
                     plugin_instance: Plugin = cls()
                     plugin_instance._source_filename = plugin_module.absolute_filename
                 except Exception as exc:
-                    session = plugin_module.context['session']
-                    session.show_exception(exc,
-                                           msg=f"Error Instantiating {plugin_module}.{cls.__name__}",
-                                           to_debuglog=True)
+                    session = plugin_module.context["session"]
+                    session.show_exception(
+                        exc,
+                        msg=f"Error Instantiating {plugin_module}.{cls.__name__}",
+                        to_debuglog=True,
+                    )
                     plugin_module.exceptions.append(exc)
                     continue
 
@@ -116,7 +126,7 @@ class PluginLoader:
 
         for pathspec in spec.submodule_search_locations:
             for dirpath, _, filenames in os.walk(pathspec):
-                for filename in [f for f in filenames if f.endswith(".py") and not f.startswith('_')]:
+                for filename in [f for f in filenames if f.endswith(".py") and not f.startswith("_")]:
                     absolute_filename = os.path.join(dirpath, filename)
                     if absolute_filename == __file__:
                         continue

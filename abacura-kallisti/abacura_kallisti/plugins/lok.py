@@ -1,4 +1,5 @@
 """Main Legends of Kallisti Module"""
+
 import os
 import re
 import time
@@ -39,13 +40,14 @@ class LegendsOfKallisti(LOKPlugin):
         def not_in_combat():
             return self.msdp.opponent_number == 0
 
-        queues = {"priority": TaskQueue(10),
-                  "heal": TaskQueue(20),
-                  "combat": TaskQueue(30, lambda: self.msdp.opponent_number > 0),
-                  "nco": TaskQueue(40, not_in_combat),
-                  "any": TaskQueue(50),
-                  "move": TaskQueue(60, not_in_combat)
-                  }
+        queues = {
+            "priority": TaskQueue(10),
+            "heal": TaskQueue(20),
+            "combat": TaskQueue(30, lambda: self.msdp.opponent_number > 0),
+            "nco": TaskQueue(40, not_in_combat),
+            "any": TaskQueue(50),
+            "move": TaskQueue(60, not_in_combat),
+        }
         self.cq.set_queues(queues)
 
         if self.session.ring_buffer:
@@ -55,15 +57,16 @@ class LegendsOfKallisti(LOKPlugin):
 
     def provide_lok_globals(self) -> Dict:
         # pass additional globals to the PythonExecutor Plugin
-        _globals = {"world": self.world,
-                    "msdp": self.msdp,
-                    "odometer": self.odometer,
-                    "metrics": self.odometer.metrics,
-                    "pc": self.pc,
-                    "cq": self.cq,
-                    "locations": self.locations,
-                    "room": self.room
-                    }
+        _globals = {
+            "world": self.world,
+            "msdp": self.msdp,
+            "odometer": self.odometer,
+            "metrics": self.odometer.metrics,
+            "pc": self.pc,
+            "cq": self.cq,
+            "locations": self.locations,
+            "room": self.room,
+        }
         return _globals
 
     def get_log_context(self) -> str:
@@ -72,18 +75,18 @@ class LegendsOfKallisti(LOKPlugin):
     def idle_check(self):
         if time.monotonic() - 300 > self.session.last_socket_write:
             self.send("\n")
-            #self.session.output(f"[red][italics]idle protection",markup=True)
+            # self.session.output(f"[red][italics]idle protection",markup=True)
 
-    @action(r'^Please enter your account password')
+    @action(r"^Please enter your account password")
     def send_password(self):
         if os.environ.get("MUD_PASSWORD") is not None:
-            self.send(os.environ.get("MUD_PASSWORD"), echo_color='')
+            self.send(os.environ.get("MUD_PASSWORD"), echo_color="")
 
-    @action(r'^Enter your account name. If you do not have an account,')
+    @action(r"^Enter your account name. If you do not have an account,")
     def send_account_name(self):
         account = self.config.get_specific_option(self.session.name, "account_name")
         if account:
-            self.send(account, echo_color='')
+            self.send(account, echo_color="")
 
     @event("core.msdp")
     def update_pc(self, msg: MSDPMessage):
@@ -102,17 +105,21 @@ class LegendsOfKallisti(LOKPlugin):
         res = self.session.ring_buffer.query(limit=1, like="%is dead!  R.I.P%")
         k_name = xp_kill_re.match(res[0][2])
         if k_name:
-            msg = LOKKillMessage(victim=k_name.groups(1)[0],
-                                 experience=experience, reduced=True)
+            msg = LOKKillMessage(victim=k_name.groups(1)[0], experience=experience, reduced=True)
             self.debuglog(msg)
             self.dispatch(msg)
 
-    @action(r"^You receive your reward for the kill, (\d+) experience points( plus (\d+) bonus experience for a rare kill)?.")
+    @action(
+        r"^You receive your reward for the kill, (\d+) experience points( plus (\d+) bonus experience for a rare kill)?.",
+    )
     def mob_kill(self, experience: int, _rare_msg, rare_bonus):
         res = self.session.ring_buffer.query(limit=1, like="%is dead!  R.I.P%")
         k_name = xp_kill_re.match(res[0][2])
         if k_name:
-            msg = LOKKillMessage(victim=k_name.groups(1)[0],
-                                 experience=experience, rare_bonus=rare_bonus,)
+            msg = LOKKillMessage(
+                victim=k_name.groups(1)[0],
+                experience=experience,
+                rare_bonus=rare_bonus,
+            )
             self.debuglog(msg)
             self.dispatch(msg)

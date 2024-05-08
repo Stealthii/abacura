@@ -1,13 +1,15 @@
 """The Event plugin"""
+
 from abacura.plugins import Plugin, command, CommandError
 from abacura.plugins.events import AbacuraMessage
 from abacura.utils.renderables import tabulate, AbacuraPanel
 
+
 class EventPlugin(Plugin):
-    """Commands and things """
+    """Commands and things"""
 
     @command(name="events")
-    def eventscommand(self, name: str = ''):
+    def eventscommand(self, name: str = ""):
         """
         Show event metrics and handlers
 
@@ -38,9 +40,11 @@ class EventPlugin(Plugin):
 
         rows = []
         for key, value in event_manager.events.items():
-            row = {"Event Name": key,
-                   "# Handlers": value.qsize(),
-                   "# Events Processed": event_manager.event_counts[key]}
+            row = {
+                "Event Name": key,
+                "# Handlers": value.qsize(),
+                "# Events Processed": event_manager.event_counts[key],
+            }
 
             # if detail:
             #     row['Handlers'] = [f"{str(f.handler.__module__)}.{str(f.handler.__name__)}" for f in value.queue]

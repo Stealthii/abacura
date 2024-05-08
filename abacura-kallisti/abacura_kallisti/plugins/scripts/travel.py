@@ -26,12 +26,13 @@ class TravelStatus(AbacuraMessage):
 @dataclass
 class TravelResult(AbacuraMessage):
     success: bool = True
-    result: str = ''
+    result: str = ""
     event_type: str = "lok.travel.result"
 
 
 class TravelScript(LOKPlugin):
     """Sends navigation commands after receiving lok.travel.request event"""
+
     def __init__(self):
         super().__init__()
         self.navigation_path: Optional[TravelPath] = None
@@ -118,13 +119,14 @@ class TravelScript(LOKPlugin):
                 continue
 
             for cmd in step.exit.get_commands():
-                if cmd.startswith("open") and self.msdp.room_exits.get(step.exit.direction) not in ('C', ''):
+                if cmd.startswith("open") and self.msdp.room_exits.get(step.exit.direction) not in ("C", ""):
                     continue
 
                 self.cq.add(cmd, dur=0, q="Move")
 
-        self.dispatch(TravelStatus(destination=self.navigation_path.destination,
-                                   steps_remaining=len(self.navigation_path.steps)))
+        self.dispatch(
+            TravelStatus(destination=self.navigation_path.destination, steps_remaining=len(self.navigation_path.steps)),
+        )
 
     def look_and_retry(self):
         if self.navigation_path:

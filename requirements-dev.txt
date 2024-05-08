@@ -1,7 +1,7 @@
 -r requirements.txt
 aiohttp==3.9.1
-black
 msgpack==1.0.5
+ruff
 sphinx ~= 7.0.1
 sphinx-rtd-theme
 textual-dev

@@ -1,4 +1,5 @@
 """Kallisti widget for displaying Odometer information"""
+
 from datetime import datetime
 from typing import List
 
@@ -14,8 +15,8 @@ from abacura.plugins.events import event
 from abacura.utils import human_format
 from abacura_kallisti.metrics.odometer import OdometerMessage
 
-class LOKOdometerDetailWindow(ScrollableContainer):
 
+class LOKOdometerDetailWindow(ScrollableContainer):
     def __init__(self, odometer: MudMetrics, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._moving: bool = False
@@ -29,9 +30,13 @@ class LOKOdometerDetailWindow(ScrollableContainer):
         buf = []
         buf.append(f"[cyan]Mission Started: [white]{odometer.start_time}  [cyan]Ended: [white]{odometer.stop_time}")
         buf.append(f"[cyan]Mobs killed: [white]{odometer.kills} @ {odometer.kills_per_hour:.1f} per hour")
-        buf.append(f"[cyan]Gold earned: [white]{human_format(odometer.earned_gold)} @ {human_format(odometer.gold_per_hour)} per hour")
+        buf.append(
+            f"[cyan]Gold earned: [white]{human_format(odometer.earned_gold)} @ {human_format(odometer.gold_per_hour)} per hour",
+        )
 
-        buf.append(f"[cyan]XP Earned: [white]{human_format(odometer.earned_xp)} @ {human_format(odometer.xp_per_hour)} per hour")
+        buf.append(
+            f"[cyan]XP Earned: [white]{human_format(odometer.earned_xp)} @ {human_format(odometer.xp_per_hour)} per hour",
+        )
         buf.append(f"[cyan]Crafting: [white]{odometer.craft_qualities}")
         buf.append(f"[cyan]Rests: [white]{odometer.rests} [cyan]for [white]{odometer.rest_time}")
         return "\n".join(buf)
@@ -59,8 +64,8 @@ class LOKOdometerDetailWindow(ScrollableContainer):
         if event.button == 3:
             self.remove()
 
-class LOKOdometer(Static):
 
+class LOKOdometer(Static):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.queue_display = DataTable(show_cursor=False, id="odometer_table")
@@ -75,7 +80,7 @@ class LOKOdometer(Static):
         self.odometers: List[MudMetrics] = []
 
     def compose(self) -> ComposeResult:
-        yield Static("Odometers",classes="WidgetTitle", id="tq_title")
+        yield Static("Odometers", classes="WidgetTitle", id="tq_title")
         yield self.queue_display
 
     def on_mount(self):
@@ -96,7 +101,7 @@ class LOKOdometer(Static):
         for odometer in odometer_list:
             self.queue_display.add_row(
                 odometer.mission,
-                datetime.utcfromtimestamp(odometer.elapsed).strftime('%H:%M:%S'),
+                datetime.utcfromtimestamp(odometer.elapsed).strftime("%H:%M:%S"),
                 human_format(odometer.kills_per_hour),
                 human_format(odometer.xp_per_hour),
                 human_format(odometer.gold_per_hour),
@@ -106,8 +111,8 @@ class LOKOdometer(Static):
         if len(self.odometers) < 1:
             return
 
-        row = event.y-1
+        row = event.y - 1
         if row >= 0 and row < len(self.odometers):
-            detail = LOKOdometerDetailWindow(odometer = self.odometers[row], classes="popover odometer-detail")
+            detail = LOKOdometerDetailWindow(odometer=self.odometers[row], classes="popover odometer-detail")
             detail.styles.offset = (event.screen_x + 10, event.screen_y + 2)
             self.screen.mount(detail)

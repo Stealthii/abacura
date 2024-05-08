@@ -6,6 +6,7 @@ from abacura.utils.renderables import tabulate, AbacuraPanel
 
 class LocationController(LOKPlugin):
     """Commands to modify saved travel locations"""
+
     @command(name="locations")
     def location_cmd(self, location: str = None, destination: Room = None, delete: bool = False, add: bool = False):
         """
@@ -27,19 +28,19 @@ class LocationController(LOKPlugin):
 
         s = location.split(".")
         if len(s) > 2:
-            raise CommandError('Location should be of the format <category>.<name>')
+            raise CommandError("Location should be of the format <category>.<name>")
 
         if add and delete:
-            raise CommandError('Cannot specify both add and delete')
+            raise CommandError("Cannot specify both add and delete")
 
         category = s[0]
 
         if len(s) == 1:
             if add or delete:
-                raise CommandError('Cannot add or delete category directly, use <category>.<name>')
+                raise CommandError("Cannot add or delete category directly, use <category>.<name>")
 
             if category not in self.locations.get_categories():
-                raise CommandError(f'Unknown category {category}')
+                raise CommandError(f"Unknown category {category}")
 
             rooms = []
 
@@ -87,7 +88,7 @@ class LocationController(LOKPlugin):
             raise CommandError(f"Unknown location '{location}'")
 
         if existing_location.vnum not in self.world.rooms:
-            raise CommandError(f'Alias {location} points to missing room {existing_location.vnum}')
+            raise CommandError(f"Alias {location} points to missing room {existing_location.vnum}")
 
         location_room = self.world.rooms[existing_location.vnum]
         self.session.output(f"{location} points to {existing_location.vnum} in {location_room.area_name}")

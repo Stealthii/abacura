@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import TypeVar, Generic
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class FIFOBuffer(Generic[T]):
@@ -33,7 +33,6 @@ class FIFOBuffer(Generic[T]):
 
 
 class TimestampedBuffer(FIFOBuffer):
-
     def __init__(self, max_size: int = 16384):
         super().__init__(max_size)
         self.timestamps: List[datetime] = []

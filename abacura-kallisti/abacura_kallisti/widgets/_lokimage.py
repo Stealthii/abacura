@@ -9,8 +9,8 @@ from rich_pixels import Pixels
 from textual.containers import Container, Center, Middle
 from textual.widgets import Static
 
-class LOKImage(Static):
 
+class LOKImage(Static):
     img = None
 
     def show_image(self, height: int = 0, width: int = 0, image: str = "ship"):

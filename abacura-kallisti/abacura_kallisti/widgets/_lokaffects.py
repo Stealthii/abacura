@@ -1,8 +1,9 @@
 """Widget to display current Affects and remaining time"""
+
 from typing import Dict
 
 from rich.columns import Columns
-#from rich.text import Text
+# from rich.text import Text
 
 from textual.app import ComposeResult, RenderResult
 from textual.reactive import reactive
@@ -14,18 +15,16 @@ from abacura.plugins.events import event
 from abacura.utils.renderables import Text, OutputColors
 
 # TODO one day this will use LOKMSDP for typed/parsed values
-#from abacura_kallisti.mud.affect import Affect
+# from abacura_kallisti.mud.affect import Affect
+
 
 class LOKAffectsList(Static):
-
     affects: dict = {}
     trigger: reactive[int] = reactive[int](0, always_update=True, layout=True)
-
 
     def __init__(self):
         super().__init__()
         self.msdp: dict[str, str] = {}
-
 
     def on_mount(self) -> None:
         self.msdp = self.screen.session.core_msdp.values
@@ -39,8 +38,7 @@ class LOKAffectsList(Static):
         sorted_keys.sort()
         sorted_dict = {i: self.affects[i] for i in sorted_keys}
         for aff, val in sorted_dict.items():
-            affects.append(Text.assemble((f"{aff:15.15s}", "cyan"),
-                                         (f"{val:2s}", OutputColors.value)))
+            affects.append(Text.assemble((f"{aff:15.15s}", "cyan"), (f"{val:2s}", OutputColors.value)))
 
         return Columns(affects, width=20)
 
@@ -48,6 +46,7 @@ class LOKAffectsList(Static):
     def update_affects(self, msg: MSDPMessage):
         self.affects = msg.value
         self.trigger = 1
+
 
 class LOKAffects(Static):
     can_focus_children = False

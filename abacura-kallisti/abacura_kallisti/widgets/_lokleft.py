@@ -1,4 +1,5 @@
 """Legends of Kallisti Left Side Panel Dock"""
+
 from textual.app import ComposeResult
 from textual.containers import Container
 
@@ -7,8 +8,10 @@ from abacura_kallisti.widgets import LOKCharacter, LOKExperience, LOKAffects, LO
 from abacura.widgets.sidebar import Sidebar
 from abacura.widgets.resizehandle import ResizeHandle
 
+
 class LOKLeft(Sidebar):
     """Left hand dock, intended for user widgets"""
+
     def compose(self) -> ComposeResult:
         yield ResizeHandle(self, "right")
         with Container(id="leftsidecontainer", classes="SidebarContainer"):

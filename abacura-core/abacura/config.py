@@ -8,13 +8,14 @@ from tomlkit import parse, TOMLDocument
 
 DEFAULT_GLOBAL_CONFIG = {
     "module_paths": [],
-    "css_path": os.path.join(os.path.dirname(__file__),"css/abacura.css"),
-    "ga": True
+    "css_path": os.path.join(os.path.dirname(__file__), "css/abacura.css"),
+    "ga": True,
 }
 
 
 class Config:
     """Base configuration class"""
+
     _config_file: str
     name = "config"
 

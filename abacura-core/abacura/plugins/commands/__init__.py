@@ -38,7 +38,7 @@ class Command:
         submitted_options = [s.strip("-") for s in submitted_arguments if s.startswith("-")]
 
         d = self.evaluate_options(submitted_options)
-        if 'help' in d:
+        if "help" in d:
             return False
 
         submitted_arguments = [s for s in submitted_arguments if not s.startswith("-")]
@@ -75,7 +75,7 @@ class Command:
                 raise CommandArgumentError(f"Missing argument `{parameter.name}`")
 
             if len(submitted_arguments) > 0:
-                if parameter.name.lower() == 'text':
+                if parameter.name.lower() == "text":
                     value = cmd_str
                     submitted_arguments = []
                 else:
@@ -89,8 +89,8 @@ class Command:
 
     def evaluate_options(self, submitted_options: List[str]) -> dict[str, any]:
         """evaluate options to command functions"""
-        if len([so for so in submitted_options if so.lower() in ('h', 'help', '?')]):
-            return {'help': True}
+        if len([so for so in submitted_options if so.lower() in ("h", "help", "?")]):
+            return {"help": True}
 
         if self.pass_full_command_text():
             return {}
@@ -112,7 +112,7 @@ class Command:
 
             option_name = matched_options[0]
 
-            if command_options[option_name].annotation in [bool, 'bool']:
+            if command_options[option_name].annotation in [bool, "bool"]:
                 result[option_name] = True
                 continue
 
@@ -127,18 +127,18 @@ class Command:
         return result
 
     def pass_full_command_text(self) -> bool:
-        return any([a for a in self.get_parameters() if a.name.lower() == 'text'])
+        return any([a for a in self.get_parameters() if a.name.lower() == "text"])
 
     def get_parameters(self) -> List[inspect.Parameter]:
         parameters = inspect.signature(self.callback).parameters.values()
-        return [p for p in parameters if p.annotation not in [bool, 'bool'] and not p.name.startswith("_")]
+        return [p for p in parameters if p.annotation not in [bool, "bool"] and not p.name.startswith("_")]
 
     def get_options(self) -> Dict[str, inspect.Parameter]:
         parameters = inspect.signature(self.callback).parameters.values()
-        return {p.name: p for p in parameters if p.annotation in [bool, 'bool'] or p.name.startswith("_")}
+        return {p.name: p for p in parameters if p.annotation in [bool, "bool"] or p.name.startswith("_")}
 
     def get_description(self) -> str:
-        doc = getattr(self.callback, '__doc__', None)
+        doc = getattr(self.callback, "__doc__", None)
         if doc is None:
             return ""
         lines = [line.strip() for line in doc.split("\n") if len(line.strip())]
@@ -146,7 +146,6 @@ class Command:
 
 
 class CommandManager:
-
     def __init__(self, session: Session):
         self.commands: Dict[str, Command] = {}
         self.session = session
@@ -167,7 +166,6 @@ class CommandManager:
         self.commands = {k: v for k, v in self.commands.items() if v.source != obj}
 
     def parse_command_line(self, command_line: str) -> Tuple[Command, str]:
-
         command_line = command_line.lstrip()
         if command_line.startswith("##") and len(command_line) > 2:
             # TODO: This is a bugfix for the input splitter removing a space
@@ -177,8 +175,8 @@ class CommandManager:
         command_str = s[0]
         argument_str = "" if len(s) == 1 else " ".join(s[1:])
 
-        if command_str == '':
-            command_str = 'help'
+        if command_str == "":
+            command_str = "help"
 
         # look for partial matches and exact matches
         starts = [cmd for cmd in self.commands.values() if cmd.name.lower().startswith(command_str.lower())]
@@ -199,7 +197,7 @@ class CommandManager:
         return command, argument_str
 
     def show_command_help(self, command: Command):
-        help_command = self.commands.get('help', None)
+        help_command = self.commands.get("help", None)
 
         if help_command is None:
             self.session.debuglog("Unable to find 'help' command handler")

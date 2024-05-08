@@ -18,8 +18,16 @@ class ActionError(Exception):
 
 
 class Action:
-    def __init__(self, source: object, pattern: str, callback: Callable,
-                 flags: int = 0, name: str = '', color: bool = False, priority: int = 0):
+    def __init__(
+        self,
+        source: object,
+        pattern: str,
+        callback: Callable,
+        flags: int = 0,
+        name: str = "",
+        color: bool = False,
+        priority: int = 0,
+    ):
         self.pattern = pattern
         self.callback = callback
         self.flags = flags
@@ -33,11 +41,20 @@ class Action:
         self.parameters = list(inspect.signature(callback).parameters.values())
 
         self.parameter_types = [p.annotation for p in self.parameters]
-        non_match_types = [Match, 'Match', OutputMessage, 'OutputMessage']
+        non_match_types = [Match, "Match", OutputMessage, "OutputMessage"]
         self.expected_match_groups = len([t for t in self.parameter_types if t not in non_match_types])
 
-        valid_type_annotations = [str, 'str', int, float, getattr(inspect, "_empty"),
-                                  Match, 'Match', OutputMessage, 'OutputMessage']
+        valid_type_annotations = [
+            str,
+            "str",
+            int,
+            float,
+            getattr(inspect, "_empty"),
+            Match,
+            "Match",
+            OutputMessage,
+            "OutputMessage",
+        ]
 
         invalid_types = [t for t in self.parameter_types if t not in valid_type_annotations]
 
@@ -56,8 +73,13 @@ class ActionManager:
         # self.unregister_object(obj)  # prevent duplicates
         for name, member in inspect.getmembers(obj, callable):
             if hasattr(member, "action_pattern"):
-                act = Action(pattern=getattr(member, "action_pattern"), callback=member, source=obj,
-                             flags=getattr(member, "action_flags"), color=getattr(member, "action_color"))
+                act = Action(
+                    pattern=getattr(member, "action_pattern"),
+                    callback=member,
+                    source=obj,
+                    flags=getattr(member, "action_flags"),
+                    color=getattr(member, "action_color"),
+                )
                 self.add(act)
 
     def unregister_object(self, obj: object):
@@ -95,7 +117,7 @@ class ActionManager:
         for arg_type in action.parameter_types:
             if arg_type == Match:
                 value = match
-            elif arg_type == OutputMessage or arg_type == 'OutputMessage':
+            elif arg_type == OutputMessage or arg_type == "OutputMessage":
                 value = message
             elif arg_type == int:
                 try:
@@ -107,9 +129,9 @@ class ActionManager:
                     value = float(g.pop(0))
                 except (ValueError, TypeError):
                     value = float(0)
-            elif callable(arg_type) and arg_type.__name__ != '_empty':
+            elif callable(arg_type) and arg_type.__name__ != "_empty":
                 # fancy type conversion
-                 value = arg_type(g.pop(0))
+                value = arg_type(g.pop(0))
             else:
                 value = g.pop(0)
 
