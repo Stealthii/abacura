@@ -14,7 +14,7 @@ ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 class OutputMessage:
     def __init__(self, message: str, gag: bool = False):
         self.message: str = message
-        if type(message) is str:
+        if isinstance(message, str):
             self.stripped = ansi_escape.sub("", message)
         else:
             self.stripped = message

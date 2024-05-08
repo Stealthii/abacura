@@ -93,7 +93,7 @@ class ActionManager:
         self.actions.queue[:] = [a for a in self.actions.queue if a.name != name]
 
     def process_output(self, message: OutputMessage):
-        if type(message.message) is not str:
+        if not isinstance(message.message, str):
             return
 
         for act in self.actions.queue:

@@ -86,7 +86,7 @@ class LOKComms(LOKPlugin):
     @action(r"^<(\w+): (\w+)( \(.*\))?> '(.*)'", color=False)
     def comms_common(self, channel: str, speaker: str, account: str, message: str, msg: OutputMessage):
         """Send common pattern comms to the commslog, including clan chat"""
-        if account == None:
+        if account is None:
             account = "None"
         self.comms_log(channel, speaker, msg)
 

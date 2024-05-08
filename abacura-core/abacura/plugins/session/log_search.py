@@ -161,8 +161,7 @@ class LogSearch(Plugin):
             return
 
         logs = ls.search_logs(find, limit, show_msdp=msdp)
-        logs = [(t, c, Text.from_ansi(l).markup) for t, c, l in logs]
-
+        logs = [(time, count, Text.from_ansi(log).markup) for time, count, log in logs]
         pview = AbacuraPropertyGroup({"Find": find, "Limit": limit, "MSDP": msdp}, title="Properties")
 
         if len(logs) == 0:

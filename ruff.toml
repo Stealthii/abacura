@@ -4,5 +4,6 @@ target-version = "py310"
 line-length = 130
 
 [lint]
-# Add the `line-too-long` rule to the enforced rule set.
-extend-select = ["E501"]
+select = [
+    "E", # pycodestyle
+]

@@ -75,7 +75,7 @@ class LOKMSDPController(LOKPlugin):
         if attr_name == "group":
             self.msdp.group.update_members_from_msdp(value)
             self.msdp.group.update_members_from_msdp(value)
-        elif attr_name == "affects" and type(value) is dict:
+        elif attr_name == "affects" and isinstance(value, dict):
             self.msdp.affects = sorted([Affect(name, int(hrs)) for name, hrs in value.items()], key=lambda a: a.name)
         else:
             setattr(self.msdp, attr_name, value)
