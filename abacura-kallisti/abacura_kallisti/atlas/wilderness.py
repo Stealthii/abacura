@@ -195,7 +195,6 @@ class WildernessGrid:
     def get_exits(self, vnum: str) -> {}:
         remove_exits = {"87172": "south", "87522": "east", "87523": "west", "87873": "north"}
 
-        v = int(vnum)
         x, y = self.get_point(vnum)
         dirs = []
 

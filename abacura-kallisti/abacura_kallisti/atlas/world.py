@@ -230,7 +230,7 @@ class World:
         for sql_version, sql in sql_updates:
             if sql_version > user_version_current:
                 self.db_conn.execute(sql)
-                user_version_new = sql_version
+                # user_version_new = sql_version
 
         self.db_conn.execute(f"pragma user_version = {max_sql_version}")
         self.db_conn.commit()

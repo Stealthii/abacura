@@ -72,7 +72,6 @@ class RichImage:
     def get_frame_segments(self, frame_number) -> List[Segment]:
         transparent_black = (0, 0, 0, 0)
         segments = []
-        strips = []
         rgba_image = self.frames_rgba[self.frame_number]
         width, height = rgba_image.width, rgba_image.height
         # segments.append(

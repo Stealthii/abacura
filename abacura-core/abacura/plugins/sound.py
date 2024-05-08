@@ -15,7 +15,7 @@ class SoundPlugin(Plugin):
 
         try:
             from playsound import playsound
-        except ModuleNotFoundError as exc:
+        except ModuleNotFoundError:
             pkg = "pip install playsound PyGObject"
             self.session.show_warning(f"Unable to play sounds without playsound module. Use '{pkg}' ")
             return

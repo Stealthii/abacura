@@ -161,7 +161,6 @@ class CommandHelper(Plugin):
     @command(hide=True)
     def error(self, error_str, _warning: bool = False):
         title = "Ooops!"
-        n = 1 / 0
         if _warning:
             self.session.show_warning(f"{error_str}", title=title)
         else:

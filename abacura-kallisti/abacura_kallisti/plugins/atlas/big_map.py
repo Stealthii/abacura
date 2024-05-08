@@ -25,7 +25,7 @@ class BigMapWindow(AbacuraWindow):
         self.bigmap: LOKMap = LOKMap(id="bigmap", resizer=False)
 
     def compose(self) -> ComposeResult:
-        with Grid(id="bigmap-grid") as g:
+        with Grid(id="bigmap-grid"):
             yield self.bigmap
 
     def remove(self):

@@ -94,8 +94,8 @@ class LOKComms(LOKPlugin):
     # Market info is a different pattern and gets different channel assignment
     @action(r"^<Market: the MGSE supervisor> (.*)", color=False)
     def comms_market_info(self, msg: OutputMessage):
-        channel = "market_info"
-        speaker = "MGSE"
+        # channel = "market_info"
+        # speaker = "MGSE"
         if self.comms_textlog is None:
             self.comms_textlog = self.session.screen.query_one("#commsTL", expect_type=RichLog)
         self.comms_textlog.write(Text.from_ansi(msg.message))
@@ -200,7 +200,7 @@ class LOKComms(LOKPlugin):
     @action(r"(\w+) whispers to you, '(.*)'", color=False)
     def comms_whisper(self, speaker: str, message: str, msg: OutputMessage):
         channel = "whisper"
-        listener = "You"
+        # listener = "You"
         self.comms_log(channel, speaker, msg)
 
     """
@@ -228,7 +228,7 @@ class LOKComms(LOKPlugin):
     @action(r"^(.*) tells you, '(.*)'", color=False)
     def comms_tell_other(self, speaker: str, message: str, msg: OutputMessage):
         channel = "tell"
-        listener = "You"
+        # listener = "You"
         _speaker = speaker.split()
         acct = ""
         if len(_speaker) > 1:

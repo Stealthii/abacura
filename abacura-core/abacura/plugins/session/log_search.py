@@ -86,7 +86,7 @@ class LogSearchWindow(AbacuraWindow):
             self.footer.refresh()
 
     def compose(self) -> ComposeResult:
-        with Grid(id="logsearch-grid") as g:
+        with Grid(id="logsearch-grid"):
             with Horizontal():
                 yield Label("Search: ", id="logsearch-label")
                 yield self.input

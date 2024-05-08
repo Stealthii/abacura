@@ -16,7 +16,7 @@ class ActionCommand(Plugin):
         rows = []
         for action in self.director.action_manager.actions.queue:
             callback_name = getattr(action.callback, "__qualname__", str(action.callback))
-            source = action.source.__class__.__name__ if action.source else ""
+            # source = action.source.__class__.__name__ if action.source else ""
 
             rows.append((repr(action.pattern), callback_name, action.priority, action.flags))
 
