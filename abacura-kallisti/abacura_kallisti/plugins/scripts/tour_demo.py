@@ -10,13 +10,13 @@ from abacura_kallisti.plugins import LOKPlugin
 class TourDemo(LOKPlugin):
     """Shows how to use the TourGuide to visit all rooms in an area"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.tour_guide: TourGuide | None = None
         self.steps_taken: int = 0
 
     @command
-    def tour(self, start: bool = False, stop: bool = False, _route: str = "", reach: bool = False):
+    def tour(self, start: bool = False, stop: bool = False, _route: str = "", reach: bool = False) -> None:
         """
         Visit rooms in current area according to area .toml file
 
@@ -42,7 +42,7 @@ class TourDemo(LOKPlugin):
 
         raise CommandError("Please specify --start or --stop")
 
-    def show_reach(self, route: str = ""):
+    def show_reach(self, route: str = "") -> None:
         tg = TourGuide(self.room.area, self.world, self.pc, self.msdp.level, route)
         response = tg.get_next_step(self.room)
         if response.error:
@@ -69,13 +69,13 @@ class TourDemo(LOKPlugin):
         self.output(tbl)
 
     @event("lok.room")
-    def got_room(self, _message: RoomMessage):
+    def got_room(self, _message: RoomMessage) -> None:
         if not self.tour_guide:
             return
 
         self.advance_tour()
 
-    def advance_tour(self):
+    def advance_tour(self) -> bool | None:
         response = self.tour_guide.get_next_step(self.room)
 
         if response.error:

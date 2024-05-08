@@ -47,7 +47,7 @@ SURVEY_SYMBOLS = {"M": "mob", "P": "player", "X": "cabin", "?": "unknown", "@": 
 # split it into commands and non-commands
 # command is escape through m
 class WildernessRoom:
-    def __init__(self, symbol: str, color: int, bright: bool):
+    def __init__(self, symbol: str, color: int, bright: bool) -> None:
         self.symbol: str = symbol
         self.color: int = color
         self.bright: bool = bright
@@ -56,7 +56,7 @@ class WildernessRoom:
         self.vnum: str = ""
         self.material: str = SURVEY_MATERIALS.get(symbol, "")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{%2d,%2d %5s: %1s %5.5s}" % (
             self.delta_x,
             self.delta_y,
@@ -65,7 +65,7 @@ class WildernessRoom:
             self.get_terrain_name(),
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
     def get_terrain_name(self) -> str:

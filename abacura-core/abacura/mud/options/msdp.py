@@ -43,7 +43,7 @@ class MSDP(TelnetOption):
     code: int = 69
     name: str = "MSDP"
 
-    def __init__(self, handler, writer, session):
+    def __init__(self, handler, writer, session) -> None:
         self.hexcode = b"\x45"
         self.handler = handler
         self.writer = writer
@@ -63,10 +63,10 @@ class MSDP(TelnetOption):
         return val, remainder
 
     # TODO generic handler for MSDP array and tables needed
-    def msdparray(self, buf):
+    def msdparray(self, buf) -> None:
         """NotImplemented: generic MSDP array parser"""
 
-    def msdptable(self, buf):
+    def msdptable(self, buf) -> None:
         """NotImplemented: generic MSDP table parser"""
 
     # TODO move this to abacura-kallisti once we have config options for MSDP parser
@@ -134,12 +134,12 @@ class MSDP(TelnetOption):
         buf += VAL.join(msdp_vals) + IAC + SE
         self.writer(buf, echo_color="")
 
-    def will(self):
+    def will(self) -> None:
         self.writer(b"\xff\xfd\x45", echo_color="")
         response = [IAC, SB, self.hexcode, VAR, b"LIST", VAL, b"REPORTABLE_VARIABLES", IAC, SE]
         self.writer(b"".join(response), echo_color="")
 
-    def sb(self, sb):
+    def sb(self, sb) -> None:
         log.debug("MSDP SB parsing")
         sb = sb[1:]
         first = sb[0:1]

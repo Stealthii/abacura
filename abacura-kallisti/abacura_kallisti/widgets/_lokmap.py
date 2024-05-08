@@ -85,7 +85,7 @@ TERRAIN_LOOKUP: dict[str, TerrainStyle] = {t.name: t for t in TERRAINS}
 
 
 class LOKMapStatic(Static):
-    def __init__(self, strips: list[Strip], **kwargs):
+    def __init__(self, strips: list[Strip], **kwargs) -> None:
         super().__init__(**kwargs)
         self.strips = strips
 
@@ -99,13 +99,13 @@ class LOKMapStatic(Static):
         else:
             return Strip([])
 
-    def refresh_strips(self, strips: list[Strip]):
+    def refresh_strips(self, strips: list[Strip]) -> None:
         self.strips = strips
         self.refresh()
 
 
 class LOKMap(Container):
-    def __init__(self, resizer: bool = True, id: str = "", map_type: str = "auto"):
+    def __init__(self, resizer: bool = True, id: str = "", map_type: str = "auto") -> None:
         super().__init__()
         self.id = id
         self.resizer: bool = resizer
@@ -129,14 +129,14 @@ class LOKMap(Container):
         self.screen.session.director.register_object(self)
         self.screen.session.dispatch(MapUpdateRequest())
 
-    def unregister(self):
+    def unregister(self) -> None:
         self.screen.session.director.unregister_object(self)
 
-    def on_resize(self, _event: Resize):
+    def on_resize(self, _event: Resize) -> None:
         self.update_map()
 
     @event(MapUpdateMessage.event_type)
-    def process_map_update(self, message: MapUpdateMessage):
+    def process_map_update(self, message: MapUpdateMessage) -> None:
         """Event to trigger map redraws on movement"""
 
         self.start_room = message.start_room
@@ -147,7 +147,7 @@ class LOKMap(Container):
         self.wilderness = message.wilderness
         self.update_map()
 
-    def update_map(self):
+    def update_map(self) -> None:
         if self.start_room is None:
             return
 
@@ -208,7 +208,7 @@ class LOKMap(Container):
             Segment("- " if "down" in room.exits else "  ", Style(bgcolor=style.bgcolor)),
         ]
 
-    def generate_5x3_map(self, start_room: Room, width, height):
+    def generate_5x3_map(self, start_room: Room, width, height) -> None:
         if self.bfs is None:
             return
 
@@ -287,7 +287,7 @@ class LOKMap(Container):
 
         return [Segment(f"{c1}{c2}{c3}", style)]
 
-    def generate_3x3_map(self, start_room: Room, width, height):
+    def generate_3x3_map(self, start_room: Room, width, height) -> None:
         if self.bfs is None:
             return
 
@@ -301,7 +301,7 @@ class LOKMap(Container):
             # doing three sub-rows at a time
             self.strips += [Strip([s for cell in row for s in self.make_3x3_segments(i, cell)]) for i in range(3)]
 
-    def generate_1x1_map(self, start_room: Room, width, height):
+    def generate_1x1_map(self, start_room: Room, width, height) -> None:
         if self.bfs is None:
             return
 
@@ -321,7 +321,7 @@ class LOKMap(Container):
                     row.append(Segment(" ", Style(bgcolor=bgcolor)))
             self.strips.append(Strip(row))
 
-    def generate_wilderness_map(self, start_room: Room, width, height):
+    def generate_wilderness_map(self, start_room: Room, width, height) -> None:
         if self.bfs is None:
             return
 

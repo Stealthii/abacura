@@ -13,7 +13,7 @@ class RingBufferLogSql:
         ring_size: int = 10000,
         wal: bool = True,
         commit_interval: int = 10,
-    ):
+    ) -> None:
         self.db_filename = db_filename
         self.ring_size = ring_size
         self.commit_interval = commit_interval
@@ -40,11 +40,11 @@ class RingBufferLogSql:
         rows = cur.fetchall()
         return rows[0][0] if len(rows) else 0
 
-    def set_log_context_provider(self, context_provider: Callable | None):
+    def set_log_context_provider(self, context_provider: Callable | None) -> None:
         # Pass a function to use to provide additional logging context
         self.log_context_provider = context_provider
 
-    def log(self, message: OutputMessage):
+    def log(self, message: OutputMessage) -> None:
         log_epoch_ns = time.time_ns()
 
         if type(message.message) not in [str, "str"]:
@@ -91,10 +91,10 @@ class RingBufferLogSql:
 
         return logs
 
-    def commit(self):
+    def commit(self) -> None:
         self.conn.commit()
 
-    def checkpoint(self, method: str = "truncate"):
+    def checkpoint(self, method: str = "truncate") -> None:
         self.commit()
         if method.lower() not in ["truncate", "passive", "full", "restart"]:
             raise ValueError("Invalid checkpoint method %s" % method)

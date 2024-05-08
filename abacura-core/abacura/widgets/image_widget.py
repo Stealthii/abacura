@@ -65,7 +65,7 @@ class ImageWidget(Widget):
     async def on_resize(self, e: events.Resize) -> None:
         self.strip_cache = [None] * len(self.frames)
 
-    def advance_frame(self):
+    def advance_frame(self) -> None:
         if len(self.frames) <= 1:
             self.refresh()
             return
@@ -143,7 +143,7 @@ class ImageWidget(Widget):
 class ImageApp(App):
     """A simple app to show our widget."""
 
-    def __init__(self, image_path: str):
+    def __init__(self, image_path: str) -> None:
         super().__init__()
         self.image_path = image_path
 

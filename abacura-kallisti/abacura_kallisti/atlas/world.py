@@ -12,7 +12,7 @@ ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 
 class World:
-    def __init__(self, db_filename: str):
+    def __init__(self, db_filename: str) -> None:
         db_path = Path(db_filename).expanduser()
 
         self.rooms: dict[str, Room] = {}
@@ -43,7 +43,7 @@ class World:
         # ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
         return ansi_escape.sub("", s)
 
-    def del_exit(self, vnum: str, direction: str):
+    def del_exit(self, vnum: str, direction: str) -> None:
         if vnum not in self.rooms:
             return
 
@@ -54,7 +54,7 @@ class World:
         del room.exits[direction]
         self.save_room(vnum)
 
-    def set_exit(self, vnum: str, direction: str, door: str = "", to_vnum: str = None, commands: str = ""):
+    def set_exit(self, vnum: str, direction: str, door: str = "", to_vnum: str = None, commands: str = "") -> None:
         if vnum not in self.rooms:
             return
 
@@ -95,7 +95,7 @@ class World:
         terrain: str,
         room_exits: dict,
         scan_room: ScannedRoom,
-    ):
+    ) -> None:
         if area_name == "The Wilderness":
             self.load_wilderness()
 
@@ -165,7 +165,7 @@ class World:
         self.rooms[vnum] = new_room
         self.save_room(vnum)
 
-    def create_tables(self):
+    def create_tables(self) -> None:
         sql_updates = [
             (1, "alter table exits add column commands"),
             (1, "update exits set commands = portal_method where portal_method != ''"),
@@ -233,7 +233,7 @@ class World:
         self.db_conn.execute(f"pragma user_version = {max_sql_version}")
         self.db_conn.commit()
 
-    def delete_room(self, vnum: str):
+    def delete_room(self, vnum: str) -> None:
         if vnum in self.rooms:
             del self.rooms[vnum]
 
@@ -242,7 +242,7 @@ class World:
         self.db_conn.execute("delete from room_tracking where vnum = ? ", vnum)
         self.db_conn.execute("delete from rooms where vnum = ? ", vnum)
 
-    def save_room(self, vnum: str):
+    def save_room(self, vnum: str) -> None:
         if vnum not in self.rooms:
             return
 
@@ -265,7 +265,7 @@ class World:
 
         self.db_conn.commit()
 
-    def load(self, where_clause: str = "where area_name != 'The Wilderness'"):
+    def load(self, where_clause: str = "where area_name != 'The Wilderness'") -> None:
         cursor = self.db_conn.execute(f"select * from rooms {where_clause}")
         # field_names = [c[0] for c in cursor.description]
         rows = cursor.fetchall()
@@ -305,7 +305,7 @@ class World:
 
         return area_transits
 
-    def load_wilderness(self):
+    def load_wilderness(self) -> None:
         if not self.wilderness_loaded:
             self.load("where area_name = 'The Wilderness'")
             self.wilderness_loaded = True

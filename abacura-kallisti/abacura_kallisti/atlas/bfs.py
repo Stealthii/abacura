@@ -20,7 +20,7 @@ class MapPoint:
 class BFS:
     """Breadth-First Search class"""
 
-    def __init__(self, world: World):
+    def __init__(self, world: World) -> None:
         self.world: World = world
 
     def get_bfs_grid(

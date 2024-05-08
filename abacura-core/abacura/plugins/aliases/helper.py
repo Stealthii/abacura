@@ -13,7 +13,7 @@ class AliasCommand(Plugin):
         _add: bool = False,
         _delete: bool = False,
         _temporary: bool = False,
-    ):
+    ) -> None:
         """
         Add an alias that automatically replace text with a value in the inputbar
 

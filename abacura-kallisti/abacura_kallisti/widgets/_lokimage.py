@@ -11,7 +11,7 @@ from textual.widgets import Static
 class LOKImage(Static):
     img = None
 
-    def show_image(self, height: int = 0, width: int = 0, image: str = "ship"):
+    def show_image(self, height: int = 0, width: int = 0, image: str = "ship") -> None:
         if not height or not width:
             return
         self.img = Pixels.from_image_path("/home/tom/Pictures/Selection_986.jpg", resize=(width, height * 2))

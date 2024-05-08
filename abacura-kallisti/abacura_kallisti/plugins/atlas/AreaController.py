@@ -17,14 +17,14 @@ if TYPE_CHECKING:
 class AreaController(LOKPlugin):
     """Commands for manipulating the database of areas and mobs"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.wild_grid = WildernessGrid()
         importlib.reload(tblt)
         self.traveling = False
 
     @command(name="visited")
-    def show_visited_rooms_in_area(self, area: str = ""):
+    def show_visited_rooms_in_area(self, area: str = "") -> None:
         """
         Show rooms in area and if they have been visited
 
@@ -78,7 +78,7 @@ class AreaController(LOKPlugin):
         self.output(AbacuraPanel(table, title=f"Rooms in '{area}'"))
 
     @command()
-    def area(self):
+    def area(self) -> None:
         """
         View all known mobs in the current area
         """
@@ -91,7 +91,7 @@ class AreaController(LOKPlugin):
         self.output(AbacuraPanel(group, title=f"Area [{self.room.area.name}]"))
 
     @command(name="mob")
-    def mob_command(self, n: int = -1):
+    def mob_command(self, n: int = -1) -> None:
         """
         Show mobs in the room and associated atlas information
         """

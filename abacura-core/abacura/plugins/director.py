@@ -22,7 +22,7 @@ class Registration:
 
 
 class Director:
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.session = session
         self.action_manager: ActionManager = ActionManager()
         self.command_manager: CommandManager = CommandManager(session)
@@ -30,7 +30,7 @@ class Director:
         self.alias_manager: AliasManager = AliasManager(session)
         self.event_manager: EventManager = EventManager()
 
-    def register_object(self, obj: object):
+    def register_object(self, obj: object) -> None:
         if getattr(obj, "register_actions", True):
             self.action_manager.register_object(obj)
 
@@ -38,7 +38,7 @@ class Director:
         self.command_manager.register_object(obj)
         self.event_manager.register_object(obj)
 
-    def unregister_object(self, obj: object):
+    def unregister_object(self, obj: object) -> None:
         self.action_manager.unregister_object(obj)
         self.ticker_manager.unregister_object(obj)
         self.command_manager.unregister_object(obj)

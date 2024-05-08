@@ -8,7 +8,7 @@ from abacura.utils.renderables import AbacuraPanel, tabulate
 class SessionHelper(Plugin):
     """Provides commands related to the session"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         if self.session.ring_buffer:
             self.add_ticker(1, self.session.ring_buffer.commit, name="ring-autocommit")
@@ -16,7 +16,7 @@ class SessionHelper(Plugin):
     """Session specific commands"""
 
     @command(name="echo")
-    def echo(self, text: str):
+    def echo(self, text: str) -> None:
         """
         Send text to the output window without triggering actions
 
@@ -54,7 +54,7 @@ class SessionHelper(Plugin):
         self.session.output(panel, highlight=True, actionable=False)
 
     @command(name="workers")
-    def workers(self, group: str = ""):
+    def workers(self, group: str = "") -> None:
         """
         Show all workers or for optional group
 

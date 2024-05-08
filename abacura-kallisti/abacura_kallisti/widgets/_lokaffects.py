@@ -19,7 +19,7 @@ class LOKAffectsList(Static):
     affects: dict = {}
     trigger: reactive[int] = reactive[int](0, always_update=True, layout=True)
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.msdp: dict[str, str] = {}
 
@@ -40,7 +40,7 @@ class LOKAffectsList(Static):
         return Columns(affects, width=20)
 
     @event("core.msdp.AFFECTS")
-    def update_affects(self, msg: MSDPMessage):
+    def update_affects(self, msg: MSDPMessage) -> None:
         self.affects = msg.value
         self.trigger = 1
 

@@ -19,7 +19,7 @@ class Config:
     _config_file: str
     name = "config"
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super().__init__()
         if "config" not in kwargs or kwargs["config"] is None:
             kwargs["config"] = "~/.abacura"

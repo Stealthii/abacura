@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 class LOKMSDPController(LOKPlugin):
     """Converts core MSDP into typed LOK MSDP variables"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.msdp_types = {f.name: f.type for f in fields(self.msdp)}
         print(self.msdp_types)
@@ -54,7 +54,7 @@ class LOKMSDPController(LOKPlugin):
         self.session.output(panel, highlight=True, actionable=False)
 
     @event("core.msdp", priority=1)
-    def update_lok_msdp(self, message: MSDPMessage):
+    def update_lok_msdp(self, message: MSDPMessage) -> None:
         # self.msdp.values[message.type] = message.value
         attr_name = message.subtype.lower()
 

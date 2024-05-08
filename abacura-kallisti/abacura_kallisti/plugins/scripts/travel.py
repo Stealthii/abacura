@@ -33,7 +33,7 @@ class TravelResult(AbacuraMessage):
 class TravelScript(LOKPlugin):
     """Sends navigation commands after receiving lok.travel.request event"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.navigation_path: TravelPath | None = None
         self.travel_guide: TravelGuide | None = None
@@ -41,13 +41,13 @@ class TravelScript(LOKPlugin):
         self.callback_fn: Callable | None = None
 
     @event(trigger="lok.travel.request")
-    def handle_travel(self, message: TravelRequest):
+    def handle_travel(self, message: TravelRequest) -> None:
         self.callback_fn = message.callback_fn
         self.start_nav(message.destination, message.avoid_home)
         self.retries = 0
 
     @event(trigger="lok.room")
-    def got_room(self, _message: RoomMessage):
+    def got_room(self, _message: RoomMessage) -> None:
         # self.session.output(f"room event {_message.vnum} {_message.room.header}")
         if self.navigation_path:
             self.continue_nav()
@@ -56,27 +56,27 @@ class TravelScript(LOKPlugin):
     #    BLOCKING_GUARD = r"^(.*) blocks you from entering the city"
 
     @action(r"^Your mount is too exhausted.")
-    def mount_exhausted(self):
+    def mount_exhausted(self) -> None:
         if self.navigation_path:
             self.cq.add(cmd="look", dur=0.1, delay=0, q="Move")
 
     @action(r"^Alas, you cannot go (.*)")
-    def cannot_go(self):
+    def cannot_go(self) -> None:
         self.look_and_retry()
 
     @action(r"^You try to climb but couldn't get a good grip that time.")
-    def cannot_climb(self):
+    def cannot_climb(self) -> None:
         self.look_and_retry()
 
     @action(r"^(.*) is blocking your way")
-    def blocking_way(self):
+    def blocking_way(self) -> None:
         self.look_and_retry()
 
     @action(r"^There's not enough room to fit in there!")
-    def no_room(self):
+    def no_room(self) -> None:
         self.look_and_retry()
 
-    def start_nav(self, destination: Room, avoid_home: bool = False):
+    def start_nav(self, destination: Room, avoid_home: bool = False) -> None:
         self.output(f"> start_nav {destination.vnum}")
         self.travel_guide = TravelGuide(self.world, self.pc, self.msdp.level, avoid_home)
         nav_path = self.travel_guide.get_path_to_room(self.msdp.room_vnum, destination.vnum, avoid_vnums=set())
@@ -88,7 +88,7 @@ class TravelScript(LOKPlugin):
         self.navigation_path = nav_path
         self.cq.add(cmd="look", dur=0.1, delay=0, q="Move")
 
-    def end_nav(self, success: bool, message: str):
+    def end_nav(self, success: bool, message: str) -> None:
         self.output(f"> end_nav: {success} {message}")
         self.travel_guide = None
         self.navigation_path = None
@@ -96,7 +96,7 @@ class TravelScript(LOKPlugin):
         if self.callback_fn:
             self.callback_fn(TravelResult(success=success, result=message))
 
-    def continue_nav(self):
+    def continue_nav(self) -> None:
         if self.msdp.room_vnum == self.navigation_path.destination.vnum:
             self.end_nav(True, "Arrived!")
             return
@@ -128,7 +128,7 @@ class TravelScript(LOKPlugin):
             TravelStatus(destination=self.navigation_path.destination, steps_remaining=len(self.navigation_path.steps)),
         )
 
-    def look_and_retry(self):
+    def look_and_retry(self) -> None:
         if self.navigation_path:
             self.retries += 1
             if self.retries > 3:

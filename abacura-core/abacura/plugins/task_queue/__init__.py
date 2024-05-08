@@ -82,7 +82,7 @@ class Task:
     def __lt__(self, other):
         return self.overall_priority < other.overall_priority
 
-    def set_queue(self, queue: TaskQueue):
+    def set_queue(self, queue: TaskQueue) -> None:
         self._queue = queue
 
     @property
@@ -90,7 +90,7 @@ class Task:
         return self._inserted
 
     @inserted.setter
-    def inserted(self, value: bool):
+    def inserted(self, value: bool) -> None:
         self._inserted = value
 
     @property
@@ -98,7 +98,7 @@ class Task:
         return self._wait_prior
 
     @wait_prior.setter
-    def wait_prior(self, value: "Task"):
+    def wait_prior(self, value: "Task") -> None:
         self._wait_prior = value
 
 
@@ -113,7 +113,7 @@ class CQMessage(AbacuraMessage):
 class TaskManager:
     """Manage tasks by priority"""
 
-    def __init__(self, queues: dict[str, TaskQueue] | None = None):
+    def __init__(self, queues: dict[str, TaskQueue] | None = None) -> None:
         self.tasks: list[Task] = []
         self._NEXT_COMMAND_TIME: float = 0.0
         self._command_inserter: Callable | None = None
@@ -126,10 +126,10 @@ class TaskManager:
     def next_command_delay(self) -> float:
         return max(0.0, self._NEXT_COMMAND_TIME - monotonic())
 
-    def set_command_inserter(self, f: Callable):
+    def set_command_inserter(self, f: Callable) -> None:
         self._command_inserter = f
 
-    def set_queues(self, queues: dict[str, TaskQueue]):
+    def set_queues(self, queues: dict[str, TaskQueue]) -> None:
         self._queues = queues
 
         # update queues for each task and re-sort in case priorities changed
@@ -150,7 +150,7 @@ class TaskManager:
 
         return None
 
-    def run_tasks(self):
+    def run_tasks(self) -> None:
         """This is the actual queue runner routine"""
 
         if self._command_inserter is None:
@@ -170,7 +170,7 @@ class TaskManager:
             log(f"Sent {task.cmd} inserted at {monotonic()}")
             self._NEXT_COMMAND_TIME = monotonic() + task.dur
 
-    def flush(self, q: str = ""):
+    def flush(self, q: str = "") -> None:
         if q == "":
             self.tasks = []
             return
@@ -178,7 +178,7 @@ class TaskManager:
         removals = set(task for task in self.tasks if task.q.lower() == q.lower())
         self._remove_tasks(removals)
 
-    def add_task(self, task: Task):
+    def add_task(self, task: Task) -> None:
         task.set_queue(self._queues.get(task.q, TaskQueue()))
 
         if task.exclusive:
@@ -192,7 +192,7 @@ class TaskManager:
         # self._pq.put(task)
         self.run_tasks()
 
-    def add_chain(self, *tasks):
+    def add_chain(self, *tasks) -> None:
         prior = None
         for task in tasks:
             task._wait_prior = prior
@@ -212,14 +212,14 @@ class TaskManager:
         dur: float = _DEFAULT_DURATION,
         delay: float = 0,
         timeout: float = 0,
-    ):
+    ) -> None:
         self.add_task(Task(cmd=cmd, priority=priority, dur=dur, delay=delay, q=q, timeout=timeout))
 
-    def remove(self, cmd: str):
+    def remove(self, cmd: str) -> None:
         removals = set(task for task in self.tasks if task.q.lower() == cmd.lower())
         self._remove_tasks(removals)
 
-    def _remove_tasks(self, removals: set[Task]):
+    def _remove_tasks(self, removals: set[Task]) -> None:
         """Remove a set of tasks and clear tasks with related priors"""
         self.tasks = [task for task in self.tasks if task not in removals]
         # clear out any priors that got removed
@@ -227,7 +227,7 @@ class TaskManager:
             if task.wait_prior in removals:
                 task.wait_prior = None
 
-    def _remove_timeouts(self):
+    def _remove_timeouts(self) -> None:
         timeouts = set()
         for task in self.tasks:
             if task.timed_out:

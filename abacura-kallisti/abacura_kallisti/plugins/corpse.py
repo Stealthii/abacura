@@ -21,20 +21,20 @@ class CorpseMessage(AbacuraMessage):
 class CorpseScanner(LOKPlugin):
     """Send an event after looking at a corpse"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.last_size = ""
         self.last_weight = 0
         self.last_value = 0
 
     @action(r"^Weight: (\d+) stones, Value: (\d+) coins, Size: (.*)")
-    def corpse_weight(self, weight: int, value: int, size: str):
+    def corpse_weight(self, weight: int, value: int, size: str) -> None:
         self.last_weight = weight
         self.last_value = value
         self.last_size = size
 
     @action(r"^Corpse type: (.*), Race of deceased: (.*), Level: (\d+)")
-    def corpse(self, corpse_type: str, race: str, level: int):
+    def corpse(self, corpse_type: str, race: str, level: int) -> None:
         # self.debuglog(msg="Corpse")
         self.dispatch(
             CorpseMessage(

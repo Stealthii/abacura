@@ -11,7 +11,7 @@ from abacura_kallisti.plugins import LOKPlugin
 class OdometerController(LOKPlugin):
     """Track and view metrics, start odometers"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.last_kill = ""
         self.last_skill = ""
@@ -62,7 +62,7 @@ class OdometerController(LOKPlugin):
         self.output(AbacuraPanel(tabulate(rows, headers=headers), title="Odometers"))
 
     @ticker(seconds=1, name="Odometer")
-    def odometer_ticker(self):
+    def odometer_ticker(self) -> None:
         if len(self.odometer.metric_history) == 0 and self.msdp.character_name != "":
             self.debuglog("Starting initial odometer")
             self.odometer.start(mission=self.msdp.area_name)
@@ -72,66 +72,66 @@ class OdometerController(LOKPlugin):
         self.dispatch(om)
 
     @action(r"^(.*) is dead!.*R.I.P.")
-    def killed(self, mob: str):
+    def killed(self, mob: str) -> None:
         self.last_kill = mob
         self.metrics.kills += 1
 
     @event("core.prompt")
-    def got_prompt(self, _: AbacuraMessage):
+    def got_prompt(self, _: AbacuraMessage) -> None:
         self.last_kill = ""
         self.last_skill = ""
 
     @action(r"^You gain (\d+) experience for mastering a skill.")
-    def skill_exp(self, xp: int):
+    def skill_exp(self, xp: int) -> None:
         self.metrics.earn_xp("practice", xp, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^You receive a reduced reward for a frequent kill, only (\d+) experience points.")
-    def killed_reduced_exp(self, xp: int):
+    def killed_reduced_exp(self, xp: int) -> None:
         self.metrics.earn_xp("kill-reduced", xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^You receive your reward for the kill, (\d+) experience points\.")
-    def killed_exp(self, xp: int):
+    def killed_exp(self, xp: int) -> None:
         self.metrics.earn_xp("kill", xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^You receive your reward for the kill, (\d+) experience points plus (\d+) bonus experience for a rare")
-    def killed_rare_exp(self, kill_xp: int, rare_xp: int):
+    def killed_rare_exp(self, kill_xp: int, rare_xp: int) -> None:
         self.metrics.earn_xp("kill", kill_xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
         self.metrics.earn_xp("kill-rare", rare_xp, self.last_kill, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^There were (\d+) coins")
-    def coins(self, gold: int):
+    def coins(self, gold: int) -> None:
         source = "kill" if self.last_kill else ""
         self.metrics.earn_gold(source, gold, self.last_kill, self.msdp.area_name, self.msdp.room_vnum)
 
     @action(
         r"^You (mine|gather|chop down|catch|skin|butcher|extract) some (.*) (herbs|cotton|silk|ore|wood|fish|meat|hide|bone)",
     )
-    def harvested(self, skill: str, quality: str, _material: str):
+    def harvested(self, skill: str, quality: str, _material: str) -> None:
         self.metrics.craft_attempted += 1
         self.metrics.craft_successful += 1
         self.metrics.craft_qualities[quality] += 1
         self.last_skill = skill
 
     @action(r"^You earn (.*) experience points")
-    def exp(self, xp: int):
+    def exp(self, xp: int) -> None:
         self.metrics.earn_xp(self.last_skill, xp, area=self.msdp.area_name, vnum=self.msdp.room_vnum)
 
     @action(r"^You can't seem to find anything nearby.")
-    def nothing_nearby(self):
+    def nothing_nearby(self) -> None:
         self.metrics.craft_attempted += 1
 
     @action(r"^You deposit (.*) coins.")
-    def deposit_coins(self, coins: int):
+    def deposit_coins(self, coins: int) -> None:
         self.metrics.counters["deposit"] += coins
 
     @event("core.msdp.EXPERIENCE")
-    def msdp_xp(self, _: AbacuraMessage):
+    def msdp_xp(self, _: AbacuraMessage) -> None:
         self.metrics.end_xp = self.msdp.experience
 
     @event("core.msdp.GOLD")
-    def msdp_gold(self, _: AbacuraMessage):
+    def msdp_gold(self, _: AbacuraMessage) -> None:
         self.metrics.end_gold = self.msdp.gold
 
     @event("core.msdp.BANK_GOLD")
-    def msdp_bank(self, _: AbacuraMessage):
+    def msdp_bank(self, _: AbacuraMessage) -> None:
         self.metrics.end_bank = self.msdp.bank_gold

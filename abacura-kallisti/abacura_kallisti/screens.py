@@ -36,7 +36,7 @@ class KallistiScreen(SessionScreen):
     CSS_PATH = "css/kallisti.css"
     DEFAULT_CLASSES = "BKS"
 
-    def __init__(self, name: str, session: Session):
+    def __init__(self, name: str, session: Session) -> None:
         super().__init__(name, session)
         self._map_overlay = False
         self.can_focus_children = False
@@ -90,7 +90,7 @@ class KallistiScreen(SessionScreen):
         debugger.display = not debugger.display
         self.refresh()
 
-    def action_escape(self):
+    def action_escape(self) -> None:
         for c in self.children:
             if isinstance(c, AbacuraWindow):
                 c.remove()
@@ -109,7 +109,7 @@ class MapScreen(ModalScreen[bool]):
 
     CSS_PATH = "css/kallisti.css"
 
-    def __init__(self, session: Session, **kwargs):
+    def __init__(self, session: Session, **kwargs) -> None:
         super().__init__(id=kwargs["id"], *kwargs)
         self.bigmap: LOKMap = LOKMap(id="bigmap", resizer=False)
         self.session = session

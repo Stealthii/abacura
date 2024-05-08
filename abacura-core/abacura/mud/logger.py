@@ -10,7 +10,7 @@ from abacura import Config
 
 
 class AbacuraLogger:
-    def __init__(self, name: str, config: Config):
+    def __init__(self, name: str, config: Config) -> None:
         if config.get_specific_option(name, "log_dir"):
             logfile = Path(config.get_specific_option(name, "log_dir")).expanduser()
             self.logfile = logfile.joinpath(datetime.now().strftime(config.get_specific_option(name, "log_file")))
@@ -23,14 +23,14 @@ class AbacuraLogger:
         else:
             self.logger = None
 
-    def info(self, msg, **kwargs):
+    def info(self, msg, **kwargs) -> None:
         if self.logger:
             self.logger.info(msg, *kwargs)
 
-    def warn(self, msg, **kwargs):
+    def warn(self, msg, **kwargs) -> None:
         if self.logger:
             self.logger.warning(msg, *kwargs)
 
-    def error(self, msg, **kwargs):
+    def error(self, msg, **kwargs) -> None:
         if self.logger:
             self.logger.error(msg, *kwargs)

@@ -7,7 +7,7 @@ from abacura.utils.renderables import AbacuraPanel, tabulate
 class TickerCommand(Plugin):
     """Provides #ticker command"""
 
-    def show_tickers(self):
+    def show_tickers(self) -> None:
         rows = []
         for ticker in self.director.ticker_manager.tickers:
             callback_name = getattr(ticker.callback, "__qualname__", str(ticker.callback))
@@ -21,7 +21,7 @@ class TickerCommand(Plugin):
         self.output(AbacuraPanel(tbl, title="Registered Tickers"))
 
     @command
-    def ticker(self, name: str = "", commands: str = "", seconds: float = 0, repeats: int = -1, delete: bool = False):
+    def ticker(self, name: str = "", commands: str = "", seconds: float = 0, repeats: int = -1, delete: bool = False) -> None:
         """
         View/Create/delete tickers
 
@@ -52,7 +52,7 @@ class TickerCommand(Plugin):
         # always remove an existing ticker with this name
         self.remove_ticker(name)
 
-        def ticker_callback():
+        def ticker_callback() -> None:
             for cmd in commands.split(";"):
                 self.session.player_input(cmd, echo_color="orange1")
 

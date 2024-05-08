@@ -44,7 +44,7 @@ class LOKCharacterStatic(Static):
     c_gold: reactive[int] = reactive[int](0)
     c_gold_bank: reactive[int] = reactive[int](0)
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         # Register our listener until we have a RegisterableObject to descend from
         self.screen.session.add_listener(self.update_reactives)
         if self.c_name is None:
@@ -89,7 +89,7 @@ class LOKCharacterStatic(Static):
         return table
 
     @event(MSDPMessage.event_type)
-    def update_reactives(self, message: MSDPMessage):
+    def update_reactives(self, message: MSDPMessage) -> None:
         MY_REACTIVES = {
             "CHARACTER_NAME": "c_name",
             "CLASS": "c_class",

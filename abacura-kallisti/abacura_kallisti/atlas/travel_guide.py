@@ -20,14 +20,14 @@ class TravelStep:
 
 
 class TravelPath:
-    def __init__(self, destination: Room = None):
+    def __init__(self, destination: Room = None) -> None:
         self.steps: list[TravelStep] = []
         self.destination: Room = destination
 
-    def add_step(self, step: TravelStep):
+    def add_step(self, step: TravelStep) -> None:
         self.steps.append(step)
 
-    def reverse(self):
+    def reverse(self) -> None:
         self.steps.reverse()
 
     def truncate_remaining_path(self, current_vnum: str) -> bool:
@@ -73,7 +73,7 @@ class SpecialExit:
 
 
 class TravelGuide:
-    def __init__(self, world: World, pc: PlayerCharacter, level: int = 0, avoid_home: bool = False):
+    def __init__(self, world: World, pc: PlayerCharacter, level: int = 0, avoid_home: bool = False) -> None:
         super().__init__()
         self.world: World = world
         self.wilderness_grid = WildernessGrid()

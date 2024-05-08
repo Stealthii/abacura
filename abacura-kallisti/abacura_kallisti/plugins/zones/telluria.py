@@ -106,7 +106,7 @@ class Telluria(LOKPlugin):
     """Determine room in telluria based on minimap"""
 
     @command
-    def telluria(self):
+    def telluria(self) -> None:
         """
         Show current location in telluria (requires that minimap is enabled)
         """

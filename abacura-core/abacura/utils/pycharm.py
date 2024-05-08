@@ -1,10 +1,10 @@
 class PycharmDebugger:
-    def __init__(self):
+    def __init__(self) -> None:
         # self.module = importlib.import_module("pydevd_pycharm")
         # self.settrace = getattr(self.module, "settrace", None)
         pass
 
-    def connect(self, host: str, port: int):
+    def connect(self, host: str, port: int) -> None:
         import pydevd_pycharm
 
         pydevd_pycharm.settrace(host, port=port, stdoutToServer=True, stderrToServer=True, suspend=False)

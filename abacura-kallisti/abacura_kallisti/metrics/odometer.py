@@ -14,12 +14,12 @@ class OdometerMessage(AbacuraMessage):
 
 
 class Odometer:
-    def __init__(self, msdp: TypedMSDP):
+    def __init__(self, msdp: TypedMSDP) -> None:
         self.metrics: MudMetrics = MudMetrics()
         self.metric_history: list[MudMetrics] = []
         self.msdp = msdp
 
-    def start(self, mission: str):
+    def start(self, mission: str) -> None:
         if self.metrics.stop_time is None:
             self.metrics.end_exp = self.msdp.experience
             self.metrics.end_gold = self.msdp.gold
@@ -40,7 +40,7 @@ class Odometer:
 
         self.metric_history.append(self.metrics)
 
-    def clear_history(self):
+    def clear_history(self) -> None:
         self.metrics = MudMetrics()
         self.metric_history.clear()
         self.start(mission=self.msdp.area_name)

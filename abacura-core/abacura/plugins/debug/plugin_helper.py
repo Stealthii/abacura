@@ -9,7 +9,7 @@ from abacura.utils.renderables import AbacuraPanel, AbacuraWarning, OutputColors
 class PluginHelper(Plugin):
     """Provides #plugin command"""
 
-    def show_all_plugins(self):
+    def show_all_plugins(self) -> None:
         plugin_rows = []
 
         for name, plugin in self.session.plugin_loader.plugins.items():
@@ -43,7 +43,7 @@ class PluginHelper(Plugin):
         )
         self.output(AbacuraPanel(tbl, title="Loaded Plugins"))
 
-    def show_failures(self):
+    def show_failures(self) -> None:
         rows = [(m.relative_filename, str(m.exceptions)) for m in self.session.plugin_loader.get_failed_modules()]
 
         if len(rows) == 0:
@@ -91,7 +91,7 @@ class PluginHelper(Plugin):
         self.output(AbacuraPanel(tbl, title=f"{plugin_module.import_path}.{loaded_plugin.get_name()}"))
 
     @command
-    def reload(self):
+    def reload(self) -> None:
         """
         Reload plugins that have been modified or added.  Unload plugins that have been deleted.
         """

@@ -9,7 +9,7 @@ from abacura.plugins.task_queue import CQMessage
 
 
 class LOKTaskQueue(Static):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.queue_display = DataTable(show_cursor=False)
         self.queue_display.can_focus = False
@@ -19,7 +19,7 @@ class LOKTaskQueue(Static):
         yield self.queue_title
         yield self.queue_display
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.screen.session.add_listener(self.update_task_queue)
         self.screen.session.add_listener(self.update_mud_queue)
         self.queue_display.add_column("Cmd", key="cmd")
@@ -28,12 +28,12 @@ class LOKTaskQueue(Static):
         self.queue_display.add_column("Queue", key="queue")
 
     @event("core.msdp", priority=1)
-    def update_mud_queue(self, message: MSDPMessage):
+    def update_mud_queue(self, message: MSDPMessage) -> None:
         if message.subtype == "QUEUE":
             self.queue_title.update(f"Task Queue [{message.value}]")
 
     @event(CQMessage.event_type)
-    def update_task_queue(self, msg: CQMessage):
+    def update_task_queue(self, msg: CQMessage) -> None:
         self.queue_display.clear()
 
         self.styles.height = len(msg.tasks) + 2

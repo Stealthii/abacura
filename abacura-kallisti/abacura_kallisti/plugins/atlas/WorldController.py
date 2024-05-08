@@ -16,13 +16,13 @@ from abacura_kallisti.plugins.scripts.travel import TravelStatus
 class WorldController(LOKPlugin):
     """Commands to manipulate rooms and exits in the world database"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.wild_grid = WildernessGrid()
         importlib.reload(tblt)
         self.traveling = False
 
-    def dispatch_map_message(self, vnum: str):
+    def dispatch_map_message(self, vnum: str) -> None:
         room = self.world.rooms.get(vnum, None)
 
         wilderness = room is not None and room.area_name == "The Wilderness"
@@ -50,16 +50,16 @@ class WorldController(LOKPlugin):
         self.dispatch(msg)
 
     @event("core.msdp.ROOM_VNUM")
-    def update_room_vnum(self, message: AbacuraMessage):
+    def update_room_vnum(self, message: AbacuraMessage) -> None:
         self.dispatch_map_message(message.value)
 
     @event(TravelStatus.event_type)
-    def update_travel_status(self, message: TravelStatus):
+    def update_travel_status(self, message: TravelStatus) -> None:
         self.traveling = message.steps_remaining > 0
         self.dispatch_map_message(self.msdp.room_vnum)
 
     @event(MapUpdateRequest.event_type)
-    def map_update_request(self, _message: MapUpdateRequest):
+    def map_update_request(self, _message: MapUpdateRequest) -> None:
         self.dispatch_map_message(self.msdp.room_vnum)
 
     def get_table_of_exits(self, vnum: str):
@@ -121,7 +121,7 @@ class WorldController(LOKPlugin):
         peaceful: bool = False,
         norecall: bool = False,
         nomagic: bool = False,
-    ):
+    ) -> None:
         """
         Display information about a room
 
@@ -235,7 +235,7 @@ class WorldController(LOKPlugin):
     #     self.session.output("Flags: %s" % self.get_room_flags(room))
 
     @command()
-    def exits(self, direction: str = "", to_vnum: str = "", _door: str = "", _commands: str = "", delete: bool = False):
+    def exits(self, direction: str = "", to_vnum: str = "", _door: str = "", _commands: str = "", delete: bool = False) -> None:
         """View and modify exits in current room
 
         :param direction: Direction of exit to view or modify
@@ -284,7 +284,7 @@ class WorldController(LOKPlugin):
         self.output(AbacuraPanel(pview, title=f"Room [ {vnum} ] - {direction}"), highlight=True)
 
     @command
-    def sql(self, query: str, _max_rows: int = 100):
+    def sql(self, query: str, _max_rows: int = 100) -> None:
         """
         Run a sql query against the world database
 

@@ -15,7 +15,7 @@ class LOKGroup(Static):
 
     group = []
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.display = False
         self.expand = True
@@ -35,7 +35,7 @@ class LOKGroup(Static):
         self.group_block.add_column("S", key="stam")
         self.group_block.add_column("Flags", key="flags")
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.screen.session.add_listener(self.update_group)
         self.screen.session.add_listener(self.update_group_level)
 
@@ -44,8 +44,8 @@ class LOKGroup(Static):
         yield self.group_block
 
     @event("core.msdp.GROUP")
-    def update_group(self, message: MSDPMessage):
-        def with_color(g):
+    def update_group(self, message: MSDPMessage) -> None:
+        def with_color(g) -> str:
             buf = "white"
             if g["is_leader"] == "1":
                 buf = "bold gold3"
@@ -83,6 +83,6 @@ class LOKGroup(Static):
         self.display = False
 
     @event("core.msdp.GROUPLEVEL")
-    def update_group_level(self, message: MSDPMessage):
+    def update_group_level(self, message: MSDPMessage) -> None:
         self.group_level = message.value
         self.group_title.update(f"Group - Level {self.group_level}")

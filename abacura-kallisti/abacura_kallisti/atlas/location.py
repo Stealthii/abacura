@@ -14,13 +14,13 @@ class Location:
 
 
 class LocationList:
-    def __init__(self, loc_file: str):
+    def __init__(self, loc_file: str) -> None:
         self.locations: list[Location] = []
         self.loc_filepath = Path(loc_file)
 
         self.load()
 
-    def save(self):
+    def save(self) -> None:
         toml_structure = {}
         for c in self.get_categories().keys():
             toml_structure[c] = {loc.name: loc.vnum for loc in self.get_category(c) if not loc.temporary}
@@ -28,7 +28,7 @@ class LocationList:
         with open(self.loc_filepath, "w") as f:
             tomlkit.dump(toml_structure, f)
 
-    def load(self):
+    def load(self) -> None:
         if not self.loc_filepath.exists():
             self.loc_filepath.parent.mkdir(parents=True, exist_ok=True)
             self.loc_filepath.touch()
@@ -60,14 +60,14 @@ class LocationList:
 
         return None
 
-    def add_location(self, location: str, vnum: str, temporary: bool = False):
+    def add_location(self, location: str, vnum: str, temporary: bool = False) -> None:
         name, category = self.parse_location(location)
 
         if self.get_location(location) is None:
             self.locations.append(Location(category, name, vnum, temporary))
             self.save()
 
-    def delete_location(self, location: str):
+    def delete_location(self, location: str) -> None:
         existing_location = self.get_location(location)
         self.locations = [loc for loc in self.locations if loc != existing_location]
         self.save()

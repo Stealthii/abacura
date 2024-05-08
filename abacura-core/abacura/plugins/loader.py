@@ -32,14 +32,14 @@ class PluginModule:
 class PluginLoader:
     """Loads all plugins and registers them"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.module_paths_discovered: dict[str, dict] = {}
         self.plugins: dict[str, Plugin] = {}
         self.plugin_modules: dict[str, PluginModule] = {}
         self.load_times = Counter()
         self.total_time = 0
 
-    def unload_plugin_module(self, plugin_module: PluginModule):
+    def unload_plugin_module(self, plugin_module: PluginModule) -> None:
         """Unregister all plugins loaded from a package"""
         try:
             # put in list to prevent mutation error
@@ -60,7 +60,7 @@ class PluginLoader:
             )
             plugin_module.exceptions.append(exc)
 
-    def load_plugin_module(self, plugin_module: PluginModule, reload: bool = False):
+    def load_plugin_module(self, plugin_module: PluginModule, reload: bool = False) -> None:
         module_start_time = datetime.utcnow()
 
         try:

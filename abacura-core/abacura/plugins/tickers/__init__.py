@@ -17,7 +17,7 @@ class Ticker:
         repeats: int = -1,
         name: str = "",
         commands: str = "",
-    ):
+    ) -> None:
         self.source: object = source
         self.callback: Callable = callback
         self.commands: str = commands
@@ -41,10 +41,10 @@ class Ticker:
 
 
 class TickerManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.tickers: list[Ticker] = []
 
-    def register_object(self, obj: object):
+    def register_object(self, obj: object) -> None:
         # self.unregister_object(obj)  # prevent duplicates
         for name, member in inspect.getmembers(obj, callable):
             if hasattr(member, "ticker_seconds"):
@@ -57,17 +57,17 @@ class TickerManager:
                 )
                 self.add(t)
 
-    def unregister_object(self, obj: object):
+    def unregister_object(self, obj: object) -> None:
         self.tickers = [t for t in self.tickers if t.source != obj]
 
-    def add(self, ticker: Ticker):
+    def add(self, ticker: Ticker) -> None:
         self.tickers = [t for t in self.tickers if t.name != ticker.name]
         self.tickers.append(ticker)
 
-    def remove(self, name: str):
+    def remove(self, name: str) -> None:
         self.tickers = [t for t in self.tickers if name == "" or t.name != name]
 
-    def process_tick(self):
+    def process_tick(self) -> None:
         for ticker in self.tickers:
             ticker.tick()
             if ticker.repeats == 0:

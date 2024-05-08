@@ -79,7 +79,7 @@ class RoomMessageParser:
         "your follower",
     }
 
-    def __init__(self, messages: list[OutputMessage]):
+    def __init__(self, messages: list[OutputMessage]) -> None:
         self.messages = messages
         self.has_quest: bool = False
         self.header: RoomHeader = RoomHeader("")
@@ -103,7 +103,7 @@ class RoomMessageParser:
         return 1
 
     @staticmethod
-    def _parse_junk(msg):
+    def _parse_junk(msg) -> str | bool:
         if msg.stripped.startswith("You find yourself"):
             return "recall"
         elif msg.stripped.strip() == "":
@@ -218,16 +218,16 @@ class RoomMessageParser:
             return item
 
     @staticmethod
-    def _parse_any(_msg):
+    def _parse_any(_msg) -> str:
         return "any"
 
-    def _parse_blood(self, msg: OutputMessage):
+    def _parse_blood(self, msg: OutputMessage) -> str | None:
         re_blood = re.compile(r"^There is a trail of fresh blood here leading (.*)\.")
         if m := re_blood.match(msg.stripped):
             self.blood_trail = m.groups()[0]
             return "blood"
 
-    def _parse_tracks(self, msg: OutputMessage):
+    def _parse_tracks(self, msg: OutputMessage) -> str | None:
         re_tracks = re.compile(r"^\[\* You see your target's tracks leading (.*)\. ")
         re_found = re.compile(r"\[\* You found ")
 
@@ -293,7 +293,7 @@ class RoomMessageParser:
         )
         return 3 if compass else 1
 
-    def _parse_messages(self):
+    def _parse_messages(self) -> None:
         header_lines = self._parse_header()
 
         parsers = [
@@ -329,7 +329,7 @@ class RoomMessageParser:
 class RoomWatcher(LOKPlugin):
     """Watches for LOK rooms and parses them into ScannedRoom objects"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.minimap: ScannedMiniMap = ScannedMiniMap([])
@@ -342,7 +342,7 @@ class RoomWatcher(LOKPlugin):
         self.room_header_entry_id = -1
 
     @action("^(Not here!|You can't do that here)")
-    def no_magic(self):
+    def no_magic(self) -> None:
         if self.msdp.room_vnum in self.world.rooms:
             r = self.world.rooms[self.msdp.room_vnum]
             if not r.no_magic or not r.no_recall:
@@ -352,7 +352,7 @@ class RoomWatcher(LOKPlugin):
                 self.world.save_room(r.vnum)
 
     @action("^Your lips move,* but no sound")
-    def silent(self):
+    def silent(self) -> None:
         if self.msdp.room_vnum in self.world.rooms:
             r = self.world.rooms[self.msdp.room_vnum]
             if not r.silent:
@@ -361,19 +361,19 @@ class RoomWatcher(LOKPlugin):
                 self.world.save_room(r.vnum)
 
     @action(r"^\[\* You see your target's tracks leading (\w+)\.")
-    def tracks(self, direction: str):
+    def tracks(self, direction: str) -> None:
         self.room.hunt_tracks = direction
 
     @action(r"\[\* You found ")
-    def found(self):
+    def found(self) -> None:
         self.room.hunt_tracks = "here"
 
     @action(r"You start searching for tracks but then realize .* is right here!")
-    def found2(self):
+    def found2(self) -> None:
         self.room.hunt_tracks = "here"
 
     @action("\x1b\\[1;35m", color=True)
-    def bold_magenta(self, message: OutputMessage):
+    def bold_magenta(self, message: OutputMessage) -> None:
         # here_matched = self.re_room_here.match(message.stripped) is not None
         room_no_compass = self.re_room_no_compass.match(message.stripped) is not None
         room_compass = self.re_room_compass.match(message.stripped) is not None
@@ -441,7 +441,7 @@ class RoomWatcher(LOKPlugin):
         return minimap_lines
 
     @event("core.prompt", priority=1)
-    def got_prompt(self, _: AbacuraMessage):
+    def got_prompt(self, _: AbacuraMessage) -> None:
         if self.room_header_entry_id >= 0:
             try:
                 self.last_room_messages = self.get_last_room_messages()
@@ -517,7 +517,7 @@ class RoomWatcher(LOKPlugin):
 
             self.dispatch(RoomMessage(vnum=sr.vnum, room=sr))
 
-    def save_room_messages(self):
+    def save_room_messages(self) -> None:
         import pickle
         from pathlib import Path
 
@@ -529,7 +529,7 @@ class RoomWatcher(LOKPlugin):
             pickle.dump(self.last_room_messages, f)
         self.output(f"Dumped [ {self.msdp.room_vnum} ] messages into {file}", highlight=True)
 
-    def test_room_messages(self, vnum: str):
+    def test_room_messages(self, vnum: str) -> None:
         import pickle
         from pathlib import Path
 
@@ -557,7 +557,7 @@ class RoomWatcher(LOKPlugin):
             self.output(f"tracks={rmp.hunt_tracks}")
 
     @command(name="scanroom", hide=True)
-    def scanroom_command(self, save: bool = False, _load: str = ""):
+    def scanroom_command(self, save: bool = False, _load: str = "") -> None:
         """
         Display details about most recently scanned room, optionally save debugging info
 

@@ -67,7 +67,7 @@ class PlayerCharacter:
     meta_xp_cost: dict[str, int] = field(default_factory=dict)
     meta_exp_per_hero: dict[str, float] = field(default_factory=dict)
 
-    def save(self):
+    def save(self) -> None:
         # convert our convenience stuff back into the _config
         self.save_harvesting()
         self.save_meta()
@@ -76,7 +76,7 @@ class PlayerCharacter:
         with open(self.char_file, "w", encoding="UTF-8") as fp:
             fp.write(self._config.as_string())
 
-    def load(self, data_dir: str, name: str):
+    def load(self, data_dir: str, name: str) -> None:
         """Load a player character record from disk"""
         self.char_name = name.lower()
 
@@ -95,13 +95,13 @@ class PlayerCharacter:
         # populating harvesting record
         self.parse_harvesting()
 
-    def parse_harvesting(self):
+    def parse_harvesting(self) -> None:
         """Pull harvesting settings out of config"""
         harvest_conf = self._config.get("harvesting", {})
         for skill in fields(PlayerHarvesting):
             setattr(self.harvesting, skill.name, harvest_conf.get(skill.name, False))
 
-    def save_harvesting(self):
+    def save_harvesting(self) -> None:
         """Put harvesting settings into config"""
         harvesting = table()
         for skill in fields(PlayerHarvesting):
@@ -109,7 +109,7 @@ class PlayerCharacter:
 
         self._config["harvesting"] = harvesting
 
-    def save_meta(self):
+    def save_meta(self) -> None:
         self._config["meta_gold_cost"] = self.meta_gold_cost
         self._config["meta_xp_cost"] = self.meta_xp_cost
         self._config["meta_exp_per_hero"] = self.meta_exp_per_hero

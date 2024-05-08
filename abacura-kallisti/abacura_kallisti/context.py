@@ -11,7 +11,7 @@ from abacura_kallisti.mud.player import PlayerCharacter
 
 
 class LOKContextProvider(ContextProvider):
-    def __init__(self, config: Config, session_name: str):
+    def __init__(self, config: Config, session_name: str) -> None:
         data_dir = config.data_directory(session_name)
         super().__init__(config, session_name)
         self.world: World = World(os.path.join(data_dir, "world.db"))

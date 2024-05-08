@@ -42,12 +42,12 @@ def event(trigger: str = "", priority: int = 5):
 class EventManager:
     """Load and Manage Events"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         log("Booting EventManager")
         self.events: dict[str, PriorityQueue] = {}
         self.event_counts = Counter()
 
-    def register_object(self, obj: object):
+    def register_object(self, obj: object) -> None:
         """Find and register all events in an object"""
         # self.unregister_object(obj)  # prevent duplicates
 
@@ -57,12 +57,12 @@ class EventManager:
                 log(f"Appending listener function '{member_name}'")
                 self.add_listener(member, source=obj)
 
-    def unregister_object(self, obj: object):
+    def unregister_object(self, obj: object) -> None:
         """Remove an object's events from the manager"""
         for trigger, pq in self.events.items():
             pq.queue[:] = [e for e in pq.queue if e.source != obj]
 
-    def add_listener(self, listener: Callable, source: object = None):
+    def add_listener(self, listener: Callable, source: object = None) -> None:
         """Add an event listener"""
         trigger: str = getattr(listener, "event_trigger")
         task = EventTask(handler=listener, source=source, trigger=trigger, priority=getattr(listener, "event_priority"))

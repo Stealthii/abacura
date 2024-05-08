@@ -35,7 +35,7 @@ class TourGuide:
     # Advance  / Next Dependencies:
     #   room_vnum, msdp.room_exits
 
-    def __init__(self, area: Area, world: World, pc: PlayerCharacter, level: int, override_route: str = ""):
+    def __init__(self, area: Area, world: World, pc: PlayerCharacter, level: int, override_route: str = "") -> None:
         super().__init__()
         self.area: Area = area
         self.world: World = world
@@ -53,7 +53,7 @@ class TourGuide:
 
         self.started: bool = False
 
-    def _start(self, scanned_room: ScannedRoom):
+    def _start(self, scanned_room: ScannedRoom) -> None:
         self.visited_rooms: set = set()
         self.reachable_rooms: set = self.travel_guide.get_reachable_rooms_in_known_area(scanned_room.vnum, self.area)
         if len(self.area.rooms_to_scout):

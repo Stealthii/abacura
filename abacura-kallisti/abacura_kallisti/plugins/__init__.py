@@ -33,7 +33,7 @@ __LOCAL_CLASSES__ = ["LOKPlugin"]
 class LOKPlugin(Plugin):
     """Subclass of standard Plugin with additional Kallisti Specifics"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.msdp: TypedMSDP = self._context["msdp"]

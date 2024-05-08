@@ -25,7 +25,7 @@ class Alias:
 class AliasManager:
     """Alias manager"""
 
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         super().__init__()
         self.session = session
         self.aliases: list[Alias] = []
@@ -60,19 +60,19 @@ class AliasManager:
                 return a
         return None
 
-    def delete_alias(self, alias: str):
+    def delete_alias(self, alias: str) -> None:
         existing_alias = self.get_alias(alias)
         self.aliases = [ali for ali in self.aliases if ali != existing_alias]
         self.save()
 
-    def add_alias(self, alias: str, value: str, temporary: bool = False):
+    def add_alias(self, alias: str, value: str, temporary: bool = False) -> None:
         name, category = self.parse_alias(alias)
 
         if self.get_alias(alias) is None:
             self.aliases.append(Alias(category, name, value, temporary))
             self.save()
 
-    def save(self):
+    def save(self) -> None:
         toml_structure = {}
         for c in self.get_categories():
             toml_structure[c] = {ali.cmd: ali.value for ali in self.get_category(c) if not ali.temporary}
@@ -80,7 +80,7 @@ class AliasManager:
         with open(self.alias_filepath, "w") as f:
             tomlkit.dump(toml_structure, f)
 
-    def load(self, file: str):
+    def load(self, file: str) -> None:
         self.alias_filepath = Path(os.path.join(self.session.config.data_directory(self.session.name), f"{file}"))
         if not self.alias_filepath.exists():
             self.alias_filepath.parent.mkdir(parents=True, exist_ok=True)
@@ -96,7 +96,7 @@ class AliasManager:
 
             self.aliases = aliases
 
-    def handle(self, cmd, line):
+    def handle(self, cmd, line) -> bool:
         """Handle aliases, return True if success, False if missing"""
         alias = self.get_alias_by_command(cmd)
         if alias:

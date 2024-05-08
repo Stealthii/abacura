@@ -26,19 +26,19 @@ class SubMenu(OptionList):
     """
     BINDINGS = [("escape", "remove", "close menu")]
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._options_callable: dict[str, Callable] = {}
 
-    def action_remove(self):
+    def action_remove(self) -> None:
         self.remove()
 
-    def on_option_list_option_selected(self, evt: OptionList.OptionMessage):
+    def on_option_list_option_selected(self, evt: OptionList.OptionMessage) -> None:
         evt.stop()
         self.remove()
         self._options_callable[str(evt.option.prompt)]()
 
-    def add_options(self, items: dict[str, Callable]):
+    def add_options(self, items: dict[str, Callable]) -> None:
         super().add_options(items)
         self._options_callable.update(items)
 
@@ -51,15 +51,15 @@ class MenuItem(Static):
     }
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._submenu_items: dict[str, Callable] = {}
 
-    def add_submenu_item(self, label: str, callback: Callable):
+    def add_submenu_item(self, label: str, callback: Callable) -> None:
         """Add a submenu item"""
         self._submenu_items[label] = callback
 
-    def on_click(self, evt: Click):
+    def on_click(self, evt: Click) -> None:
         try:
             sub = self.screen.query_one("#submenu")
             sub.remove()
@@ -89,7 +89,7 @@ class MenuBar(Static):
         }
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._menu_items: list[MenuItem] = []
 
@@ -98,7 +98,7 @@ class MenuBar(Static):
             for m_item in self._menu_items:
                 yield m_item
 
-    def add_menu_item(self, menu_item: MenuItem):
+    def add_menu_item(self, menu_item: MenuItem) -> None:
         """Add an item to the menu"""
         self._menu_items.append(menu_item)
 
@@ -115,7 +115,7 @@ class MenuApp(App):
     """
     BINDINGS = [("ctrl+q", "quit", "Quit")]
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.bar = MenuBar()
         menu_item = MenuItem("Freaky")
@@ -133,16 +133,16 @@ class MenuApp(App):
         yield self.static
         yield Input()
 
-    def test_called(self, *args, **kwargs):
+    def test_called(self, *args, **kwargs) -> None:
         self.static.update("You clicked test")
 
-    def best_called(self, *args, **kwargs):
+    def best_called(self, *args, **kwargs) -> None:
         self.static.update("You clicked best")
 
-    def woop_called(self, *args, **kwargs):
+    def woop_called(self, *args, **kwargs) -> None:
         self.static.update("You clicked woop")
 
-    def womp_called(self, *args, **kwargs):
+    def womp_called(self, *args, **kwargs) -> None:
         self.static.update("You clicked wonp")
 
 

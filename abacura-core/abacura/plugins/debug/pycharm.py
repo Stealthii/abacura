@@ -5,12 +5,12 @@ from abacura.utils.pycharm import PycharmDebugger
 class PycharmDebug(Plugin):
     """Connect to the remote pycharm debugger"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.debugger: PycharmDebugger | None = None
 
     @command(hide=True)
-    def pycharm_debug(self, host: str = "localhost", port: int = 12345):
+    def pycharm_debug(self, host: str = "localhost", port: int = 12345) -> None:
         """
         Connect to the remote pycharm debugger
 

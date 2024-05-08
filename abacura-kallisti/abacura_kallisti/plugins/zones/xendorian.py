@@ -10,11 +10,11 @@ class XendorianOutpost(LOKPlugin):
     XENDORIAN_VNUM = "33900"
     PORTAL_AREAS = ["Midgaard City", "Boring City"]
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     @action(r"^A portal stands here, attempting to hold its shape.")
-    def entrance_portal(self):
+    def entrance_portal(self) -> None:
         if self.msdp.area_name in self.PORTAL_AREAS:
             self.locations.delete_location("temp.xendorian_portal")
             self.locations.add_location("temp.xendorian_portal", self.msdp.room_vnum, True)
@@ -30,7 +30,7 @@ class XendorianOutpost(LOKPlugin):
                 self.debuglog(f"Xendorian Portal: [{self.msdp.room_vnum}]")
 
     @action(r"^A portal stands here, its horizon (\w+) ")
-    def xendorian_portal(self, portal_name: str):
+    def xendorian_portal(self, portal_name: str) -> None:
         if self.msdp.area_name == "Xendorian Outpost":
             room = self.world.rooms[self.msdp.room_vnum]
 
@@ -46,7 +46,7 @@ class XendorianOutpost(LOKPlugin):
             # self.session.debug(f'{portal_name} [{self.msdp.room_vnum}]')
 
     @command
-    def xendorian(self, delete: bool = False):
+    def xendorian(self, delete: bool = False) -> None:
         """
         List known portals in xendorian outpost
 

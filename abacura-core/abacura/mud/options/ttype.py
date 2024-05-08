@@ -15,7 +15,7 @@ class TerminalTypeOption(TelnetOption):
     code: int = 24
     name: str = "TerminalType"
 
-    def __init__(self, writer):
+    def __init__(self, writer) -> None:
         self.writer = writer
         self.count = 0
 
@@ -24,7 +24,7 @@ class TerminalTypeOption(TelnetOption):
         self.writer.write(IAC + WILL + TTYPE)
         log.warning("IAC WILL TTYPE")
 
-    def sb(self, sb):
+    def sb(self, sb) -> None:
         """IAC SB handler"""
         log.debug(f"TTYPE SB RECEIVED: {sb} on {self.count}")
         if sb[1:2] == SEND:

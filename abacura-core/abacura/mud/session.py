@@ -56,7 +56,7 @@ def load_class(class_name: str, default=None):
 class Session(BaseSession):
     """Main User Session Class"""
 
-    def __init__(self, name: str, abacura: Abacura, config: Config):
+    def __init__(self, name: str, abacura: Abacura, config: Config) -> None:
         self.abacura = abacura
         self.config = config
         self.name = name
@@ -123,7 +123,7 @@ class Session(BaseSession):
         self.screen.set_interval(interval=0.01, callback=self.director.ticker_manager.process_tick, name="tickers")
 
     # TODO: This doesn't launch a screen anymore, it loads plugins
-    def launch_screen(self):
+    def launch_screen(self) -> None:
         """Fired on screen mounting, so our Footer is updated and Session gets a RichLog handle"""
         if self.screen.footer:
             self.screen.footer.session_name = self.name
@@ -237,7 +237,7 @@ class Session(BaseSession):
         else:
             self.output(f"[bold red]# NO-SESSION SEND: {msg}", markup=True, highlight=True)
 
-    def echo_command(self, cmd, color="white"):
+    def echo_command(self, cmd, color="white") -> None:
         if not self.tl or len(self.tl.lines) < 2:
             return
 
@@ -260,7 +260,7 @@ class Session(BaseSession):
         self.output(Segments([cmd_segment]))
 
     @command(name="debuglog")
-    def debuglog_command(self, msg: str, _facility: str = "info", markup: bool = True, highlight: bool = True):
+    def debuglog_command(self, msg: str, _facility: str = "info", markup: bool = True, highlight: bool = True) -> None:
         """
         Send output to debug window
 
@@ -271,7 +271,7 @@ class Session(BaseSession):
         """
         self.debuglog(facility=_facility, msg=msg, markup=markup, highlight=highlight)
 
-    def debuglog(self, msg, facility: str = "info", markup: bool = True, highlight: bool = True):
+    def debuglog(self, msg, facility: str = "info", markup: bool = True, highlight: bool = True) -> None:
         if self.debugtl:
             date_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             self.debugtl.markup = markup
@@ -282,7 +282,7 @@ class Session(BaseSession):
                 self.debugtl.write(rf"{date_time} \[{facility}]")
                 self.debugtl.write(msg)
 
-    def outputlog(self, message: OutputMessage):
+    def outputlog(self, message: OutputMessage) -> None:
         """Write to long-term logger and short-term ring buffer"""
         self.logger.info(message.message)
         self.ring_buffer.log(message)
@@ -296,7 +296,7 @@ class Session(BaseSession):
         actionable: bool = True,
         gag: bool = False,
         loggable: bool = True,
-    ):
+    ) -> None:
         """Write to RichLog for this screen"""
         if self.tl is None:
             log.warning(f"Attempt to write to nonexistent RichLog: {msg}")

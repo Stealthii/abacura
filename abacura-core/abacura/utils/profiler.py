@@ -109,7 +109,7 @@ def profiler(frame, event, _arg):
     return profiler
 
 
-def profile_on():
+def profile_on() -> None:
     global p_stats, p_start_time, p_profiling
     p_stats = {}
     p_start_time = perf_counter_ns()
@@ -118,7 +118,7 @@ def profile_on():
     p_profiling = True
 
 
-def profile_off():
+def profile_off() -> None:
     global p_profiling
     threading.setprofile(None)
     sys.setprofile(None)

@@ -9,10 +9,10 @@ from abacura.utils.renderables import AbacuraPanel, Group, OutputColors, Text, b
 class CommandHelper(Plugin):
     """Display help for a command and evaluate a string"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
-    def show_command_help(self, cmd: Command):
+    def show_command_help(self, cmd: Command) -> None:
         help_text = [""]
 
         doc_lines = []
@@ -93,7 +93,7 @@ class CommandHelper(Plugin):
         self.output(AbacuraPanel(g, title=f"#{cmd.name} command"))
 
     @command(name="help", hide=True)
-    def list_commands(self, name: str = "", hidden: bool = False):
+    def list_commands(self, name: str = "", hidden: bool = False) -> None:
         """
         Show available commands
 
@@ -133,12 +133,12 @@ class CommandHelper(Plugin):
         self.session.output(AbacuraPanel(tbl, title="Available Commands"))
 
     @command(name="?")
-    def help_question(self):
+    def help_question(self) -> None:
         """Display list of commands"""
         self.list_commands()
 
     @command(hide=True)
-    def repeat(self, n: int, text: str):
+    def repeat(self, n: int, text: str) -> None:
         """
         Repeat a command multiple times
 
@@ -153,13 +153,13 @@ class CommandHelper(Plugin):
         if m:
             cmd = m.groups()[1]
 
-            def do_repeat():
+            def do_repeat() -> None:
                 self.session.player_input(cmd.strip())
 
             self.add_ticker(0.1, do_repeat, repeats=n, name="_repeat")
 
     @command(hide=True)
-    def error(self, error_str, _warning: bool = False):
+    def error(self, error_str, _warning: bool = False) -> None:
         title = "Ooops!"
         if _warning:
             self.session.show_warning(f"{error_str}", title=title)

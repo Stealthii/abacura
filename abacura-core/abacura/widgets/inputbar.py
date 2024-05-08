@@ -32,18 +32,18 @@ class InputBar(Input):
             self.password: bool = password
             super().__init__()
 
-    def __init__(self, id: str = ""):
+    def __init__(self, id: str = "") -> None:
         super().__init__(id=id)
         self.history = []
         self.history_ptr = None
         self.styles.padding = (0, 0)
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.suggester = AbacuraSuggester(self.screen.session)
         self.screen.session.add_listener(self.password_mode)
 
     @event("core.password_mode")
-    def password_mode(self, msg: AbacuraMessage):
+    def password_mode(self, msg: AbacuraMessage) -> None:
         if msg.value == "on":
             self.password = True
             return
@@ -95,7 +95,7 @@ class InputBar(Input):
 
 
 class AbacuraSuggester(Suggester):
-    def __init__(self, session):
+    def __init__(self, session) -> None:
         super().__init__(use_cache=False)
         self.session = session
         self.history = []

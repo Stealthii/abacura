@@ -32,7 +32,7 @@ class WildernessMap:
     Special care is taken with "landmark" terrain including water, peaks, lava, etc
     """
 
-    def __init__(self, world: World):
+    def __init__(self, world: World) -> None:
         """
         :param world: The world with the list of all known rooms
         """

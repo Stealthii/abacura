@@ -8,7 +8,7 @@ class LocationController(LOKPlugin):
     """Commands to modify saved travel locations"""
 
     @command(name="locations")
-    def location_cmd(self, location: str = None, destination: Room = None, delete: bool = False, add: bool = False):
+    def location_cmd(self, location: str = None, destination: Room = None, delete: bool = False, add: bool = False) -> None:
         """
         View and modify room locations
 

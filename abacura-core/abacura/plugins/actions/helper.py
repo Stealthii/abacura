@@ -7,7 +7,7 @@ from abacura.utils.renderables import AbacuraPanel, tabulate
 class ActionCommand(Plugin):
     """Provides #ticker command"""
 
-    def show_actions(self):
+    def show_actions(self) -> None:
         rows = []
         for action in self.director.action_manager.actions.queue:
             callback_name = getattr(action.callback, "__qualname__", str(action.callback))
@@ -23,7 +23,7 @@ class ActionCommand(Plugin):
         self.output(AbacuraPanel(tbl, title="Registered Actions"))
 
     @command
-    def action(self):
+    def action(self) -> None:
         """
         View actions
 

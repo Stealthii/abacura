@@ -9,7 +9,7 @@ class EventPlugin(Plugin):
     """Commands and things"""
 
     @command(name="events")
-    def eventscommand(self, name: str = ""):
+    def eventscommand(self, name: str = "") -> None:
         """
         Show event metrics and handlers
 
@@ -54,7 +54,7 @@ class EventPlugin(Plugin):
         self.output(AbacuraPanel(tabulate(rows), title="Events"))
 
     @command(name="dispatch")
-    def dispatch_event(self, trigger: str, value: str = ""):
+    def dispatch_event(self, trigger: str, value: str = "") -> None:
         """
         Dispatch an AbacuraMessage
 

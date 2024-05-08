@@ -56,7 +56,7 @@ class RoomRecord:
         " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     )
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.vnum = int()
         self.name = ""
         self.terrain_name = ""
@@ -95,7 +95,7 @@ class ExitRecord:
 
     fixed_commands = ["turn", "enter", "push", "pull", "visit", "say"]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.from_vnum = int()
         self.direction = ""
         self.to_vnum = int()
@@ -174,7 +174,7 @@ class ExitRecord:
     help='Output file for abacura map database (default "worldtest.db")',
     default="worldtest.db",
 )
-def main(infile, outfile):
+def main(infile, outfile) -> None:
     """"""
     con = sqlite3.connect(outfile)
     cur = con.cursor()

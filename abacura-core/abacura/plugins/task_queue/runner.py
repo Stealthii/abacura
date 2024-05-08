@@ -15,15 +15,15 @@ _RUNNER_INTERVAL: float = 0.1
 class QueueRunner(Plugin):
     """Manage action queues by priority"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.cq.set_command_inserter(self.insert_command)
         # self.add_ticker(_RUNNER_INTERVAL, callback_fn=self.cq.run_tasks, repeats=-1, name="Queue Runner")
 
-    def insert_command(self, cmd: str):
+    def insert_command(self, cmd: str) -> None:
         self.session.player_input(cmd, echo_color="orange1")
 
-    def show_queues(self, q: str):
+    def show_queues(self, q: str) -> None:
         """Show current action queue depths"""
         rows = []
         for task in self.cq.tasks:
@@ -51,7 +51,7 @@ class QueueRunner(Plugin):
         self.output(AbacuraPanel(tbl, title=f"{q or 'All Queues'}"))
 
     @ticker(seconds=_RUNNER_INTERVAL, name="Queue Runner", repeats=-1)
-    def queue_runner(self):
+    def queue_runner(self) -> None:
         self.cq.run_tasks()
         cqm = CQMessage(tasks=self.cq.tasks, next_command_delay=self.cq.next_command_delay)
         self.dispatch(cqm)
@@ -65,7 +65,7 @@ class QueueRunner(Plugin):
         _priority: int = _DEFAULT_PRIORITY,
         _duration: float = _DEFAULT_DURATION,
         _delay: int = 0,
-    ):
+    ) -> None:
         """
         Add commands to queues, display queue, or flush them
 

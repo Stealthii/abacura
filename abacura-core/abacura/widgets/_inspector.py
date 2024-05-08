@@ -79,7 +79,7 @@ rule_set_call_stacks: dict[RuleSet, list[inspect.FrameInfo]] = {}
 original_rule_set_init = RuleSet.__init__
 
 
-def rule_set_init(self: RuleSet, *args, **kwargs):
+def rule_set_init(self: RuleSet, *args, **kwargs) -> None:
     original_rule_set_init.__get__(self)(*args, **kwargs)
     rule_set_call_stacks[self] = inspect.stack()
 
@@ -198,7 +198,7 @@ class DOMTree(Tree[DOMNode]):
         id: str | None = None,
         classes: str | None = None,
         disabled: bool = False,
-    ):
+    ) -> None:
         """Initialise the DOMTree widget."""
         super().__init__(
             root.css_identifier_styled,
@@ -318,7 +318,7 @@ class PropertiesTree(Tree[object]):
         id: str | None = None,
         classes: str | None = None,
         disabled: bool = False,
-    ):
+    ) -> None:
         """Initialise the PropertiesTree widget."""
         super().__init__(
             label,
@@ -1004,7 +1004,7 @@ class Inspector(Container):
     picking = var(False)
     """Whether the user is picking a widget to inspect."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise the inspector."""
 
         super().__init__()

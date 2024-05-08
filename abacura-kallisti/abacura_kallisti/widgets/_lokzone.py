@@ -17,14 +17,14 @@ class LOKZoneHeading(Static):
         self.display = False
         self.classes = "WidgetTitle"
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.screen.session.add_listener(self.update_zone_name)
 
     def render(self) -> str:
         return f"{self.z_name}"
 
     @event("core.msdp.AREA_NAME")
-    def update_zone_name(self, message: MSDPMessage):
+    def update_zone_name(self, message: MSDPMessage) -> None:
         self.z_name = message.value
 
         if not self.display and self.z_name is not None:
@@ -52,7 +52,7 @@ class LOKZoneInfo(Static):
         super().__init__()
         self.display = False
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.screen.session.add_listener(self.update_room_name)
         self.screen.session.add_listener(self.update_room_vnum)
         self.screen.session.add_listener(self.update_room_weather)
@@ -61,19 +61,19 @@ class LOKZoneInfo(Static):
         return f"{self.r_icon}  {self.r_name} [{self.r_vnum}]"
 
     @event("core.msdp.ROOM_WEATHER")
-    def update_room_weather(self, message: MSDPMessage):
+    def update_room_weather(self, message: MSDPMessage) -> None:
         if message.value in self.weather_icons:
             self.r_icon = self.weather_icons[message.value]
         else:
             self.r_icon = " "
 
     @event("core.msdp.ROOM_VNUM")
-    def update_room_vnum(self, message: MSDPMessage):
+    def update_room_vnum(self, message: MSDPMessage) -> None:
         self.r_vnum = message.value
         self.display = True
 
     @event("core.msdp.ROOM_NAME")
-    def update_room_name(self, message: MSDPMessage):
+    def update_room_name(self, message: MSDPMessage) -> None:
         self.r_name = message.value
         self.display = True
 

@@ -18,10 +18,10 @@ class GroupMember:
 
 
 class Group:
-    def __init__(self):
+    def __init__(self) -> None:
         self.members: list[GroupMember] = []
 
-    def update_members_from_msdp(self, member_list: list[dict[str, str]]):
+    def update_members_from_msdp(self, member_list: list[dict[str, str]]) -> None:
         self.members = []
         for m in member_list:
             gm = GroupMember(

@@ -8,14 +8,14 @@ from abacura.utils.renderables import AbacuraPanel, tabulate
 class Profiler(Plugin):
     """CPU and Memory Profiling"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.profiler = None
         self.heap = None
         self.guppy = None
 
     @command(hide=True)
-    def memory(self, baseline: bool = False, gc: bool = False):
+    def memory(self, baseline: bool = False, gc: bool = False) -> bool | None:
         """
         Show memory usage, set memory baseline, and collect garbage
 
@@ -46,7 +46,7 @@ class Profiler(Plugin):
             self.session.output(str(self.heap.heap()))
 
     @command(hide=True)
-    def pyprofile(self, num_functions: int = 40, disable: bool = False):
+    def pyprofile(self, num_functions: int = 40, disable: bool = False) -> None:
         """
         Start/Stop Python implemented profiler (slow...)
 
@@ -84,7 +84,7 @@ class Profiler(Plugin):
         self.output(AbacuraPanel(tbl, title="Profiler Results"))
 
     @command(hide=True)
-    def profile(self, num_functions: int = 40, disable: bool = False, callers: bool = False, _sort: str = "time"):
+    def profile(self, num_functions: int = 40, disable: bool = False, callers: bool = False, _sort: str = "time") -> None:
         """
         Profile CPU usage by method
 

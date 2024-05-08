@@ -21,13 +21,13 @@ class CommandError(Exception):
 
 
 class Command:
-    def __init__(self, source: object, callback: Callable, name: str, hide_help: bool = False):
+    def __init__(self, source: object, callback: Callable, name: str, hide_help: bool = False) -> None:
         self.callback = callback
         self.name = name
         self.source = source
         self.hide_help = hide_help
 
-    def execute(self, command_arguments: str):
+    def execute(self, command_arguments: str) -> bool:
         submitted_arguments = shlex.split(command_arguments)
 
         submitted_options = [s.strip("-") for s in submitted_arguments if s.startswith("-")]
@@ -141,11 +141,11 @@ class Command:
 
 
 class CommandManager:
-    def __init__(self, session: Session):
+    def __init__(self, session: Session) -> None:
         self.commands: dict[str, Command] = {}
         self.session = session
 
-    def register_object(self, obj: object):
+    def register_object(self, obj: object) -> None:
         # self.unregister_object(obj)  #  prevent duplicates
         for name, member in inspect.getmembers(obj, callable):
             if hasattr(member, "command_name"):
@@ -157,7 +157,7 @@ class CommandManager:
                 log(f"Adding command function '{member.command_name}'")
                 self.commands[name] = Command(obj, member, member.command_name, member.command_hide)
 
-    def unregister_object(self, obj: object):
+    def unregister_object(self, obj: object) -> None:
         self.commands = {k: v for k, v in self.commands.items() if v.source != obj}
 
     def parse_command_line(self, command_line: str) -> tuple[Command, str]:
@@ -191,7 +191,7 @@ class CommandManager:
 
         return command, argument_str
 
-    def show_command_help(self, command: Command):
+    def show_command_help(self, command: Command) -> None:
         help_command = self.commands.get("help", None)
 
         if help_command is None:

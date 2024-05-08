@@ -33,11 +33,11 @@ class LOKExperience(Static):
     c_remorts: reactive[int] = reactive[int](0)
     c_laps_in_class: reactive[int] = reactive[int](0)
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super().__init__()
         self.remort_line = Static(id="remorts")
 
-    def setup_progress_bars(self):
+    def setup_progress_bars(self) -> None:
         self.pb_xp = ProgressBar(id="xp_to_level", classes="LOKProgBar", show_eta=True, show_percentage=True)
         self.pb_xpsack = ProgressBar(id="xp_to_sack", classes="LOKProgBar", show_eta=True, show_percentage=True)
         self.pb_herp = ProgressBar(id="herp_to_level", classes="LOKProgBar", show_eta=True, show_percentage=True)
@@ -52,7 +52,7 @@ class LOKExperience(Static):
         yield Static("[cyan]XP to Cap", id="capxplabel")
         yield Static("[cyan]Heros to Level", id="herplabel")
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         """Set up listeners, update visibility state"""
         self.screen.session.add_listener(self.update_reactives)
         self.setup_progress_bars()
@@ -60,7 +60,7 @@ class LOKExperience(Static):
             self.display = False
 
     @event("core.msdp")
-    def update_reactives(self, message: MSDPMessage):
+    def update_reactives(self, message: MSDPMessage) -> None:
         """Update reactive values for this widget"""
 
         if message.subtype in self.my_reactives:

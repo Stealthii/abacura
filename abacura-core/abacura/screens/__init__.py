@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 
 
 class SessionRichLog(RichLog):
-    def on_resize(self, _e: events.Resize):
+    def on_resize(self, _e: events.Resize) -> None:
         # animate this to reduce "flicker" when toggling commslog, debuglog
         self.scroll_end(duration=0.1)
 
@@ -46,7 +46,7 @@ class SessionScreen(Screen):
 
     AUTO_FOCUS = "InputBar"
 
-    def __init__(self, name: str, session: Session):
+    def __init__(self, name: str, session: Session) -> None:
         super().__init__()
 
         self.session = session
@@ -141,16 +141,16 @@ class SessionScreen(Screen):
 class AbacuraWindow(Container):
     BINDINGS = [("escape", "escape", "Close Window")]
 
-    def __init__(self, title="Window", *args, **kwargs):
+    def __init__(self, title="Window", *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.close_color = "red"
         self.border_title = f"[[{self.close_color}] X [/{self.close_color}]] [bold cyan]{title}"
 
-    def action_escape(self):
+    def action_escape(self) -> None:
         self.remove()
 
-    def on_click(self, event: events.Click):
+    def on_click(self, event: events.Click) -> None:
         # check if the click was on the border, on the "close" button [ X ] color
         if event.y == 0 and event.style.color and event.style.color.name == self.close_color:
             self.remove()

@@ -13,14 +13,14 @@ class LOKCombatTop(DataTable):
     c_position: reactive[str] = reactive("Standing")
     c_alignment: reactive[str] = reactive("")
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.show_header = False
         self.show_cursor = False
         self.show_row_labels = False
         self.add_columns("pos", "align")
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         self.clear()
         self.add_row(self.c_position, self.c_alignment)
 
@@ -36,14 +36,14 @@ class LOKCombatStatus(DataTable):
     c_mp: reactive[str] = reactive("?")
     c_sp: reactive[str] = reactive("?")
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.show_header = False
         self.show_cursor = False
         self.show_row_labels = False
         self.add_columns("r1", "r2", "r3", "r4", "r5", "r6")
         self.update()
 
-    def update(self):
+    def update(self) -> None:
         self.clear()
         self.add_row(
             "[cyan] AC:",
@@ -89,7 +89,7 @@ class LOKCombat(Static):
     c_opponent_stamina = 0
     c_opponent_stamina_max = 0
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.combat_title = Static("Combat", classes="WidgetTitle")
         self.combat_top = LOKCombatTop()
@@ -105,7 +105,7 @@ class LOKCombat(Static):
         self.opponent_block = DataTable(show_header=False, show_cursor=False, show_row_labels=False)
         self.opponent_block.add_columns("H", "hval", "S", "sval")
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.screen.session.add_listener(self.update_combat_values)
 
     def compose(self) -> ComposeResult:
@@ -123,7 +123,7 @@ class LOKCombat(Static):
         yield self.opponent_name
         yield self.opponent_block
 
-    def healthpct(self, health: int = 0):
+    def healthpct(self, health: int = 0) -> str:
         if self.screen:
             max = int(self.screen.session.core_msdp.values.get("HEALTH_MAX", health))
             if max > 0:
@@ -131,7 +131,7 @@ class LOKCombat(Static):
                 return f"[{percent_color(pct)}]{pct}%"
         return "0%"
 
-    def manapct(self, mana: int = 0):
+    def manapct(self, mana: int = 0) -> str:
         if self.screen:
             max = int(self.screen.session.core_msdp.values.get("MANA_MAX", mana))
             if max > 0:
@@ -139,7 +139,7 @@ class LOKCombat(Static):
                 return f"[{percent_color(pct)}]{pct}%"
         return "0%"
 
-    def stampct(self, stam: int = 0):
+    def stampct(self, stam: int = 0) -> str:
         if self.screen:
             max = int(self.screen.session.core_msdp.values.get("STAMINA_MAX", stam))
             if max > 0:
@@ -147,7 +147,7 @@ class LOKCombat(Static):
                 return f"[{percent_color(pct)}]{pct}%"
         return "0%"
 
-    def mount_block_update(self):
+    def mount_block_update(self) -> None:
         self.mount_block.clear()
         if self.c_mount_name != "":
             if self.c_mount_health_max == 0:
@@ -165,7 +165,7 @@ class LOKCombat(Static):
                 f"[{percent_color(spct)}]{spct}%",
             )
 
-    def opponent_block_update(self):
+    def opponent_block_update(self) -> None:
         self.opponent_block.clear()
         if self.c_opponent_name != "":
             if self.c_opponent_health_max == 0:
@@ -193,7 +193,7 @@ class LOKCombat(Static):
             self.opponent_block.add_row("", "", "", "")
 
     @event("core.msdp")
-    def update_combat_values(self, msg: MSDPMessage):
+    def update_combat_values(self, msg: MSDPMessage) -> None:
         if msg.subtype == "POSITION":
             self.combat_top.c_position = msg.value
             self.combat_top.update()

@@ -109,7 +109,7 @@ class Room:
 
 
 class ScannedMiniMap:
-    def __init__(self, messages: list[OutputMessage] = None):
+    def __init__(self, messages: list[OutputMessage] = None) -> None:
         self.you: tuple | None = None
         self.grid: dict[tuple, str] = {}
         self.messages: list[OutputMessage] = messages or []
@@ -128,7 +128,7 @@ class ScannedMiniMap:
         if self.you is not None:
             self.grid = {(k[0] - self.you[0], k[1] - self.you[1]): v for k, v in self.grid.items()}
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"ScannedMiniMap({[m.stripped for m in self.messages]})"
 
 
@@ -188,7 +188,7 @@ class RoomMob(Mob):
     ranged: bool = False
     flags: set[str] = field(default_factory=set)
 
-    def copy_mob_properties(self, mob: Mob):
+    def copy_mob_properties(self, mob: Mob) -> None:
         for f in fields(Mob):
             setattr(self, f.name, getattr(mob, f.name))
 
@@ -207,7 +207,7 @@ class ScannedRoom(Room):
     hunt_tracks: str = ""
     msdp_exits: dict[str, str] = field(default_factory=dict)
 
-    def identify_room_mobs(self):
+    def identify_room_mobs(self) -> None:
         if len(self.area.mobs) == 0:
             return
 

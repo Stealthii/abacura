@@ -12,7 +12,7 @@ from abacura.plugins.events import AbacuraMessage, event
 class PythonExecutor(Plugin):
     """Executes python code using ## and #run commands"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.global_providers: dict[str, Callable] = {"core": self.provide_core_globals}
         self.exec_locals = {}
@@ -37,21 +37,21 @@ class PythonExecutor(Plugin):
         return _globals
 
     @event("core.exec.globals")
-    def add_globals_provider(self, message: AbacuraMessage):
+    def add_globals_provider(self, message: AbacuraMessage) -> None:
         if isinstance(message.value, dict):
             self.global_providers.update(message.value)
 
-    def add_response(self, pattern: str, message: str, flags: int = 0):
+    def add_response(self, pattern: str, message: str, flags: int = 0) -> None:
         name = str(uuid.uuid4())
 
-        def do_response():
+        def do_response() -> None:
             self.send(message)
             self.remove_action(name)
 
         self.add_action(pattern, do_response, flags=flags, name=name)
 
     @command
-    def run(self, filename: str, reset_locals: bool = False):
+    def run(self, filename: str, reset_locals: bool = False) -> bool | None:
         """
         Execute python code and display results
 
@@ -83,7 +83,7 @@ class PythonExecutor(Plugin):
             return False
 
     @command(name="#")
-    def exec_python(self, text: str, reset_locals: bool = False):
+    def exec_python(self, text: str, reset_locals: bool = False) -> bool | None:
         """
         Execute python code and display results
 

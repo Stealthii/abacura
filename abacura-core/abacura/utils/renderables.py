@@ -27,7 +27,7 @@ class OutputColors:
 
 
 class AbacuraTable(Table):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         kwargs.setdefault("title_style", Style(color=OutputColors.title))
         kwargs.setdefault("title_justify", "left")
         kwargs.setdefault("style", OutputColors.value)
@@ -41,7 +41,7 @@ class AbacuraTable(Table):
 
 
 class AbacuraPropertyGroup(Group):
-    def __init__(self, obj: dict | dataclass, title="Properties", exclude: set = None):
+    def __init__(self, obj: dict | dataclass, title="Properties", exclude: set = None) -> None:
         if is_dataclass(obj):
             obj = {f.name: getattr(obj, f.name) for f in fields(obj)}
 
@@ -60,7 +60,7 @@ class AbacuraPropertyGroup(Group):
 
 
 class AbacuraPanel(Panel):
-    def __init__(self, renderable, title: str = "", *args, **kwargs):
+    def __init__(self, renderable, title: str = "", *args, **kwargs) -> None:
         kwargs.setdefault("highlight", True)
         kwargs.setdefault("expand", False)
         kwargs.setdefault("border_style", Style(bold=True, bgcolor=OutputColors.panel))
@@ -73,14 +73,14 @@ class AbacuraPanel(Panel):
 
 
 class AbacuraWarning(AbacuraPanel):
-    def __init__(self, renderable, title: str, *args, **kwargs):
+    def __init__(self, renderable, title: str, *args, **kwargs) -> None:
         kwargs.setdefault("border_style", Style(color=OutputColors.warning, bold=True))
         kwargs.setdefault("box", box.SQUARE)
         super().__init__(renderable=renderable, title=title, *args, **kwargs)
 
 
 class AbacuraError(AbacuraPanel):
-    def __init__(self, renderable, title: str, *args, **kwargs):
+    def __init__(self, renderable, title: str, *args, **kwargs) -> None:
         kwargs.setdefault("border_style", Style(color=OutputColors.error, bold=True))
         kwargs.setdefault("box", box.SQUARE)
         super().__init__(renderable=renderable, title=title, *args, **kwargs)

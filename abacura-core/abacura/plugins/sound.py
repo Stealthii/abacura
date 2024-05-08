@@ -10,7 +10,7 @@ class SoundPlugin(Plugin):
     """Handle MSP sound"""
 
     @action(r"^!!SOUND\((.*)\)")
-    def msp(self, wav: str, msg: OutputMessage):
+    def msp(self, wav: str, msg: OutputMessage) -> None:
         msg.gag = True
 
         try:

@@ -13,21 +13,21 @@ from abacura.plugins.events import event
 class AbacuraFooter(Footer):
     """Bottom of screen bar with current session name"""
 
-    def __init__(self, id: str = ""):
+    def __init__(self, id: str = "") -> None:
         super().__init__()
         self.id = id
 
     session_name: reactive[str | None] = reactive[str | None]("null")
     level: reactive[str] = reactive[str]("")
 
-    def on_mount(self):
+    def on_mount(self) -> None:
         self.screen.session.add_listener(self.update_level)
 
     def render(self) -> str:
         return f"#{self.session_name} {self.level}"
 
     @event("core.msdp.LEVEL", priority=5)
-    def update_level(self, message: MSDPMessage):
+    def update_level(self, message: MSDPMessage) -> None:
         """Update reactive values for level"""
 
         self.level = f"Level: {message.value}"

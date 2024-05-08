@@ -15,7 +15,7 @@ class AutoBuff(LOKPlugin):
 
     _RUNNER_INTERVAL: float = 2.0
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.getting_skills: bool = False
         self.player_skills: dict[str, PlayerSkill] = {}
@@ -54,7 +54,7 @@ class AutoBuff(LOKPlugin):
 
         return buffs
 
-    def buff_check(self):
+    def buff_check(self) -> None:
         """Ticker to loop through all the buffs we know of, and renew or add ones we need"""
         if self.msdp.character_name == "" or self.msdp.level > 199:
             return
@@ -74,7 +74,7 @@ class AutoBuff(LOKPlugin):
         #     if self.msdp.get_affect_hours(buf) < 1:
         #         self.acquire_buf(buf)
 
-    def acquire_buff(self, buff: Skill):
+    def acquire_buff(self, buff: Skill) -> None:
         """Figure out how to get buf and if possible, acquire it"""
         # Only try once every 10 seconds
         if monotonic() - self.last_attempt.get(buff.command, 0) > 10:
@@ -109,7 +109,7 @@ class AutoBuff(LOKPlugin):
         return buff.command
 
     @command(name="autobuff")
-    def list_autobuffs(self):
+    def list_autobuffs(self) -> None:
         """
         Show known buffs, will add current or expected buffs or something
         """
@@ -139,7 +139,7 @@ class AutoBuff(LOKPlugin):
         self.output(AbacuraPanel(Group(pc_buffs, Text(), tbl), title="Autobuffs"), actionable=False)
 
     @action(r"Skill/Spell +Cast Level +Mp.Sp +Skilled +Rank +Bonus +Damage")
-    def skill_start(self):
+    def skill_start(self) -> None:
         if not self.getting_skills:
             self.getting_skills = True
             self.player_skills = {}
@@ -155,7 +155,7 @@ class AutoBuff(LOKPlugin):
         trained_rank: int,
         bonus: int,
         locked: str,
-    ):
+    ) -> None:
         if self.getting_skills:
             locked = locked is not None
 
@@ -163,15 +163,15 @@ class AutoBuff(LOKPlugin):
             self.player_skills[p_skill.skill] = p_skill
 
     @action("Spell Fail Modifier: .*Skill Fail Modifier: .*")
-    def end_skills(self):
+    def end_skills(self) -> None:
         self.getting_skills = False
         self.pc.skills = self.player_skills
 
     @event("core.prompt", priority=10)
-    def got_prompt(self, _: AbacuraMessage):
+    def got_prompt(self, _: AbacuraMessage) -> None:
         self.getting_skills = False
 
-    def affects(self):
+    def affects(self) -> None:
         from rich.columns import Columns
         from rich.text import Text
 
@@ -182,7 +182,7 @@ class AutoBuff(LOKPlugin):
         self.output(Columns(affects, width=20))
 
     @command(name="shapechange")
-    def shapechange_command(self, form: str = ""):
+    def shapechange_command(self, form: str = "") -> None:
         if not form or form == "normal":
             self.cq.add("shapechange normal", dur=4.0)
             new_buffs = [b for b in self.pc.buffs if not b.startswith("shapechange")]

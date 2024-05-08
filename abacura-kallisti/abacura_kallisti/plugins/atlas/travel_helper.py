@@ -11,11 +11,11 @@ from abacura_kallisti.plugins.scripts.travel import TravelRequest, TravelResult
 class TravelHelper(LOKPlugin):
     """Provides #go and #path commands"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     @command
-    def path(self, destination: Room, detailed: bool = False):
+    def path(self, destination: Room, detailed: bool = False) -> None:
         """
         Compute path to a room/location
 
@@ -72,7 +72,7 @@ class TravelHelper(LOKPlugin):
         self.debuglog(f"#path metrics: {nav.metrics}")
 
     @command
-    def go(self, destination: Room, avoid_home: bool = False):
+    def go(self, destination: Room, avoid_home: bool = False) -> None:
         """
         Automatically go to a destination
 
@@ -80,7 +80,7 @@ class TravelHelper(LOKPlugin):
         :param avoid_home: Do not use the 'home' command
         """
 
-        def go_done(result: TravelResult):
+        def go_done(result: TravelResult) -> None:
             self.output(f"[bold purple] #go {result.result}", markup=True)
 
         tm = TravelRequest(destination=destination, avoid_home=avoid_home, callback_fn=go_done)

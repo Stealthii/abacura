@@ -27,7 +27,7 @@ class Action:
         name: str = "",
         color: bool = False,
         priority: int = 0,
-    ):
+    ) -> None:
         self.pattern = pattern
         self.callback = callback
         self.flags = flags
@@ -66,10 +66,10 @@ class Action:
 
 
 class ActionManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.actions: PriorityQueue = PriorityQueue()
 
-    def register_object(self, obj: object):
+    def register_object(self, obj: object) -> None:
         # self.unregister_object(obj)  # prevent duplicates
         for name, member in inspect.getmembers(obj, callable):
             if hasattr(member, "action_pattern"):
@@ -82,17 +82,17 @@ class ActionManager:
                 )
                 self.add(act)
 
-    def unregister_object(self, obj: object):
+    def unregister_object(self, obj: object) -> None:
         self.actions.queue[:] = [a for a in self.actions.queue if a.source != obj]
 
-    def add(self, action: Action):
+    def add(self, action: Action) -> None:
         log.debug(f"Appending action '{action.name}' from '{action.source}'")
         self.actions.put(action)
 
-    def remove(self, name: str):
+    def remove(self, name: str) -> None:
         self.actions.queue[:] = [a for a in self.actions.queue if a.name != name]
 
-    def process_output(self, message: OutputMessage):
+    def process_output(self, message: OutputMessage) -> None:
         if not isinstance(message.message, str):
             return
 
@@ -104,7 +104,7 @@ class ActionManager:
                 self.initiate_callback(act, message, match)
 
     @staticmethod
-    def initiate_callback(action: Action, message: OutputMessage, match: Match):
+    def initiate_callback(action: Action, message: OutputMessage, match: Match) -> None:
         g = list(match.groups())
 
         # perform type conversions

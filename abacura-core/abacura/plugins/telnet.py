@@ -11,7 +11,7 @@ from abacura.plugins.events import AbacuraMessage
 class TelnetPlugin(Plugin):
     """Handles telnet connectivity"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.options: dict[int, TelnetOption] = {}
         self.poll_timeout = 0.001
@@ -20,7 +20,7 @@ class TelnetPlugin(Plugin):
         self.outb = b""
 
     # TODO: Need a better way of handling this, possibly an autoloader
-    def register_options(self, handlers: list[TelnetOption]):
+    def register_options(self, handlers: list[TelnetOption]) -> None:
         """Set up telnet options handlers"""
         # TODO swap to context?
         for handler in handlers:

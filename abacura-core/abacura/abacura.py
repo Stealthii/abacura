@@ -33,7 +33,7 @@ class Abacura(App):
         Binding("f10", "screenshot", ""),
     ]
 
-    def __init__(self, config: Config, inspector: bool = False):
+    def __init__(self, config: Config, inspector: bool = False) -> None:
         self.screens: dict[Session, Screen]
         self.config: Config = config
         self.inspector = inspector
@@ -81,7 +81,7 @@ class Abacura(App):
 @click.option("-d", "--debug", "debug", type=str)
 @click.option("-s", "--start", "start", type=str)
 @click.option("-i", "--inspector", "inspector", is_flag=True, default=False)
-def main(config, debug, start, inspector):
+def main(config, debug, start, inspector) -> None:
     if debug:
         host, port = debug.split(":")
         pycharm.PycharmDebugger().connect(host, int(port))

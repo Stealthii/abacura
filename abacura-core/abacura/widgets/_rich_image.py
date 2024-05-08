@@ -126,7 +126,7 @@ class RichImage:
 class LOKGif(Static):
     progress_timer: Timer
 
-    def __init__(self, filename: str, width: int = 0, height: int = 0, **kwargs):
+    def __init__(self, filename: str, width: int = 0, height: int = 0, **kwargs) -> None:
         super().__init__(*kwargs)
         self.filename = filename
         self.image = RichImage.from_image_path(filename, (width, height))

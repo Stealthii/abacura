@@ -19,7 +19,7 @@ class BigMapWindow(AbacuraWindow):
 
     CSS_PATH = "css/kallisti.css"
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(title="Big Map")
         self.input = Input(id="logsearch-input", placeholder="search text")
         self.bigmap: LOKMap = LOKMap(id="bigmap", resizer=False)
@@ -28,14 +28,14 @@ class BigMapWindow(AbacuraWindow):
         with Grid(id="bigmap-grid"):
             yield self.bigmap
 
-    def remove(self):
+    def remove(self) -> None:
         self.bigmap.unregister()
         super().remove()
 
 
 class BigMap(Plugin):
     @command
-    def map(self):
+    def map(self) -> None:
         """
         Show a big map window
         """

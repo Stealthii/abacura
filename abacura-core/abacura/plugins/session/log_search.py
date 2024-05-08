@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class LogSearcher:
-    def __init__(self, ring_buffer: RingBufferLogSql):
+    def __init__(self, ring_buffer: RingBufferLogSql) -> None:
         self.ring_buffer = ring_buffer
 
     def search_logs(self, like: str = "", limit: int = 100, minutes_ago: int = 0, show_msdp: bool = False) -> list:
@@ -46,7 +46,7 @@ class LogSearchWindow(AbacuraWindow):
     ]
 
     # CSS_PATH = "css/kallisti.css"
-    def __init__(self, searcher: LogSearcher, find: str = "%", show_msdp: bool = False):
+    def __init__(self, searcher: LogSearcher, find: str = "%", show_msdp: bool = False) -> None:
         super().__init__(title="Log Search")
         self.searcher = searcher
         self.richlog = RichLog(id="logsearch-log")
@@ -65,7 +65,7 @@ class LogSearchWindow(AbacuraWindow):
         self.msdp_checkbox.can_focus = False
         self.row_limit.can_focus = False
 
-    async def run_search(self, find: str = "%"):
+    async def run_search(self, find: str = "%") -> None:
         if self.populate_timer:
             self.populate_timer.stop()
         start = time.monotonic()
@@ -73,7 +73,7 @@ class LogSearchWindow(AbacuraWindow):
         elapsed = time.monotonic() - start
         self.call_later(self.display_results, results, elapsed)
 
-    async def display_results(self, results: list, elapsed: float = 0):
+    async def display_results(self, results: list, elapsed: float = 0) -> None:
         self.footer.refresh()
         # with self.app.batch_update():
         with self.screen.app.batch_update():
@@ -113,8 +113,8 @@ class LogSearchWindow(AbacuraWindow):
         await self.run_search(self.input.value)
 
     @on(Input.Changed)
-    async def on_input_changed(self, event: Input.Changed):
-        async def run_search():
+    async def on_input_changed(self, event: Input.Changed) -> None:
+        async def run_search() -> None:
             await self.run_search(event.value)
 
         if self.populate_timer:
@@ -122,7 +122,7 @@ class LogSearchWindow(AbacuraWindow):
 
         self.populate_timer = self.set_timer(0.40, run_search)
 
-    async def on_input_submitted(self, event: Input.Submitted):
+    async def on_input_submitted(self, event: Input.Submitted) -> None:
         if self.populate_timer:
             self.populate_timer.stop()
 
@@ -143,7 +143,7 @@ class LogSearchWindow(AbacuraWindow):
 
 class LogSearch(Plugin):
     @command
-    def log(self, find: str = "%", limit: int = 40, dump: bool = False, msdp: bool = False):
+    def log(self, find: str = "%", limit: int = 40, dump: bool = False, msdp: bool = False) -> None:
         """
         Search output log and show results in a window
 

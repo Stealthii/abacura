@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class ContextProvider:
-    def __init__(self, config: Config, session_name: str):
+    def __init__(self, config: Config, session_name: str) -> None:
         pass
 
     def get_injections(self) -> dict:
@@ -29,7 +29,7 @@ class Plugin:
 
     _context: dict = {}
 
-    def __init__(self):
+    def __init__(self) -> None:
         # super().__init__()
         self._source_filename: str = ""
         self.session: Session = self._context["session"]
@@ -44,7 +44,7 @@ class Plugin:
         self.register_actions = True
 
     @classmethod
-    def set_context(cls, context: dict):
+    def set_context(cls, context: dict) -> None:
         cls._context = context
 
     def get_name(self):
@@ -54,27 +54,27 @@ class Plugin:
         doc = getattr(self, "__doc__", None)
         return doc
 
-    def add_action(self, pattern: str, callback_fn: Callable, flags: int = 0, name: str = "", color: bool = False):
+    def add_action(self, pattern: str, callback_fn: Callable, flags: int = 0, name: str = "", color: bool = False) -> None:
         act = Action(source=self, pattern=pattern, callback=callback_fn, flags=flags, name=name, color=color)
         self.director.action_manager.add(act)
 
-    def remove_action(self, name: str):
+    def remove_action(self, name: str) -> None:
         self.director.action_manager.remove(name)
 
-    def add_ticker(self, seconds: float, callback_fn: Callable, repeats: int = -1, name: str = "", commands: str = ""):
+    def add_ticker(self, seconds: float, callback_fn: Callable, repeats: int = -1, name: str = "", commands: str = "") -> None:
         t = Ticker(source=self, seconds=seconds, callback=callback_fn, repeats=repeats, name=name, commands=commands)
         self.director.ticker_manager.add(t)
 
-    def remove_ticker(self, name: str):
+    def remove_ticker(self, name: str) -> None:
         self.director.ticker_manager.remove(name)
 
-    def add_substitute(self, pattern: str, repl: str, name: str = ""):
+    def add_substitute(self, pattern: str, repl: str, name: str = "") -> None:
         pass
 
-    def remove_substitute(self, name: str):
+    def remove_substitute(self, name: str) -> None:
         pass
 
-    def send(self, message: str, raw: bool = False, echo_color: str = "orange1"):
+    def send(self, message: str, raw: bool = False, echo_color: str = "orange1") -> None:
         self.session.send(message, raw=raw, echo_color=echo_color)
 
 
