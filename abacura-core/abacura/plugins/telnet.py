@@ -1,6 +1,5 @@
 import asyncio
 from textual import log
-from typing import TYPE_CHECKING
 
 from abacura.mud.options import GA, TelnetOption
 from abacura.mud.options.ttype import TerminalTypeOption

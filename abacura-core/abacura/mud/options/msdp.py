@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 import re
-from typing import Any
 
 from textual import log
 

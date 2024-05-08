@@ -1,7 +1,6 @@
 import time
 
 from abacura.plugins import command
-from abacura.utils.timer import Timer
 from abacura_kallisti.atlas.travel_guide import TravelGuide
 from abacura_kallisti.atlas.room import Room
 from abacura_kallisti.plugins import LOKPlugin

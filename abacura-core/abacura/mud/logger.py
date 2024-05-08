@@ -5,7 +5,6 @@ Logging module for sessions
 from datetime import datetime
 import logging
 from pathlib import Path
-from rich.text import Text
 
 from abacura import Config
 

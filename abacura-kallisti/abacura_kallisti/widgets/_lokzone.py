@@ -1,6 +1,5 @@
 """Legends of Kallisti Zone information widget"""
 
-from textual import log
 from textual.app import ComposeResult
 from textual.containers import Container
 from textual.reactive import reactive

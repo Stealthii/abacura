@@ -14,9 +14,7 @@ from abacura.plugins.events import event
 from abacura.utils import human_format
 
 if TYPE_CHECKING:
-    from abacura_kallisti.screens import BetterKallistiScreen
-    from textual.screen import Screen
-    from typing import Self
+    pass
 
 
 class LOKCharacter(Static):

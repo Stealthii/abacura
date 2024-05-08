@@ -3,7 +3,6 @@
 from datetime import datetime
 from typing import List
 
-from rich.pretty import Pretty
 
 from textual.app import ComposeResult
 from textual.containers import ScrollableContainer

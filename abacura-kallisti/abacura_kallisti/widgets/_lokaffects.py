@@ -1,7 +1,5 @@
 """Widget to display current Affects and remaining time"""
 
-from typing import Dict
-
 from rich.columns import Columns
 # from rich.text import Text
 

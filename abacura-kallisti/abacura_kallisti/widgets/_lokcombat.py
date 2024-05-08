@@ -1,14 +1,7 @@
 """Kallisti widget for displaying Combat information"""
 
-from collections import OrderedDict
-
-from rich.segment import Segment
-from rich.style import Style
-from textual import log
-from textual.app import ComposeResult, RenderResult
-from textual.containers import Container
+from textual.app import ComposeResult
 from textual.reactive import reactive
-from textual.strip import Strip
 from textual.widgets import Static, DataTable
 
 from abacura.utils import percent_color

@@ -5,7 +5,7 @@ from textual import on
 from textual.app import ComposeResult
 from textual.containers import Grid, Horizontal
 from textual.timer import Timer
-from textual.widgets import Button, Input, Label, RichLog, Select, Checkbox
+from textual.widgets import Input, Label, RichLog, Select, Checkbox
 
 from abacura.screens import AbacuraWindow
 from abacura.plugins import Plugin, command, CommandError

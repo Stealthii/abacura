@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from rich.segment import Segment
 
-from textual import log, events
+from textual import events
 from textual.geometry import Offset, Size
 from textual.strip import Strip
 from textual.widget import Widget
 
 
-from typing import TYPE_CHECKING, Literal
+from typing import Literal
 
 
 class ResizeHandle(Widget):

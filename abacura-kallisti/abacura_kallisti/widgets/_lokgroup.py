@@ -1,10 +1,6 @@
 """Kallisti widget for displaying Group information"""
 
-from collections import OrderedDict
-from textual import log
 from textual.app import ComposeResult
-from textual.containers import Container
-from textual.reactive import reactive
 from textual.widgets import Static, DataTable
 
 

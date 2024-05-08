@@ -1,6 +1,4 @@
 import ast
-import importlib
-import types
 
 
 async def meval(code, globs, locs, **kwargs):

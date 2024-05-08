@@ -1,5 +1,3 @@
-import time
-
 from rich.panel import Panel
 from rich.pretty import Pretty
 

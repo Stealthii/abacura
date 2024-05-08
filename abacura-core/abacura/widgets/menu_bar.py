@@ -6,15 +6,12 @@ Intended for top of screen but you do you
 
 from typing import Callable
 
-from rich.text import Text
 
-from textual.app import App, ComposeResult, RenderResult
+from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.css.query import NoMatches
 from textual.events import Click
-from textual.geometry import Size, Region
-from textual.widget import Widget
-from textual.widgets import Placeholder, Static, OptionList, Input
+from textual.widgets import Static, OptionList, Input
 
 
 class SubMenu(OptionList):

@@ -7,4 +7,5 @@ line-length = 130
 select = [
     "E", # pycodestyle
     "W", # pycodestyle
+    "F", # Pyflakes
 ]

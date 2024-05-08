@@ -3,8 +3,6 @@
 from time import monotonic
 from typing import Dict, Optional
 
-from rich.panel import Panel
-from rich.table import Table
 
 from abacura.plugins import command, action
 from abacura.plugins.events import event, AbacuraMessage

@@ -1,12 +1,8 @@
 """Debug console widget"""
 
-from datetime import datetime
-
-from textual.css.query import NoMatches
 from textual.widget import Widget
 from textual.widgets import RichLog
 
-from abacura.plugins import command, Plugin
 from abacura.widgets.resizehandle import ResizeHandle
 
 

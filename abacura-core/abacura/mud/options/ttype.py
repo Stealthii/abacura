@@ -2,7 +2,7 @@
 
 from textual import log
 
-from abacura.mud.options import IAC, SE, SB, WILL, WONT, TelnetOption
+from abacura.mud.options import IAC, SE, SB, WILL, TelnetOption
 
 
 SEND = b"\x01"

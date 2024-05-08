@@ -1,12 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
-from rich.table import Table
-from rich.markup import escape
+from typing import TYPE_CHECKING
 
-from abacura.plugins import Plugin, command, CommandError
+from abacura.plugins import Plugin, command
 from abacura.utils.renderables import tabulate, AbacuraPanel
-from abacura.utils import ansi_escape
 
 if TYPE_CHECKING:
     pass

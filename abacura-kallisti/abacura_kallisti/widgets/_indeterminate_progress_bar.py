@@ -1,15 +1,10 @@
 import random
 
 
-from textual import log
-from textual.app import App, ComposeResult
-from textual.containers import Center, Middle
+from textual.app import ComposeResult
 from textual.timer import Timer
 from textual.widget import Widget
 from textual.widgets import Static, ProgressBar
-
-from abacura.widgets.sidebar import Sidebar
-from abacura.widgets.resizehandle import ResizeHandle
 
 
 class IndeterminateProgressBar(Widget):

@@ -3,11 +3,9 @@
 from __future__ import annotations
 
 # TODO: screen and widget definitions should go under the hierarchy, not in __init__
-import csv
-import io
 from typing import TYPE_CHECKING, Coroutine, Any
 
-from textual import log, on
+from textual import on
 from textual.binding import Binding
 from textual.message import Message
 from textual.suggester import Suggester
@@ -16,8 +14,7 @@ from textual.widgets import Input
 from abacura.plugins.events import event, AbacuraMessage
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
-    from abacura.mud.session import Session
+    pass
 
 
 class InputBar(Input):

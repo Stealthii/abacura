@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
-from rich.table import Table
+from typing import TYPE_CHECKING
 
 from abacura.plugins import Plugin, command, CommandError
 from abacura.utils.renderables import tabulate, AbacuraPanel

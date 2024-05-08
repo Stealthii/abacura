@@ -33,7 +33,6 @@ from abacura.utils.renderables import AbacuraPanel, tabulate
 
 if TYPE_CHECKING:
     from abacura.abacura import Abacura
-    from asyncio import StreamWriter
 
 speedwalk_pattern = r"^(\d*[neswud])+$"
 speedwalk_step_pattern = r"\d*[neswud]"
