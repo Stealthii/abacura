@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from textual.widget import Widget
 
-from ..case import camel_to_snake
+from abacura_kallisti.case import camel_to_snake
 
 if TYPE_CHECKING:
     from ._indeterminate_progress_bar import IndeterminateProgressBar

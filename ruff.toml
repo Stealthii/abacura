@@ -39,7 +39,6 @@ ignore = [
     "T20",  # flake8-print
     "TCH",  # flake8-type-checking
     "TD",   # flake8-todos
-    "TID",  # flake8-tidy-imports
     "TRY",  # tryceratops
     "UP",   # pyupgrade
 ]

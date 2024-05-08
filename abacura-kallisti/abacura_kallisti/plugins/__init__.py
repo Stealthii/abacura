@@ -13,12 +13,11 @@ from abacura.plugins import CommandError, Plugin
 from abacura_kallisti.atlas.location import LocationList
 from abacura_kallisti.atlas.room import ScannedRoom
 from abacura_kallisti.atlas.world import World
+from abacura_kallisti.case import camel_to_snake
 from abacura_kallisti.metrics import MudMetrics
 from abacura_kallisti.metrics.odometer import Odometer
 from abacura_kallisti.mud.msdp import TypedMSDP
 from abacura_kallisti.mud.player import PlayerCharacter
-
-from ..case import camel_to_snake
 
 if TYPE_CHECKING:
     from .lokcomms import LOKComms
