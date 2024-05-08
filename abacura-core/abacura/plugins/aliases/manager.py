@@ -6,7 +6,7 @@ import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import tomlkit
 
@@ -39,7 +39,7 @@ class AliasManager:
 
         return name, category
 
-    def get_alias(self, alias: str) -> Optional[Alias]:
+    def get_alias(self, alias: str) -> Alias | None:
         cmd, category = self.parse_alias(alias)
         for a in self.aliases:
             if a.cmd == cmd and (a.category == category or category is None):

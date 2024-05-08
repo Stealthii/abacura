@@ -1,5 +1,3 @@
-from typing import Optional
-
 from abacura.plugins import Plugin, command
 from abacura.utils.pycharm import PycharmDebugger
 
@@ -9,7 +7,7 @@ class PycharmDebug(Plugin):
 
     def __init__(self):
         super().__init__()
-        self.debugger: Optional[PycharmDebugger] = None
+        self.debugger: PycharmDebugger | None = None
 
     @command(hide=True)
     def pycharm_debug(self, host: str = "localhost", port: int = 12345):

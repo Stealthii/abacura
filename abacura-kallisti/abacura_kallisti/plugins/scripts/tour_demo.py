@@ -1,5 +1,3 @@
-from typing import Optional
-
 from rich.table import Table
 
 from abacura.plugins import CommandError, command
@@ -14,7 +12,7 @@ class TourDemo(LOKPlugin):
 
     def __init__(self):
         super().__init__()
-        self.tour_guide: Optional[TourGuide] = None
+        self.tour_guide: TourGuide | None = None
         self.steps_taken: int = 0
 
     @command

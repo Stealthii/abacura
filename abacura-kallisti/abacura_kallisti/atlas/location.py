@@ -1,7 +1,6 @@
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 import tomlkit
 
@@ -53,7 +52,7 @@ class LocationList:
 
         return name, category
 
-    def get_location(self, location: str) -> Optional[Location]:
+    def get_location(self, location: str) -> Location | None:
         name, category = self.parse_location(location)
         for a in self.locations:
             if a.name == name and (a.category == category or category is None):

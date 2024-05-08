@@ -2,7 +2,6 @@ import sys
 from dataclasses import dataclass
 from functools import lru_cache
 from itertools import groupby
-from typing import Optional
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
@@ -19,8 +18,8 @@ from textual.widget import Widget
 @dataclass
 class HalfBlock:
     symbol: str
-    fg_color: Optional[tuple[int, int, int]]
-    bg_color: Optional[tuple[int, int, int]]
+    fg_color: tuple[int, int, int] | None
+    bg_color: tuple[int, int, int] | None
 
     @staticmethod
     @lru_cache(maxsize=1024 * 16)
@@ -48,7 +47,7 @@ class ImageWidget(Widget):
         self.image_path = image_path
         self.image: Image = PILImageModule.open(image_path)
         self.frames: list[Image] = [frame.copy() for frame in ImageSequence.Iterator(self.image)]
-        self.strip_cache: list[Optional[list[Strip]]] = [None] * len(self.frames)
+        self.strip_cache: list[list[Strip] | None] = [None] * len(self.frames)
         self.frame_number = 0
         self.loop_number = 0
         self.loops = self.image.info.get("loops", 0)

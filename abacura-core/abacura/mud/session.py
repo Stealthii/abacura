@@ -7,7 +7,7 @@ import re
 import time
 from datetime import datetime
 from importlib import import_module
-from typing import TYPE_CHECKING, Any, Generator, Optional, Union
+from typing import TYPE_CHECKING, Any, Generator
 
 from rich.segment import Segment, Segments
 from rich.style import Style
@@ -59,11 +59,11 @@ class Session(BaseSession):
         self.abacura = abacura
         self.config = config
         self.name = name
-        self.host: Optional[str] = None
-        self.port: Optional[int] = None
-        self.writer: Optional[asyncio.StreamWriter] = None
-        self.tl: Optional[RichLog] = None
-        self.debugtl: Optional[RichLog] = None
+        self.host: str | None = None
+        self.port: int | None = None
+        self.writer: asyncio.StreamWriter | None = None
+        self.tl: RichLog | None = None
+        self.debugtl: RichLog | None = None
         self.output_history: FIFOBuffer = FIFOBuffer(1000)
 
         self.core_msdp: MSDP = MSDP(self.output, self.send, self)
@@ -216,7 +216,7 @@ class Session(BaseSession):
             self.output(f"[bold red]# NO SESSION CONNECTED - pi {sl}", markup=True)
 
     # TODO raw can come out now that we isinstance
-    def send(self, msg: Union[str, bytes], raw: bool = False, echo_color: str = "orange1") -> None:
+    def send(self, msg: str | bytes, raw: bool = False, echo_color: str = "orange1") -> None:
         """Send to writer (socket)"""
         if self.writer is not None:
             try:

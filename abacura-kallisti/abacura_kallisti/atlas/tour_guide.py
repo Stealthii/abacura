@@ -1,6 +1,5 @@
 import random
 from dataclasses import dataclass, field
-from typing import Optional
 
 from abacura_kallisti.atlas.room import Area, Exit, ScannedRoom
 from abacura_kallisti.atlas.travel_guide import TravelGuide, TravelPath
@@ -11,7 +10,7 @@ from abacura_kallisti.mud.player import PlayerCharacter
 @dataclass
 class TourGuideResponse:
     completed_tour: bool = False
-    exit: Optional[Exit] = None
+    exit: Exit | None = None
     error: str = ""
     route: str = ""
     visited_rooms: set = field(default_factory=set)

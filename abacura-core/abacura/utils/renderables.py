@@ -1,6 +1,6 @@
 from dataclasses import astuple, dataclass, fields, is_dataclass
 from itertools import zip_longest
-from typing import Iterable, Union
+from typing import Iterable
 
 from rich import box
 from rich.console import Group
@@ -41,7 +41,7 @@ class AbacuraTable(Table):
 
 
 class AbacuraPropertyGroup(Group):
-    def __init__(self, obj: Union[dict, dataclass], title="Properties", exclude: set = None):
+    def __init__(self, obj: dict | dataclass, title="Properties", exclude: set = None):
         if is_dataclass(obj):
             obj = {f.name: getattr(obj, f.name) for f in fields(obj)}
 

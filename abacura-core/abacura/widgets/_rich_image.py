@@ -4,7 +4,6 @@ from datetime import datetime
 from functools import lru_cache
 from itertools import groupby
 from pathlib import Path, PurePath
-from typing import Optional, Union
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
@@ -21,8 +20,8 @@ from textual.widgets import Static
 @dataclass
 class HalfBlock:
     symbol: str
-    fg_color: Optional[tuple[int, int, int]]
-    bg_color: Optional[tuple[int, int, int]]
+    fg_color: tuple[int, int, int] | None
+    bg_color: tuple[int, int, int] | None
 
     @staticmethod
     @lru_cache(maxsize=1000)
@@ -44,7 +43,7 @@ class HalfBlock:
 
 
 class RichImage:
-    def __init__(self, image: Image, resize: Optional[tuple[int, int]] = None) -> None:
+    def __init__(self, image: Image, resize: tuple[int, int] | None = None) -> None:
         self.frames = [frame.copy() for frame in ImageSequence.Iterator(image)]
 
         if resize:
@@ -57,7 +56,7 @@ class RichImage:
         self.current_frame: Image = self.frames[self.frame_number]
 
     @staticmethod
-    def from_image_path(path: Union[PurePath, str], resize: Optional[tuple[int, int]] = None) -> "RichImage":
+    def from_image_path(path: PurePath | str, resize: tuple[int, int] | None = None) -> "RichImage":
         """Create a RichImage object from an image file.
 
         Args:

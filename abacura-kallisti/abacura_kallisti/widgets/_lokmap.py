@@ -4,7 +4,6 @@ LOK Map Widget
 
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Optional
 
 from rich.color import Color, ColorType
 from rich.color_triplet import ColorTriplet
@@ -112,8 +111,8 @@ class LOKMap(Container):
         self.resizer: bool = resizer
         self.strips: list = []
         self.map_type: str = map_type
-        self.start_room: Optional[Room] = None
-        self.bfs: Optional[BFS] = None
+        self.start_room: Room | None = None
+        self.bfs: BFS | None = None
         self.current_vnum: str = ""
         self.traveling: bool = False
         self.wilderness: bool = False
@@ -179,7 +178,7 @@ class LOKMap(Container):
     def terrain_style_for_terrain(terrain: str) -> TerrainStyle:
         return TERRAIN_LOOKUP.get(terrain.split(" ")[0], TERRAIN_LOOKUP[" "])
 
-    def make_5x3_top_row(self, room: Optional[Room]) -> list[Segment]:
+    def make_5x3_top_row(self, room: Room | None) -> list[Segment]:
         if room is None:
             return [Segment("     ")]
         style = self.terrain_style_for_terrain(room.terrain_name).style
@@ -189,7 +188,7 @@ class LOKMap(Container):
             Segment("+ " if "up" in room.exits else "  ", Style(bgcolor=style.bgcolor)),
         ]
 
-    def make_5x3_mid_row(self, room: Optional[Room]) -> list[Segment]:
+    def make_5x3_mid_row(self, room: Room | None) -> list[Segment]:
         if room is None:
             return [Segment("     ")]
         style = self.terrain_style_for_terrain(room.terrain_name).style
@@ -199,7 +198,7 @@ class LOKMap(Container):
             Segment("]-" if "east" in room.exits else "] ", Style(bgcolor=style.bgcolor)),
         ]
 
-    def make_5x3_bot_row(self, room: Optional[Room]) -> list[Segment]:
+    def make_5x3_bot_row(self, room: Room | None) -> list[Segment]:
         if room is None:
             return [Segment("     ")]
         style = self.terrain_style_for_terrain(room.terrain_name).style
@@ -234,7 +233,7 @@ class LOKMap(Container):
             self.strips.append(Strip(row2))
             self.strips.append(Strip(row3))
 
-    def make_3x3_segments(self, sub_row: int, room: Optional[Room]) -> list[Segment]:
+    def make_3x3_segments(self, sub_row: int, room: Room | None) -> list[Segment]:
         if room is None:
             return [Segment("   ")]
         bgcolor = self.terrain_style_for_terrain(room.terrain_name).style.bgcolor

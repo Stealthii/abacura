@@ -1,7 +1,6 @@
 """Automatic application of Buffs"""
 
 from time import monotonic
-from typing import Optional
 
 from abacura.plugins import action, command
 from abacura.plugins.events import AbacuraMessage, event
@@ -94,7 +93,7 @@ class AutoBuff(LOKPlugin):
             # else:
             #    self.output(f"[bold red]# No method of acquisition for {buf}!", markup=True)
 
-    def acquisition_method(self, buff: Skill) -> Optional[str]:
+    def acquisition_method(self, buff: Skill) -> str | None:
         """Returns likely acquisition method"""
         if self.room.vnum in ["13200"] or self.room.no_magic or self.room.silent:
             return None

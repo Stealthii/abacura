@@ -31,7 +31,7 @@ SOFTWARE.
 import asyncio
 import inspect
 import os
-from typing import Any, Iterable, NamedTuple, Optional, TypeGuard
+from typing import Any, Iterable, NamedTuple, TypeGuard
 
 from rich.highlighter import ReprHighlighter
 from rich.markup import escape
@@ -613,7 +613,7 @@ class NodeInfo(Container):
             print("action_open_file", path, line_number, column_number)
             # launch_editor(path, line_number, column_number)
 
-    dom_node: var[DOMNode | None] = var[Optional[DOMNode]](None)
+    dom_node: var[DOMNode | None] = var[DOMNode | None](None)
     """The DOM node being inspected."""
 
     def __init__(

@@ -1,7 +1,6 @@
 import os
 from dataclasses import dataclass, field
 from functools import lru_cache
-from typing import Optional
 
 import tomlkit
 
@@ -11,7 +10,7 @@ from .mob import Mob
 @dataclass()
 class Area:
     name: str = ""
-    include_areas: Optional[list] = field(default_factory=list)
+    include_areas: list | None = field(default_factory=list)
     route: str = "LRV"
     room_range: str = "-"
     room_min_level: dict[str, int] = field(default_factory=dict)

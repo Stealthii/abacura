@@ -2,7 +2,6 @@ import re
 from dataclasses import dataclass, field, fields
 from datetime import datetime
 from functools import lru_cache
-from typing import Optional
 
 from abacura.mud import OutputMessage
 from abacura.plugins.events import AbacuraMessage
@@ -69,8 +68,8 @@ class Room:
     narrow: bool = False
     no_magic: bool = False
     no_recall: bool = False
-    last_visited: Optional[datetime] = None
-    last_harvested: Optional[datetime] = None
+    last_visited: datetime | None = None
+    last_harvested: datetime | None = None
     # _exits should be last to make the simple db query work
     _exits: dict[str, Exit] = field(default_factory=dict)
 
@@ -111,7 +110,7 @@ class Room:
 
 class ScannedMiniMap:
     def __init__(self, messages: list[OutputMessage] = None):
-        self.you: Optional[tuple] = None
+        self.you: tuple | None = None
         self.grid: dict[tuple, str] = {}
         self.messages: list[OutputMessage] = messages or []
 

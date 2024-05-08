@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from rich.text import Text
 from textual.widgets import RichLog
@@ -31,7 +30,7 @@ class CommsMessage(AbacuraMessage):
 class LOKComms(LOKPlugin):
     """Puts all communcations into 'comms' window"""
 
-    comms_textlog: Optional[RichLog] = None
+    comms_textlog: RichLog | None = None
 
     # valid channels in LOK
     channels = [

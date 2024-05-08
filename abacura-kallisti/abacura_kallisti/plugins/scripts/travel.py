@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Optional
+from typing import Callable
 
 from abacura.plugins import action
 from abacura.plugins.events import AbacuraMessage, event
@@ -10,15 +10,15 @@ from abacura_kallisti.plugins import LOKPlugin
 
 @dataclass
 class TravelRequest(AbacuraMessage):
-    destination: Optional[Room] = None
+    destination: Room | None = None
     avoid_home: bool = False
-    callback_fn: Optional[Callable] = None
+    callback_fn: Callable | None = None
     event_type: str = "lok.travel.request"
 
 
 @dataclass
 class TravelStatus(AbacuraMessage):
-    destination: Optional[Room] = None
+    destination: Room | None = None
     steps_remaining: int = 0
     event_type: str = "lok.travel.status"
 
@@ -35,10 +35,10 @@ class TravelScript(LOKPlugin):
 
     def __init__(self):
         super().__init__()
-        self.navigation_path: Optional[TravelPath] = None
-        self.travel_guide: Optional[TravelGuide] = None
+        self.navigation_path: TravelPath | None = None
+        self.travel_guide: TravelGuide | None = None
         self.retries = 0
-        self.callback_fn: Optional[Callable] = None
+        self.callback_fn: Callable | None = None
 
     @event(trigger="lok.travel.request")
     def handle_travel(self, message: TravelRequest):

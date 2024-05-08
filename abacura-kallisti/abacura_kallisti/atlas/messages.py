@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 from abacura.plugins.events import AbacuraMessage
 
@@ -9,9 +8,9 @@ from .world import World
 
 @dataclass
 class MapUpdateMessage(AbacuraMessage):
-    start_room: Optional[Room] = None
+    start_room: Room | None = None
     current_vnum: str = ""
-    world: Optional[World] = None
+    world: World | None = None
     traveling: bool = False
     wilderness: bool = False
     ship: bool = False

@@ -116,7 +116,7 @@ class TaskManager:
     def __init__(self, queues: dict[str, TaskQueue] | None = None):
         self.tasks: list[Task] = []
         self._NEXT_COMMAND_TIME: float = 0.0
-        self._command_inserter: Optional[Callable] = None
+        self._command_inserter: Callable | None = None
         self._queues: dict[str, TaskQueue] = {}
 
         if queues:

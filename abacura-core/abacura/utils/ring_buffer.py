@@ -1,7 +1,7 @@
 import sqlite3
 import time
 from datetime import datetime
-from typing import Callable, Optional
+from typing import Callable
 
 from abacura.mud import OutputMessage
 
@@ -19,7 +19,7 @@ class RingBufferLogSql:
         self.commit_interval = commit_interval
         self.conn = sqlite3.connect(db_filename)
         self.rows_logged = 0
-        self.log_context_provider: Optional[Callable] = None
+        self.log_context_provider: Callable | None = None
 
         if wal:
             self.conn.execute("PRAGMA journal_mode=WAL")
@@ -40,7 +40,7 @@ class RingBufferLogSql:
         rows = cur.fetchall()
         return rows[0][0] if len(rows) else 0
 
-    def set_log_context_provider(self, context_provider: Optional[Callable]):
+    def set_log_context_provider(self, context_provider: Callable | None):
         # Pass a function to use to provide additional logging context
         self.log_context_provider = context_provider
 

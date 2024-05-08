@@ -3,7 +3,7 @@
 import sys
 from collections import OrderedDict
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import click
 from textual.app import App
@@ -24,7 +24,7 @@ class Abacura(App):
     AUTO_FOCUS = "InputBar"
     CSS_PATH = ["./css/abacura.css"]
     SCREENS = {}
-    START_SESSION: Optional[str] = None
+    START_SESSION: str | None = None
     BINDINGS = [
         Binding("ctrl+d", "toggle_dark", "Toggle dark mode"),
         Binding("ctrl+q", "quit", "Quit", priority=True),
