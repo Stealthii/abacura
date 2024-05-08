@@ -61,7 +61,7 @@ class TravelHelper(LOKPlugin):
         tbl = tabulate(
             rows,
             headers=("_Vnum", "_To Vnum", "Commands", "Direction", "Door", "Closes", "Locks", "Cost", "Terrain"),
-            title=f"Steps",
+            title="Steps",
             caption=f" Path computed in {1000 * path_elapsed_time:.1f}ms",
             show_footer=True,
         )

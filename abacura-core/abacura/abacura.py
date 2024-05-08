@@ -64,7 +64,7 @@ class Abacura(App):
         tl = self.sessions[self.session].tl
         self.config.reload()
         tl.markup = True
-        tl.write(f"[bold red]# CONFIG: Reloaded configuration file")
+        tl.write("[bold red]# CONFIG: Reloaded configuration file")
         tl.markup = False
 
     def action_toggle_inspector(self) -> None:

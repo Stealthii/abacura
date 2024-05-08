@@ -493,7 +493,7 @@ class RoomWatcher(LOKPlugin):
                 missing_msdp_exits = any([d for d in self.msdp.room_exits if d not in room.exits])
                 extra_room_exits = any([d for d in room.exits if d not in self.msdp.room_exits])
                 if missing_msdp_exits or extra_room_exits:
-                    self.debuglog(f"\nRoomWatcher: Mismatch between MSDP & Room exits")
+                    self.debuglog("\nRoomWatcher: Mismatch between MSDP & Room exits")
 
             # Load the new area if it has changed
             sr.area = self.room.area

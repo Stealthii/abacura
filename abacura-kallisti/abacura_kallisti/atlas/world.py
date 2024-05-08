@@ -256,7 +256,7 @@ class World:
         self.db_conn.execute("BEGIN TRANSACTION")
         self.db_conn.execute(f"INSERT OR REPLACE INTO rooms VALUES({room_binds})", room_fields)
 
-        self.db_conn.execute(f"DELETE FROM exits WHERE from_vnum = ?", (vnum,))
+        self.db_conn.execute("DELETE FROM exits WHERE from_vnum = ?", (vnum,))
 
         for room_exit in room.exits.values():
             if room_exit.temporary:

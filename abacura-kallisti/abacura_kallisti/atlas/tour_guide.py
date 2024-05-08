@@ -226,4 +226,4 @@ class TourGuide:
                 if k.startswith(move):
                     return TourGuideResponse(exit=Exit(direction=move))
 
-        return TourGuideResponse(error=f"Telluria: out of moves")
+        return TourGuideResponse(error="Telluria: out of moves")

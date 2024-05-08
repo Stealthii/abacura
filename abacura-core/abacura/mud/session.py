@@ -372,7 +372,7 @@ class Session(BaseSession):
             # buf = "[bold red]# Current Sessions:\n"
             rows = []
             for session_name, session in self.abacura.sessions.items():
-                active = f"[bold green]> [/bold green]" if session.name == self.abacura.session else "  "
+                active = "[bold green]> [/bold green]" if session.name == self.abacura.session else "  "
                 if session.name == "null":
                     host = "Main Session"
                     status = ""

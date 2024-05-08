@@ -47,7 +47,7 @@ class QueueRunner(Plugin):
         tbl = tabulate(
             rows,
             headers=("ID", "Queue", "Command", "Prior", "Priority", "Duration", "Delay", "Insertable"),
-            title=f"Queued Commands",
+            title="Queued Commands",
             float_format="4.1f",
         )
         self.output(AbacuraPanel(tbl, title=f"{q or 'All Queues'}"))

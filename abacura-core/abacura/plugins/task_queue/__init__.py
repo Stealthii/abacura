@@ -154,7 +154,7 @@ class TaskManager:
         """This is the actual queue runner routine"""
 
         if self._command_inserter is None:
-            log.error(f"No command inserter")
+            log.error("No command inserter")
             return
 
         self._remove_timeouts()

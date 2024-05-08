@@ -745,7 +745,7 @@ class NodeInfo(Container):
         def format_location_info(location: tuple[str, int | None] | None) -> Text:
             """Shows a link to open the the source code where a style is set."""
             if location is None:
-                return Text.styled(f"(unknown location)", "#808080")
+                return Text.styled("(unknown location)", "#808080")
             else:
                 file, line_number = location
                 action = f"open_file({file!r}, {line_number!r})"

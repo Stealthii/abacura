@@ -86,7 +86,7 @@ class PluginHelper(Plugin):
         for r in registrations:
             rows.append((r.registration_type, r.name, r.callback.__qualname__, r.details))
 
-        tbl = tabulate(rows, headers=["Type", "Name", "Callback", "Details"], title=f"Registered Callbacks")
+        tbl = tabulate(rows, headers=["Type", "Name", "Callback", "Details"], title="Registered Callbacks")
 
         self.output(AbacuraPanel(tbl, title=f"{plugin_module.import_path}.{loaded_plugin.get_name()}"))
 
