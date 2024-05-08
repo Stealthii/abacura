@@ -10,6 +10,7 @@ ignore = [
     "COM812", # Allow missing-trailing-comma
     "D203",   # Enable no-blank-line-before-class (D211)
     "D212",   # Enable multi-line-summary-second-line (D213)
+    "PD",     # pandas-vet (false-positives)
     # TODO: Enable the following sets when possible
     "A",    # flake8-builtins
     "ANN",  # flake8-annotations
@@ -26,7 +27,6 @@ ignore = [
     "FIX",  # flake8-fixme
     "INP",  # flake8-no-pep420
     "N",    # pep8-naming
-    "PD",   # pandas-vet
     "PERF", # perflint
     "PGH",  # pygrep-hooks
     "PIE",  # flake8-pie
