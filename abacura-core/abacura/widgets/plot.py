@@ -55,8 +55,9 @@ class PlotApp(App):
 
     @on(Button.Pressed, "#shift")
     def shift_data(self, event: Button.Pressed) -> None:
+        rng = np.random.default_rng()
         x = np.linspace(0, 2 * np.pi, 100)
-        y = np.sin(x + np.random.uniform(0, np.pi))
+        y = np.sin(x + rng.uniform(0, np.pi))
         self.query_one("#plot").set_data(x, y)
 
 
