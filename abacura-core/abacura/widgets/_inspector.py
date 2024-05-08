@@ -811,7 +811,6 @@ class NodeInfo(Container):
                         break
             except KeyError:
                 path = None
-                pass
             if path is not None and ":" in path:
                 path, widget_name = path.rsplit(":", 1)
                 # parse the python file to find the line number of the widget definition
