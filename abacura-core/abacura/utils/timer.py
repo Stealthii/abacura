@@ -1,7 +1,7 @@
 import time
 from contextlib import ContextDecorator
 from dataclasses import dataclass, field
-from typing import Any, Callable, ClassVar, Dict, Optional
+from typing import Callable, ClassVar, Dict, Optional
 
 
 class TimerError(Exception):
@@ -53,6 +53,6 @@ class Timer(ContextDecorator):
         self.start()
         return self
 
-    def __exit__(self, *exc_info: Any) -> None:
+    def __exit__(self, *exc_info: object) -> None:
         """Stop the context manager timer"""
         self.stop()
