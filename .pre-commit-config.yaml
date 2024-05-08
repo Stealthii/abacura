@@ -11,3 +11,10 @@ repos:
       - id: check-merge-conflict
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.4.3
+    hooks:
+      # Linting
+      - id: ruff
+      # Formatting
+      - id: ruff-format
