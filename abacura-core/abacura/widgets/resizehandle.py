@@ -70,7 +70,8 @@ class ResizeHandle(Widget):
     def on_mouse_move(self, event: events.MouseMove) -> None:
         if not self._resizing:
             return
-        assert self._start_size is not None and self._start_mouse_position is not None
+        assert self._start_size is not None
+        assert self._start_mouse_position is not None
         diff = event.screen_offset - self._start_mouse_position
         match self._side:
             case "left":
