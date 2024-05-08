@@ -63,7 +63,7 @@ class KallistiScreen(SessionScreen):
         yield self.footer
 
         if self.session.abacura.inspector:
-            from abacura.widgets._inspector import Inspector
+            from abacura.widgets import Inspector
 
             inspector = Inspector()
             inspector.display = False
