@@ -1,16 +1,19 @@
 import time
+from typing import TYPE_CHECKING
 
 from rich.text import Text
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Grid, Horizontal
-from textual.timer import Timer
 from textual.widgets import Checkbox, Input, Label, RichLog, Select
 
 from abacura.plugins import CommandError, Plugin, command
 from abacura.screens import AbacuraWindow
 from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, Group, OutputColors, tabulate
 from abacura.utils.ring_buffer import RingBufferLogSql
+
+if TYPE_CHECKING:
+    from textual.timer import Timer
 
 
 class LogSearcher:

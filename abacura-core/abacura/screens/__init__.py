@@ -5,8 +5,6 @@ from __future__ import annotations
 # TODO: screen and widget definitions should go under the hierarchy, not in __init__
 from typing import TYPE_CHECKING
 
-from textual import events
-from textual.app import ComposeResult
 from textual.containers import Container
 from textual.screen import Screen
 from textual.widgets import Header, RichLog
@@ -17,6 +15,9 @@ from abacura.widgets.footer import AbacuraFooter
 from abacura.widgets.sidebar import Sidebar
 
 if TYPE_CHECKING:
+    from textual import events
+    from textual.app import ComposeResult
+
     from abacura.mud.session import Session
 
 

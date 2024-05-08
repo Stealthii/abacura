@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import re
 import time
 from datetime import datetime
@@ -17,7 +16,6 @@ from textual.css.query import NoMatches
 from textual.strip import Strip
 from textual.widgets import RichLog
 
-from abacura.config import Config
 from abacura.mud import BaseSession, OutputMessage
 from abacura.mud.logger import AbacuraLogger
 from abacura.mud.options.msdp import MSDP
@@ -31,7 +29,10 @@ from abacura.utils.renderables import AbacuraPanel, tabulate
 from abacura.utils.ring_buffer import RingBufferLogSql
 
 if TYPE_CHECKING:
+    from asyncio import StreamWriter
+
     from abacura.abacura import Abacura
+    from abacura.config import Config
 
 speedwalk_pattern = r"^(\d*[neswud])+$"
 speedwalk_step_pattern = r"\d*[neswud]"
@@ -61,7 +62,7 @@ class Session(BaseSession):
         self.name = name
         self.host: str | None = None
         self.port: int | None = None
-        self.writer: asyncio.StreamWriter | None = None
+        self.writer: StreamWriter | None = None
         self.tl: RichLog | None = None
         self.debugtl: RichLog | None = None
         self.output_history: FIFOBuffer = FIFOBuffer(1000)

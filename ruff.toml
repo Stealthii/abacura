@@ -37,7 +37,6 @@ ignore = [
     "SIM",  # flake8-simplify
     "SLF",  # flake8-self
     "T20",  # flake8-print
-    "TCH",  # flake8-type-checking
     "TD",   # flake8-todos
     "TRY",  # tryceratops
     "UP",   # pyupgrade

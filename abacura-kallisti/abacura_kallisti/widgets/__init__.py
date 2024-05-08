@@ -5,23 +5,23 @@ from __future__ import annotations
 from importlib import import_module
 from typing import TYPE_CHECKING
 
-from textual.widget import Widget
-
 from abacura_kallisti.case import camel_to_snake
 
+from ._indeterminate_progress_bar import IndeterminateProgressBar
+from ._lokaffects import LOKAffects
+from ._lokcharacter import LOKCharacter
+from ._lokcombat import LOKCombat
+from ._lokexperience import LOKExperience
+from ._lokgroup import LOKGroup
+from ._lokleft import LOKLeft
+from ._lokmap import LOKMap
+from ._lokodometer import LOKOdometer
+from ._lokright import LOKRight
+from ._loktask_queue import LOKTaskQueue
+from ._lokzone import LOKZone
+
 if TYPE_CHECKING:
-    from ._indeterminate_progress_bar import IndeterminateProgressBar
-    from ._lokaffects import LOKAffects
-    from ._lokcharacter import LOKCharacter
-    from ._lokcombat import LOKCombat
-    from ._lokexperience import LOKExperience
-    from ._lokgroup import LOKGroup
-    from ._lokleft import LOKLeft
-    from ._lokmap import LOKMap
-    from ._lokodometer import LOKOdometer
-    from ._lokright import LOKRight
-    from ._loktask_queue import LOKTaskQueue
-    from ._lokzone import LOKZone
+    from textual.widget import Widget
 
 __all__ = [
     "LOKAffects",

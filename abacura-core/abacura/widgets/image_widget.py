@@ -2,10 +2,10 @@ import sys
 from dataclasses import dataclass
 from functools import lru_cache
 from itertools import groupby
+from typing import TYPE_CHECKING
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
-from PIL.Image import Image
 from rich.color import Color
 from rich.segment import Segment
 from rich.style import Style
@@ -13,6 +13,9 @@ from textual import events
 from textual.app import App, ComposeResult
 from textual.strip import Strip
 from textual.widget import Widget
+
+if TYPE_CHECKING:
+    from PIL.Image import Image
 
 
 @dataclass

@@ -3,14 +3,14 @@ from __future__ import annotations
 import inspect
 import re
 from queue import PriorityQueue
-from typing import TYPE_CHECKING, Callable, Match
+from typing import TYPE_CHECKING, Match
 
 from textual import log
 
 from abacura.mud import OutputMessage
 
 if TYPE_CHECKING:
-    pass
+    from typing import Callable
 
 
 class ActionError(Exception):

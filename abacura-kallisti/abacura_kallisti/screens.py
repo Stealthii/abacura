@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from textual import events
-from textual.app import ComposeResult
 from textual.containers import Container, Grid
 from textual.screen import ModalScreen
 from textual.widgets import Button, Header
@@ -17,6 +15,9 @@ from abacura.widgets.footer import AbacuraFooter
 from abacura_kallisti.widgets import LOKLeft, LOKMap, LOKRight
 
 if TYPE_CHECKING:
+    from textual import events
+    from textual.app import ComposeResult
+
     from abacura.mud.session import Session
 
 

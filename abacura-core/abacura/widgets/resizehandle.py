@@ -1,12 +1,18 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import TYPE_CHECKING
 
 from rich.segment import Segment
-from textual import events
-from textual.geometry import Offset, Size
 from textual.strip import Strip
 from textual.widget import Widget
+
+if TYPE_CHECKING:
+    from typing import Literal
+
+    from textual import events
+    from textual.geometry import Offset, Size
+
+    Side = Literal["left", "right", "top", "bottom"]
 
 
 class ResizeHandle(Widget):
@@ -35,7 +41,7 @@ class ResizeHandle(Widget):
     def __init__(
         self,
         target: Widget,
-        side: Literal["left", "right", "top", "bottom"],
+        side: Side,
         *,
         name: str | None = None,
         id: str | None = None,
@@ -47,7 +53,7 @@ class ResizeHandle(Widget):
         self._resizing = False
         self._start_size: Size | None = None
         self._start_mouse_position: Offset | None = None
-        self._side: Literal["left", "right", "top", "bottom"] = side
+        self._side: Side = side
         self._horizontal_resize = side in ("left", "right")
         self.styles.dock = side  # type: ignore
 

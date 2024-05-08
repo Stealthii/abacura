@@ -5,14 +5,17 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from rich.text import Text
 from textual.widgets import RichLog
 
-from abacura.mud import OutputMessage
 from abacura.plugins import CommandError, action, command
 from abacura.plugins.events import AbacuraMessage
 from abacura_kallisti.plugins import LOKPlugin
+
+if TYPE_CHECKING:
+    from abacura.mud import OutputMessage
 
 
 @dataclass

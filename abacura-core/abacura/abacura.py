@@ -8,14 +8,13 @@ from typing import TYPE_CHECKING
 import click
 from textual.app import App
 from textual.binding import Binding
-from textual.screen import Screen
 
 from abacura.config import Config
 from abacura.mud.session import Session
 from abacura.utils import pycharm
 
 if TYPE_CHECKING:
-    pass
+    from textual.screen import Screen
 
 
 class Abacura(App):

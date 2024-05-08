@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 import rich.box as box
 from rich.table import Table
-from textual.app import ComposeResult, RenderResult
 from textual.reactive import reactive
 from textual.widgets import Static
 
@@ -13,7 +12,7 @@ from abacura.plugins.events import event
 from abacura.utils import human_format
 
 if TYPE_CHECKING:
-    pass
+    from textual.app import ComposeResult, RenderResult
 
 
 class LOKCharacter(Static):

@@ -5,14 +5,10 @@ from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
 from importlib.util import find_spec
-from typing import TYPE_CHECKING
 
 from textual import log
 
 from abacura.plugins import Plugin
-
-if TYPE_CHECKING:
-    pass
 
 
 @dataclass

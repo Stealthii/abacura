@@ -20,10 +20,6 @@ class CommandError(Exception):
     pass
 
 
-if TYPE_CHECKING:
-    pass
-
-
 class Command:
     def __init__(self, source: object, callback: Callable, name: str, hide_help: bool = False):
         self.callback = callback

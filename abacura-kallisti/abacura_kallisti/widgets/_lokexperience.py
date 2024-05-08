@@ -2,16 +2,16 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from textual.app import ComposeResult
 from textual.reactive import reactive
 from textual.widgets import ProgressBar, Static
 
-from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
 from abacura_kallisti.mud.experience import LEVEL_VALUES
 
 if TYPE_CHECKING:
-    pass
+    from textual.app import ComposeResult
+
+    from abacura.mud.options.msdp import MSDPMessage
 
 
 class LOKExperience(Static):

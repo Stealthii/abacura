@@ -1,5 +1,6 @@
 import importlib
 from dataclasses import fields
+from typing import TYPE_CHECKING
 
 from rich.text import Text
 
@@ -7,8 +8,10 @@ import abacura.utils.renderables as tblt
 from abacura.plugins import CommandError, command
 from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, Group, tabulate
 from abacura_kallisti.atlas.wilderness import WildernessGrid
-from abacura_kallisti.atlas.world import Exit, Room
 from abacura_kallisti.plugins import LOKPlugin
+
+if TYPE_CHECKING:
+    from abacura_kallisti.atlas.world import Exit, Room
 
 
 class AreaController(LOKPlugin):
