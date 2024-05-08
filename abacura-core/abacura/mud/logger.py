@@ -2,8 +2,8 @@
 Logging module for sessions
 """
 
-from datetime import datetime
 import logging
+from datetime import datetime
 from pathlib import Path
 
 from abacura import Config

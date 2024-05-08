@@ -1,9 +1,10 @@
-from abacura.plugins.events import AbacuraMessage
 from dataclasses import dataclass
+from typing import Optional
+
+from abacura.plugins.events import AbacuraMessage
+
 from .room import Room
 from .world import World
-
-from typing import Optional
 
 
 @dataclass

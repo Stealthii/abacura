@@ -1,7 +1,7 @@
-from abacura.plugins import command, CommandError
+from abacura.plugins import CommandError, command
+from abacura.utils.renderables import AbacuraPanel, tabulate
 from abacura_kallisti.atlas.world import Room
 from abacura_kallisti.plugins import LOKPlugin
-from abacura.utils.renderables import tabulate, AbacuraPanel
 
 
 class LocationController(LOKPlugin):

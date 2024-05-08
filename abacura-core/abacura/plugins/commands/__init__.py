@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import inspect
-import shlex
-from typing import List, Dict, TYPE_CHECKING, Callable, Tuple
 import re
+import shlex
+from typing import TYPE_CHECKING, Callable, Dict, List, Tuple
 
 from rich.markup import escape
 from textual import log
-
 
 if TYPE_CHECKING:
     from abacura.mud.session import Session

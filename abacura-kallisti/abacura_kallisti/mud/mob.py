@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-
 RACE_CONSTRUCT = "construct"
 RACE_MINERAL = "mineral"
 RACE_UNDEAD = "undead"

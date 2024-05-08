@@ -1,11 +1,11 @@
 import time
 
 from abacura.plugins import command
-from abacura_kallisti.atlas.travel_guide import TravelGuide
+from abacura.utils.renderables import AbacuraPanel, Group, OutputColors, Text, tabulate
 from abacura_kallisti.atlas.room import Room
+from abacura_kallisti.atlas.travel_guide import TravelGuide
 from abacura_kallisti.plugins import LOKPlugin
 from abacura_kallisti.plugins.scripts.travel import TravelRequest, TravelResult
-from abacura.utils.renderables import tabulate, AbacuraPanel, Group, Text, OutputColors
 
 
 class TravelHelper(LOKPlugin):

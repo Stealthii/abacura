@@ -2,7 +2,6 @@ import re
 from functools import lru_cache
 from typing import List
 
-
 SURVEY_TERRAIN = {
     ". 0 32": "Field",
     ". 1 32": "Field",

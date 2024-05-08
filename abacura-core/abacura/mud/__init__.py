@@ -4,9 +4,10 @@ The mud module contains Session objects and protocol handlers
 
 import re
 import traceback
-from rich.traceback import Traceback
-from abacura.utils.renderables import AbacuraError, AbacuraWarning, Panel, box
 
+from rich.traceback import Traceback
+
+from abacura.utils.renderables import AbacuraError, AbacuraWarning, Panel, box
 
 ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 

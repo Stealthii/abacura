@@ -1,11 +1,11 @@
+import importlib
 import inspect
 import os
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
-import importlib
 from importlib.util import find_spec
-from typing import Dict, TYPE_CHECKING, List
-from collections import Counter
+from typing import TYPE_CHECKING, Dict, List
 
 from textual import log
 

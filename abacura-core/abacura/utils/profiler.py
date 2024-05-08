@@ -1,12 +1,12 @@
-from time import perf_counter_ns
-from dataclasses import dataclass
-import threading
 import sys
+import threading
 from collections import deque
+from dataclasses import dataclass
+from time import perf_counter_ns
 from typing import Dict
 
 try:
-    from resource import getrusage, RUSAGE_SELF
+    from resource import RUSAGE_SELF, getrusage
 except ImportError:
     RUSAGE_SELF = 0
 

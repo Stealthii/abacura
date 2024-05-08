@@ -8,14 +8,13 @@ from textual import events
 from textual.app import ComposeResult
 from textual.containers import Container, Grid
 from textual.screen import ModalScreen
-from textual.widgets import Header, Button
+from textual.widgets import Button, Header
 
-from abacura.screens import SessionScreen, AbacuraWindow
-from abacura.widgets import CommsLog
-from abacura.widgets import InputBar
+from abacura.screens import AbacuraWindow, SessionScreen
+from abacura.widgets import CommsLog, InputBar
 from abacura.widgets.debug import DebugDock
 from abacura.widgets.footer import AbacuraFooter
-from abacura_kallisti.widgets import LOKLeft, LOKRight, LOKMap
+from abacura_kallisti.widgets import LOKLeft, LOKMap, LOKRight
 
 if TYPE_CHECKING:
     from abacura.mud.session import Session

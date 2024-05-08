@@ -1,10 +1,10 @@
 """Common stuff for mud.events module"""
 
 import inspect
+from collections import Counter
 from dataclasses import dataclass, field
 from queue import PriorityQueue
-from typing import Dict, Callable
-from collections import Counter
+from typing import Callable, Dict
 
 from textual import log
 

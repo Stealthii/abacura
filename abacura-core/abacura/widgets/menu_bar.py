@@ -6,12 +6,11 @@ Intended for top of screen but you do you
 
 from typing import Callable
 
-
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.css.query import NoMatches
 from textual.events import Click
-from textual.widgets import Static, OptionList, Input
+from textual.widgets import Input, OptionList, Static
 
 
 class SubMenu(OptionList):

@@ -1,8 +1,8 @@
 """The Event plugin"""
 
-from abacura.plugins import Plugin, command, CommandError
+from abacura.plugins import CommandError, Plugin, command
 from abacura.plugins.events import AbacuraMessage
-from abacura.utils.renderables import tabulate, AbacuraPanel
+from abacura.utils.renderables import AbacuraPanel, tabulate
 
 
 class EventPlugin(Plugin):

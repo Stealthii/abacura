@@ -1,14 +1,13 @@
+from dataclasses import astuple, dataclass, fields, is_dataclass
 from itertools import zip_longest
-from rich.table import Table
+from typing import Iterable, Union
+
 from rich import box
-from rich.text import Text
 from rich.console import Group
 from rich.panel import Panel
 from rich.style import Style
-
-from typing import Iterable
-from dataclasses import dataclass, fields, is_dataclass, astuple
-from typing import Union
+from rich.table import Table
+from rich.text import Text
 
 
 @dataclass

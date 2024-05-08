@@ -3,7 +3,7 @@ import re
 
 from abacura.plugins import Plugin, command
 from abacura.plugins.commands import Command
-from abacura.utils.renderables import AbacuraPanel, tabulate, box, Group, Text, OutputColors
+from abacura.utils.renderables import AbacuraPanel, Group, OutputColors, Text, box, tabulate
 
 
 class CommandHelper(Plugin):

@@ -1,13 +1,11 @@
 from datetime import datetime
 
-from abacura_kallisti.plugins import LOKPlugin
-from abacura_kallisti.metrics.odometer import OdometerMessage
-
-from abacura.plugins import command, action, ticker
-from abacura.plugins.events import AbacuraMessage
-from abacura.plugins.events import event
+from abacura.plugins import action, command, ticker
+from abacura.plugins.events import AbacuraMessage, event
 from abacura.utils import human_format
-from abacura.utils.renderables import tabulate, AbacuraPanel
+from abacura.utils.renderables import AbacuraPanel, tabulate
+from abacura_kallisti.metrics.odometer import OdometerMessage
+from abacura_kallisti.plugins import LOKPlugin
 
 
 class OdometerController(LOKPlugin):

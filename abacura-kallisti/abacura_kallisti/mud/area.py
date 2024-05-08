@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass, field
 from functools import lru_cache
-from typing import Optional, List, Set, Dict
+from typing import Dict, List, Optional, Set
 
 import tomlkit
 

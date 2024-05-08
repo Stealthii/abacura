@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import inspect
 from datetime import datetime, timedelta
-from typing import List, TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING, Callable, List
 
 if TYPE_CHECKING:
     pass

@@ -1,12 +1,11 @@
 """Kallisti widget for displaying Group information"""
 
 from textual.app import ComposeResult
-from textual.widgets import Static, DataTable
+from textual.widgets import DataTable, Static
 
-
-from abacura.utils import percent_color
 from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
+from abacura.utils import percent_color
 
 
 class LOKGroup(Static):

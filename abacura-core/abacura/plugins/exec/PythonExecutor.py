@@ -1,12 +1,12 @@
 import ast
 import uuid
-from typing import Dict, Callable
+from typing import Callable, Dict
 
 from rich.panel import Panel
 from rich.pretty import Pretty
 
-from abacura.plugins import command, Plugin
-from abacura.plugins.events import event, AbacuraMessage
+from abacura.plugins import Plugin, command
+from abacura.plugins.events import AbacuraMessage, event
 
 
 class PythonExecutor(Plugin):

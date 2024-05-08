@@ -1,12 +1,12 @@
 """MSDP telnet option processor"""
 
-from dataclasses import dataclass
 import re
+from dataclasses import dataclass
 
 from textual import log
 
-from abacura.mud.options import IAC, SE, SB, TelnetOption
 from abacura.mud import OutputMessage
+from abacura.mud.options import IAC, SB, SE, TelnetOption
 from abacura.plugins.events import AbacuraMessage
 
 VAR = b"\x01"

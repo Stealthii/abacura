@@ -4,15 +4,13 @@ import os
 import re
 import time
 from dataclasses import dataclass
-
-from abacura_kallisti.plugins import LOKPlugin
-
 from typing import Dict
 
-from abacura.plugins.task_queue import TaskQueue
 from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins import action
-from abacura.plugins.events import event, AbacuraMessage
+from abacura.plugins.events import AbacuraMessage, event
+from abacura.plugins.task_queue import TaskQueue
+from abacura_kallisti.plugins import LOKPlugin
 
 xp_kill_re = re.compile("(.*) is dead!")
 

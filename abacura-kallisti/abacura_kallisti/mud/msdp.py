@@ -1,9 +1,10 @@
-from dataclasses import dataclass, field
-from abacura_kallisti.mud.group import Group
-from abacura_kallisti.mud.affect import Affect
-from abacura_kallisti.mud.skills import SKILL_COMMANDS, SKILLS
-from typing import List, Dict
 import re
+from dataclasses import dataclass, field
+from typing import Dict, List
+
+from abacura_kallisti.mud.affect import Affect
+from abacura_kallisti.mud.group import Group
+from abacura_kallisti.mud.skills import SKILL_COMMANDS, SKILLS
 
 
 @dataclass(slots=True)

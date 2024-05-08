@@ -5,7 +5,6 @@ This depends on the vertical resolution doubling patch to rich-pixels
 """
 
 from rich_pixels import Pixels
-
 from textual.widgets import Static
 
 

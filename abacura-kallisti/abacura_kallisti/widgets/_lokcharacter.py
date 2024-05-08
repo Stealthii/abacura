@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import rich.box as box
+from rich.table import Table
 from textual.app import ComposeResult, RenderResult
 from textual.reactive import reactive
 from textual.widgets import Static
-
-import rich.box as box
-from rich.table import Table
 
 from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event

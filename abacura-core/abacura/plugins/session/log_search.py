@@ -5,12 +5,12 @@ from textual import on
 from textual.app import ComposeResult
 from textual.containers import Grid, Horizontal
 from textual.timer import Timer
-from textual.widgets import Input, Label, RichLog, Select, Checkbox
+from textual.widgets import Checkbox, Input, Label, RichLog, Select
 
+from abacura.plugins import CommandError, Plugin, command
 from abacura.screens import AbacuraWindow
-from abacura.plugins import Plugin, command, CommandError
+from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, Group, OutputColors, tabulate
 from abacura.utils.ring_buffer import RingBufferLogSql
-from abacura.utils.renderables import tabulate, AbacuraPropertyGroup, AbacuraPanel, Group, OutputColors
 
 
 class LogSearcher:

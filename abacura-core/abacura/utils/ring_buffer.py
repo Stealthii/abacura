@@ -1,8 +1,9 @@
 import sqlite3
-from datetime import datetime
-from abacura.mud import OutputMessage
-from typing import Callable, Optional
 import time
+from datetime import datetime
+from typing import Callable, Optional
+
+from abacura.mud import OutputMessage
 
 
 class RingBufferLogSql:

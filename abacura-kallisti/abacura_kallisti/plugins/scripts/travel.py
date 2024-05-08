@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional, Callable
+from typing import Callable, Optional
 
 from abacura.plugins import action
-from abacura.plugins.events import event, AbacuraMessage
-from abacura_kallisti.atlas.room import RoomMessage, Room
+from abacura.plugins.events import AbacuraMessage, event
+from abacura_kallisti.atlas.room import Room, RoomMessage
 from abacura_kallisti.atlas.travel_guide import TravelGuide, TravelPath
 from abacura_kallisti.plugins import LOKPlugin
 

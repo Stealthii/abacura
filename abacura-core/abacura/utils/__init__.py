@@ -1,6 +1,6 @@
-from numbers import Real
-from collections import OrderedDict
 import re
+from collections import OrderedDict
+from numbers import Real
 
 _pct_colors = OrderedDict()
 _pct_colors[80] = "green"

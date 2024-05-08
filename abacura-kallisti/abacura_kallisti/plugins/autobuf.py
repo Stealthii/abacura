@@ -3,13 +3,12 @@
 from time import monotonic
 from typing import Dict, Optional
 
-
-from abacura.plugins import command, action
-from abacura.plugins.events import event, AbacuraMessage
+from abacura.plugins import action, command
+from abacura.plugins.events import AbacuraMessage, event
+from abacura.utils.renderables import AbacuraPanel, Group, OutputColors, Text, tabulate
 from abacura_kallisti.mud.player import PlayerSkill
-from abacura_kallisti.mud.skills import SKILLS, Skill, SKILL_COMMANDS
+from abacura_kallisti.mud.skills import SKILL_COMMANDS, SKILLS, Skill
 from abacura_kallisti.plugins import LOKPlugin
-from abacura.utils.renderables import AbacuraPanel, tabulate, Group, Text, OutputColors
 
 
 class AutoBuff(LOKPlugin):
@@ -174,8 +173,8 @@ class AutoBuff(LOKPlugin):
         self.getting_skills = False
 
     def affects(self):
-        from rich.text import Text
         from rich.columns import Columns
+        from rich.text import Text
 
         affects = []
         for affect in self.msdp.affects:

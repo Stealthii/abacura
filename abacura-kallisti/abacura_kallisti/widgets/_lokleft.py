@@ -3,10 +3,9 @@
 from textual.app import ComposeResult
 from textual.containers import Container
 
-from abacura_kallisti.widgets import LOKCharacter, LOKExperience, LOKAffects, LOKOdometer
-
-from abacura.widgets.sidebar import Sidebar
 from abacura.widgets.resizehandle import ResizeHandle
+from abacura.widgets.sidebar import Sidebar
+from abacura_kallisti.widgets import LOKAffects, LOKCharacter, LOKExperience, LOKOdometer
 
 
 class LOKLeft(Sidebar):

@@ -3,7 +3,7 @@ from collections import Counter
 from rich.text import Text
 
 from abacura.plugins import Plugin, command
-from abacura.utils.renderables import tabulate, AbacuraPanel, AbacuraWarning, OutputColors
+from abacura.utils.renderables import AbacuraPanel, AbacuraWarning, OutputColors, tabulate
 
 
 class PluginHelper(Plugin):

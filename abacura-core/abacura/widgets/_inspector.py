@@ -33,10 +33,10 @@ import inspect
 import os
 from typing import Any, Iterable, NamedTuple, Optional, Type, TypeGuard
 
+from rich.highlighter import ReprHighlighter
 from rich.markup import escape
 from rich.style import Style
 from rich.text import Text
-from rich.highlighter import ReprHighlighter
 
 # from rich.syntax import Syntax
 from textual import events
@@ -51,13 +51,13 @@ from textual.errors import NoWidget
 from textual.geometry import Offset, Region
 from textual.message import Message
 from textual.reactive import var
-
 from textual.widget import Widget
-from textual.widgets import Button, Static, TabPane, TabbedContent, Tree
+from textual.widgets import Button, Static, TabbedContent, TabPane, Tree
 from textual.widgets.tree import TreeNode
-# from textual.css._style_properties import BorderDefinition
 
+# from textual.css._style_properties import BorderDefinition
 from abacura.widgets.resizehandle import ResizeHandle
+
 # from launch_editor import launch_editor
 
 # Instrument style setting in order to link to the source code where inline styles are set.
@@ -355,9 +355,9 @@ class PropertiesTree(Tree[object]):
     @property
     def AAA_deal_with_it(self) -> dict[str, Any]:
         """This property gives a grab bag of different types to test the tree."""
+        import traceback
         from enum import Enum
         from typing import NamedTuple
-        import traceback
 
         return {
             "a_string": "DEAL WITH IT 😎",

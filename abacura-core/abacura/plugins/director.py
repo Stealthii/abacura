@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, List, Callable
+from typing import TYPE_CHECKING, Callable, List
 
 from abacura.plugins.actions import ActionManager
 from abacura.plugins.aliases.manager import AliasManager

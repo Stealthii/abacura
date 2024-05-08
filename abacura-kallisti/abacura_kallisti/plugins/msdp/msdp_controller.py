@@ -7,12 +7,11 @@ from dataclasses import asdict, fields
 from rich.panel import Panel
 from rich.pretty import Pretty
 
+from abacura.mud.options.msdp import MSDPMessage
+from abacura.plugins import CommandError, command
+from abacura.plugins.events import event
 from abacura_kallisti.mud.affect import Affect
 from abacura_kallisti.plugins import LOKPlugin
-
-from abacura.mud.options.msdp import MSDPMessage
-from abacura.plugins import command, CommandError
-from abacura.plugins.events import event
 
 
 # TODO: disable the abacura @msdp command and let's implement it here

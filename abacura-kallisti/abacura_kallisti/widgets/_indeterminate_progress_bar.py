@@ -1,10 +1,9 @@
 import random
 
-
 from textual.app import ComposeResult
 from textual.timer import Timer
 from textual.widget import Widget
-from textual.widgets import Static, ProgressBar
+from textual.widgets import ProgressBar, Static
 
 
 class IndeterminateProgressBar(Widget):

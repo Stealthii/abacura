@@ -1,7 +1,7 @@
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional, List, Dict
-from collections import Counter
+from typing import Dict, List, Optional
 
 
 @dataclass(slots=True)

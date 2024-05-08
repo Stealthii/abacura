@@ -1,13 +1,12 @@
 import heapq
 from dataclasses import dataclass
-from typing import Dict, Set, List, Generator, Callable
-from itertools import groupby
+from itertools import chain, groupby
+from typing import Callable, Dict, Generator, List, Set
 
+from abacura_kallisti.atlas.room import Area, Exit, Room
 from abacura_kallisti.atlas.wilderness import WildernessGrid
 from abacura_kallisti.atlas.world import World
-from abacura_kallisti.atlas.room import Exit, Room, Area
 from abacura_kallisti.mud.player import PlayerCharacter
-from itertools import chain
 
 HOMETOWN = "Midgaard City"
 HOME_AREA_NAME = "Mortal Residences"

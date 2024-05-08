@@ -4,10 +4,11 @@ Player structure
 Includes current player information, and preferences
 """
 
-from dataclasses import dataclass, field, fields
 import os
+from dataclasses import dataclass, field, fields
 from typing import Dict
-from tomlkit import parse, TOMLDocument, document, table
+
+from tomlkit import TOMLDocument, document, parse, table
 
 # class Consumable:
 #     short_name: str = ''

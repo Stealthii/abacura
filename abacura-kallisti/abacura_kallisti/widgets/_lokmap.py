@@ -2,6 +2,8 @@
 LOK Map Widget
 """
 
+from dataclasses import dataclass
+from functools import lru_cache
 from typing import Optional
 
 from rich.color import Color, ColorType
@@ -17,11 +19,9 @@ from textual.widgets import Static
 
 from abacura.plugins.events import event
 from abacura.widgets.resizehandle import ResizeHandle
+from abacura_kallisti.atlas.bfs import BFS
 from abacura_kallisti.atlas.messages import MapUpdateMessage, MapUpdateRequest
 from abacura_kallisti.atlas.room import Room
-from abacura_kallisti.atlas.bfs import BFS
-from dataclasses import dataclass
-from functools import lru_cache
 
 
 @dataclass(eq=True, frozen=True, slots=True)

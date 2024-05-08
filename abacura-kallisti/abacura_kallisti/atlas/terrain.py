@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from typing import Dict
 from functools import lru_cache
+from typing import Dict
 
 
 @dataclass(slots=True)

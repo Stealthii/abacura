@@ -1,10 +1,9 @@
+import re
 from dataclasses import dataclass
 from enum import Enum
-import re
 
-from abacura_kallisti.plugins import LOKPlugin
 from abacura.plugins import command
-
+from abacura_kallisti.plugins import LOKPlugin
 
 item_re = re.compile(r"(\x1b\[0m)?\x1b\[0;37m[^\x1b ]")
 

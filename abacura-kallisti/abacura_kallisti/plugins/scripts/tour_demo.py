@@ -1,12 +1,12 @@
 from typing import Optional
 
-from abacura.plugins import command, CommandError
+from rich.table import Table
+
+from abacura.plugins import CommandError, command
 from abacura.plugins.events import event
 from abacura_kallisti.atlas.room import RoomMessage
 from abacura_kallisti.atlas.tour_guide import TourGuide
 from abacura_kallisti.plugins import LOKPlugin
-
-from rich.table import Table
 
 
 class TourDemo(LOKPlugin):

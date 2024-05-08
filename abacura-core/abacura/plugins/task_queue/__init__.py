@@ -5,11 +5,11 @@ Tracks last command, calculates delay, and issues commands in priority order,
 depending on the combat situation.
 """
 
-from dataclasses import dataclass, field
 import bisect
-from time import monotonic
-from typing import Optional, Callable, Dict
 import itertools
+from dataclasses import dataclass, field
+from time import monotonic
+from typing import Callable, Dict, Optional
 
 from textual import log
 

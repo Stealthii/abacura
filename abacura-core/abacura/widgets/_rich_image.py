@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import lru_cache
 from itertools import groupby
 from pathlib import Path, PurePath
-from typing import Tuple, Union, Optional, List
+from typing import List, Optional, Tuple, Union
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
@@ -14,7 +14,6 @@ from rich.console import Console, ConsoleOptions, RenderResult
 from rich.live import Live
 from rich.segment import Segment
 from rich.style import Style
-
 from textual.timer import Timer
 from textual.widgets import Static
 

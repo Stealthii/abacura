@@ -1,4 +1,5 @@
 import asyncio
+
 from textual import log
 
 from abacura.mud.options import GA, TelnetOption

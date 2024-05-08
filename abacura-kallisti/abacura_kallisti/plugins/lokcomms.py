@@ -1,16 +1,17 @@
 """LOK Communications plugins"""
 
 from __future__ import annotations
+
+import re
 from dataclasses import dataclass
 from datetime import datetime
-import re
 from typing import Optional
 
 from rich.text import Text
 from textual.widgets import RichLog
 
 from abacura.mud import OutputMessage
-from abacura.plugins import action, command, CommandError
+from abacura.plugins import CommandError, action, command
 from abacura.plugins.events import AbacuraMessage
 from abacura_kallisti.plugins import LOKPlugin
 

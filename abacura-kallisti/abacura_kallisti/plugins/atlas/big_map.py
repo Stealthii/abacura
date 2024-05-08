@@ -2,8 +2,8 @@ from textual.app import ComposeResult
 from textual.containers import Grid
 from textual.widgets import Input
 
-from abacura.screens import AbacuraWindow
 from abacura.plugins import Plugin, command
+from abacura.screens import AbacuraWindow
 from abacura_kallisti.widgets import LOKMap
 
 

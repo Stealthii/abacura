@@ -1,6 +1,5 @@
+from abacura.plugins import CommandError, Plugin, command
 from abacura.utils.renderables import AbacuraPanel, tabulate
-
-from abacura.plugins import Plugin, command, CommandError
 
 
 class AliasCommand(Plugin):

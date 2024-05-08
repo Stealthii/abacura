@@ -2,18 +2,18 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Callable, Dict
 
-from abacura.plugins.actions import Action
-from abacura.plugins.director import Director
-from abacura.plugins.tickers import Ticker
-from abacura.plugins.commands import CommandError, CommandArgumentError
-from abacura.plugins.task_queue import TaskManager
-from abacura.utils.fifo_buffer import FIFOBuffer
 from abacura.mud import OutputMessage
+from abacura.plugins.actions import Action
+from abacura.plugins.commands import CommandArgumentError, CommandError
+from abacura.plugins.director import Director
+from abacura.plugins.task_queue import TaskManager
+from abacura.plugins.tickers import Ticker
+from abacura.utils.fifo_buffer import FIFOBuffer
 
 if TYPE_CHECKING:
+    from abacura.config import Config
     from abacura.mud.options.msdp import MSDP
     from abacura.mud.session import Session
-    from abacura.config import Config
 
 
 class ContextProvider:

@@ -1,12 +1,11 @@
 """Kallisti widget for displaying Task Queue information"""
 
 from textual.app import ComposeResult
-from textual.widgets import Static, DataTable
+from textual.widgets import DataTable, Static
 
-
+from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
 from abacura.plugins.task_queue import CQMessage
-from abacura.mud.options.msdp import MSDPMessage
 
 
 class LOKTaskQueue(Static):

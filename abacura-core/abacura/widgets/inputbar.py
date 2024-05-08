@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 # TODO: screen and widget definitions should go under the hierarchy, not in __init__
-from typing import TYPE_CHECKING, Coroutine, Any
+from typing import TYPE_CHECKING, Any, Coroutine
 
 from textual import on
 from textual.binding import Binding
@@ -11,7 +11,7 @@ from textual.message import Message
 from textual.suggester import Suggester
 from textual.widgets import Input
 
-from abacura.plugins.events import event, AbacuraMessage
+from abacura.plugins.events import AbacuraMessage, event
 
 if TYPE_CHECKING:
     pass

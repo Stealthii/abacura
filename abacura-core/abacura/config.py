@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from tomlkit import parse, TOMLDocument
+from tomlkit import TOMLDocument, parse
 
 DEFAULT_GLOBAL_CONFIG = {
     "module_paths": [],

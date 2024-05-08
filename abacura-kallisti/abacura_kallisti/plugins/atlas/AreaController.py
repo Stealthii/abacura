@@ -4,10 +4,10 @@ from dataclasses import fields
 from rich.text import Text
 
 import abacura.utils.renderables as tblt
-from abacura.plugins import command, CommandError
-from abacura.utils.renderables import tabulate, AbacuraPropertyGroup, AbacuraPanel, Group
+from abacura.plugins import CommandError, command
+from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, Group, tabulate
 from abacura_kallisti.atlas.wilderness import WildernessGrid
-from abacura_kallisti.atlas.world import Room, Exit
+from abacura_kallisti.atlas.world import Exit, Room
 from abacura_kallisti.plugins import LOKPlugin
 
 

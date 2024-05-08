@@ -1,8 +1,8 @@
 import importlib
 import io
 
-from abacura.plugins import Plugin, command, CommandError
-from abacura.utils.renderables import tabulate, AbacuraPanel
+from abacura.plugins import CommandError, Plugin, command
+from abacura.utils.renderables import AbacuraPanel, tabulate
 
 
 class Profiler(Plugin):

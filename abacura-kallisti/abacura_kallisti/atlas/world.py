@@ -3,11 +3,10 @@ import sqlite3
 from dataclasses import fields
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
 
-from .room import ScannedRoom, Exit, Room
+from .room import Exit, Room, ScannedRoom
 from .wilderness import WildernessGrid
-
 
 # TODO: Use the abacura methods for strip_ansi_codes
 ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")

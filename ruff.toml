@@ -8,4 +8,6 @@ select = [
     "E", # pycodestyle
     "W", # pycodestyle
     "F", # Pyflakes
+    "I", # isort
 ]
+isort.known-first-party = ["abacura", "abacura_kallisti"]

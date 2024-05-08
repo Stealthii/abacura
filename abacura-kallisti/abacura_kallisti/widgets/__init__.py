@@ -10,18 +10,18 @@ from textual.widget import Widget
 from ..case import camel_to_snake
 
 if TYPE_CHECKING:
+    from ._indeterminate_progress_bar import IndeterminateProgressBar
+    from ._lokaffects import LOKAffects
     from ._lokcharacter import LOKCharacter
     from ._lokcombat import LOKCombat
     from ._lokexperience import LOKExperience
-    from ._indeterminate_progress_bar import IndeterminateProgressBar
-    from ._lokleft import LOKLeft
-    from ._lokright import LOKRight
-    from ._lokmap import LOKMap
-    from ._lokzone import LOKZone
     from ._lokgroup import LOKGroup
-    from ._lokaffects import LOKAffects
-    from ._loktask_queue import LOKTaskQueue
+    from ._lokleft import LOKLeft
+    from ._lokmap import LOKMap
     from ._lokodometer import LOKOdometer
+    from ._lokright import LOKRight
+    from ._loktask_queue import LOKTaskQueue
+    from ._lokzone import LOKZone
 
 __all__ = [
     "LOKAffects",

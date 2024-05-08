@@ -4,8 +4,8 @@ from rich.text import Text
 
 import abacura.utils.renderables as tblt
 from abacura.plugins import command
-from abacura.plugins.events import event, AbacuraMessage
-from abacura.utils.renderables import tabulate, AbacuraPropertyGroup, AbacuraPanel, Group, OutputColors, Style
+from abacura.plugins.events import AbacuraMessage, event
+from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, Group, OutputColors, Style, tabulate
 from abacura_kallisti.atlas.messages import MapUpdateMessage, MapUpdateRequest
 from abacura_kallisti.atlas.wilderness import WildernessGrid
 from abacura_kallisti.atlas.world import Room

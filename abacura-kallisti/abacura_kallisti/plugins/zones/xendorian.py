@@ -1,7 +1,7 @@
 from abacura.plugins import action, command
-from abacura_kallisti.plugins import LOKPlugin
+from abacura.utils.renderables import AbacuraPanel, tabulate
 from abacura_kallisti.atlas.room import Exit
-from abacura.utils.renderables import tabulate, AbacuraPanel
+from abacura_kallisti.plugins import LOKPlugin
 
 
 class XendorianOutpost(LOKPlugin):
