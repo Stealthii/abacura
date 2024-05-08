@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
-# script to import tt map data to sqlite
+"""script to import tt map data to sqlite
 
-"""
 Tables:
 CREATE TABLE exits(from_vnum,direction,to_vnum,door,closes,locks,key_name,weight,max_level,min_level,deathtrap,
     commands, PRIMARY KEY (from_vnum, direction))
@@ -19,11 +18,9 @@ parse map file for rooms with room info
 exits with exit info
 don't need room_tracking
 
-"""
+note: room 24736 has a command west to transfer to aartuat, but it doesn't match the msdp exit vnum
+can only go that way if level 50 or higher
 
-# note: room 24736 has a command west to transfer to aartuat, but it doesn't match the msdp exit vnum
-# can only go that way if level 50 or higher
-"""
 Sample rooms:
 
 R = room
@@ -38,7 +35,6 @@ E {  205} {n} {n} {1} {0} {} {1.000} {} {0.00}
 E {  207} {w} {w} {8} {0} {} {1.000} {} {0.00}
 
 """
-
 
 import re
 import sqlite3

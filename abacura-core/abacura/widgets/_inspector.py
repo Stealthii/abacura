@@ -6,7 +6,7 @@ __author__ = "Isaiah Odhner"
 __email__ = "isaiahodhner@gmail.com"
 __version__ = "0.0.0"
 __license__ = "MIT"
-"""
+__copyright__ = """
 Copyright (c) 2023 Isaiah Odhner
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
