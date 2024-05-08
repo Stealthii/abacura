@@ -49,7 +49,7 @@ class Plugin:
 
     def get_name(self):
         return self.__class__.__name__
-    
+
     def get_help(self):
         doc = getattr(self, '__doc__', None)
         return doc
@@ -85,7 +85,7 @@ def action(pattern: str, flags: int = 0, color: bool = False, priority: int = 0)
         action_fn.action_flags = flags
         action_fn.action_priority = priority
         return action_fn
-    
+
     return add_action
 
 

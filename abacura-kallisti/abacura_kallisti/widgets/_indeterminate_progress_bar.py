@@ -20,7 +20,7 @@ class IndeterminateProgressBar(Widget):
     def compose(self) -> ComposeResult:
         yield Static("Remort Progress", classes="WidgetTitle")
         yield ProgressBar(show_eta=True, show_percentage=True)
-        
+
 
     def on_mount(self) -> None:
         """Set up a timer to simulate progess happening."""

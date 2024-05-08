@@ -31,7 +31,7 @@ class AbacuraLogger:
     def info(self, msg, **kwargs):
         if self.logger:
             self.logger.info(msg, *kwargs)
-       
+
     def warn(self, msg, **kwargs):
         if self.logger:
             self.logger.warning(msg, *kwargs)
@@ -39,4 +39,3 @@ class AbacuraLogger:
     def error(self, msg, **kwargs):
         if self.logger:
             self.logger.error(msg, *kwargs)
-

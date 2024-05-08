@@ -64,7 +64,7 @@ class LOKComms(LOKPlugin):
     #comms toggle for comms log (not mud output window)
     comms_toggles = {}
     comms_gag_entities = []
-    
+
     for channel in channels:
         comms_toggles[channel] = 'on'
 
@@ -86,7 +86,7 @@ class LOKComms(LOKPlugin):
         if account == None:
             account = 'None'
         self.comms_log(channel, speaker, msg)
-    
+
     #<Market: the MGSE supervisor> 'Lapis Lazuli stocks went up 10.  Trading at 130 now.'
     # Market info is a different pattern and gets different channel assignment
     @action (r"^<Market: the MGSE supervisor> (.*)", color=False)
@@ -118,20 +118,20 @@ class LOKComms(LOKPlugin):
     @action(r"^(You) cchat, '(.*)'", color=False)
     def comms_clan_self(self, speaker: str, message: str, msg: OutputMessage):
         channel = 'clan'
-        self.comms_log(channel, speaker, msg) 
+        self.comms_log(channel, speaker, msg)
 
     @action(r"^{RolePlay: (\w+)} '(.*)'", color=False)
     def comms_roleplay(self, speaker: str, message: str, msg: OutputMessage):
         channel = 'roleplay'
-        self.comms_log(channel, speaker, msg) 
+        self.comms_log(channel, speaker, msg)
 
     @action(r"^<Gemote> '(.*)'", color=False)
     def comms_gemote(self, msg: OutputMessage):
         """Gemote speaker is indeterminate"""
         channel = 'gemote'
         speaker = ''
-        self.comms_log(channel, speaker, msg) 
-    
+        self.comms_log(channel, speaker, msg)
+
     #You shout, 'huehue'
     #Whitechain shouts, 'huehue'
     @action(r"^(\w+) (shout|shouts), '(.*)'", color=False)
@@ -155,7 +155,7 @@ class LOKComms(LOKPlugin):
     def comms_immchat(self, speaker: str, account: str, message: str, msg: OutputMessage):
         channel = 'imm'
         self.comms_log(channel, speaker, msg)
-    
+
     #imms see requests this way
     #[Whitechain (Goliath) Requests:] 'huehue'
     @action(r"^\[(\w+) (\(.*\)) Requests:] ('.*)'", color=False)
@@ -195,7 +195,7 @@ class LOKComms(LOKPlugin):
     def comms_whisper(self, speaker: str, message: str, msg: OutputMessage):
         channel = 'whisper'
         listener = 'You'
-        self.comms_log(channel, speaker, msg) 
+        self.comms_log(channel, speaker, msg)
 
     """
     You tell Vajra (Anicca){Rp}, 'huehue'
@@ -211,7 +211,7 @@ class LOKComms(LOKPlugin):
             acct = _listener[1]
             acct = re.sub("\(|\)", '', acct)
             listener = _listener[0]
-        self.comms_log(channel, speaker, msg)  
+        self.comms_log(channel, speaker, msg)
 
     """
     Vajra tells you, 'huehue'
@@ -251,10 +251,10 @@ class LOKComms(LOKPlugin):
 
         if channel_or_speaker is None:
             raise CommandError("Must give channel or speaker.")
-        
+
         if name is None:
             raise CommandError("Must provide a channel or speaker.")
-        
+
         name = name.lower()
         if on_off in ["on", "off"]:
             if channel_or_speaker == "channel":
@@ -276,4 +276,3 @@ class LOKComms(LOKPlugin):
                 raise CommandError("Valid options are 'channel' or 'speaker'.")
         else:
             raise CommandError("Valid options are 'on' or 'off'.")
-        

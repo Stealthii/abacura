@@ -28,7 +28,7 @@ class LOKZoneHeading(Static):
         self.z_name = message.value
 
         if not self.display and self.z_name is not None:
-            self.display = True    
+            self.display = True
 
 class LOKZoneInfo(Static):
     r_name: reactive[str | None] = reactive[str | None](None)
@@ -49,7 +49,7 @@ class LOKZoneInfo(Static):
     def __init__(self) -> None:
         super().__init__()
         self.display = False
-    
+
     def on_mount(self):
         self.screen.session.add_listener(self.update_room_name)
         self.screen.session.add_listener(self.update_room_vnum)
@@ -66,7 +66,7 @@ class LOKZoneInfo(Static):
         else:
             self.r_icon = " "
 
-        
+
 
     @event("core.msdp.ROOM_VNUM")
     def update_room_vnum(self, message: MSDPMessage):
@@ -85,5 +85,3 @@ class LOKZone(Container):
         self.styles.height = 2
         yield LOKZoneHeading()
         yield LOKZoneInfo()
-
-        

@@ -91,7 +91,7 @@ class InputBar(Input):
         self.history_ptr = None
         self.post_message(self.UserCommand(message.value, self.password))
         self.value = ""
-    
+
     def action_clear(self) -> None:
         self.value=""
 

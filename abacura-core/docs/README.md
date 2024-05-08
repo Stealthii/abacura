@@ -8,4 +8,3 @@ sphinx-apidoc -f -o docs/ abacura
 cd docs
 make html
 ```
-

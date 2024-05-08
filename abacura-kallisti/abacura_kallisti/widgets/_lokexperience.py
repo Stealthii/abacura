@@ -55,7 +55,7 @@ class LOKExperience(Static):
         yield Static("[cyan]XP to Level", id="levelxplabel")
         yield Static("[cyan]XP to Cap", id="capxplabel")
         yield Static("[cyan]Heros to Level", id="herplabel")
-        
+
 
     def on_mount(self):
         """Set up listeners, update visibility state"""
@@ -67,7 +67,7 @@ class LOKExperience(Static):
     @event("core.msdp")
     def update_reactives(self, message: MSDPMessage):
         """Update reactive values for this widget"""
-        
+
         if message.subtype in self.my_reactives:
             setattr(self, self.my_reactives[message.subtype], int(message.value))
             self.remort_line.update(f"[cyan]Remorts: [white]{self.c_remorts} [cyan]In Class: [white]{self.c_laps_in_class}")
@@ -81,7 +81,7 @@ class LOKExperience(Static):
                 # no need to progress
                 if self.c_level > 199:
                     self.display = False
-                    return                
+                    return
 
                 if self.c_level > 99:
                     self.query_one("#levelxplabel").display = False
@@ -92,7 +92,7 @@ class LOKExperience(Static):
                 if self.c_level > 19 and self.c_level < 95:
                     self.pb_xpsack.total = LEVEL_VALUES[self.c_level + 1].xp * 5
                 else:
-                    self.pb_xpsack.total = pow(2,32) - 1                    
+                    self.pb_xpsack.total = pow(2,32) - 1
                 return
 
             if message.subtype in ["EXPERIENCE", "EXPERIENCE_TNL"]:

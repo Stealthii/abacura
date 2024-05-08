@@ -45,7 +45,7 @@ class Group:
 
     def get_members_with_you(self) -> List[GroupMember]:
         return [m for m in self.members if m.with_you and m.position != "Linkless"]
-    
+
     @property
     def members_with_you(self) -> List[GroupMember]:
         return [m for m in self.members if m.with_you and m.position != "Linkless"]

@@ -21,7 +21,7 @@ class LOKGroup(Static):
         super().__init__(*args, **kwargs)
         self.display = False
         self.expand = True
-        
+
         self.group_title = Static(classes="WidgetTitle")
         self.group_block = DataTable(id="group_detail", zebra_stripes=True, show_header=False, show_row_labels=False, show_cursor=False)
         self.group_block.add_column("ClassLevel", key="classlevel")
@@ -75,7 +75,7 @@ class LOKGroup(Static):
                 ]
                 self.group_block.add_row(*row, label=g_member["name"])
             return
-        
+
         self.display = False
 
     @event("core.msdp.GROUPLEVEL")

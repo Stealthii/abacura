@@ -17,7 +17,7 @@ class Config:
     """Base configuration class"""
     _config_file: str
     name = "config"
-       
+
     def __init__(self, **kwargs):
         super().__init__()
         if "config" not in kwargs or kwargs["config"] is None:
@@ -65,7 +65,7 @@ class Config:
     def ring_log(self, section: str) -> str:
         """Returns the location of the ring log"""
         return Path(os.path.join(self.data_directory(section), "ringlog.db")).as_posix()
-    
+
     @property
     def config(self) -> TOMLDocument:
         return self._config

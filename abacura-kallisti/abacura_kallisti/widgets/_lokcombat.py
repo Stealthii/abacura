@@ -160,7 +160,7 @@ class LOKCombat(Static):
                 hpct = int(self.c_opponent_health * 100/ self.c_opponent_health_max)
             else:
                 hpct = 0
-            
+
             if self.c_opponent_stamina_max > 0:
                 spct = int(self.c_opponent_stamina * 100/ self.c_opponent_stamina_max)
             else:

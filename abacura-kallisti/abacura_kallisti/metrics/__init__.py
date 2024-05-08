@@ -27,7 +27,7 @@ class MudMetrics:
     mission: str = ""
     character_name: str = ""
     area_name: str = ""
-    
+
     start_time: Optional[datetime] = None  # field(default_factory=datetime.now)
     stop_time: Optional[datetime] = None
 
@@ -55,7 +55,7 @@ class MudMetrics:
     craft_successful: int = 0
     craft_kept: int = 0
     craft_discarded: int = 0
-    
+
     rests: int = 0
     rest_time: float = 0
 

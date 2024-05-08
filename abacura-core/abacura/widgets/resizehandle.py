@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING, Literal
 
 class ResizeHandle(Widget):
     """A handle for resizing a panel.
-    
+
     This is a child of the panel, and is positioned on the edge of the panel.
     The panel can use min-width, min-height, max-width, and max-height to limit the size.
     """

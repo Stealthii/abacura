@@ -62,6 +62,3 @@ class TickerCommand(Plugin):
                 self.session.player_input(cmd, echo_color="orange1")
 
         self.add_ticker(seconds=seconds, callback_fn=ticker_callback, repeats=repeats, name=name, commands=commands)
-
-
-

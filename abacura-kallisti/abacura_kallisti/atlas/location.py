@@ -35,7 +35,7 @@ class LocationList:
         if not self.loc_filepath.exists():
             self.loc_filepath.parent.mkdir(parents=True, exist_ok=True)
             self.loc_filepath.touch()
-            
+
         with open(self.loc_filepath, 'r') as f:
             toml_structure = tomlkit.load(f)
             locations: List[Location] = []

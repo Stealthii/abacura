@@ -170,7 +170,7 @@ class Session(BaseSession):
             yield buf
 
     def player_input(self, line, gag: bool = False, echo_color: str = "white") -> None:
-        """This is entry point of the inputbar on the screen"""        
+        """This is entry point of the inputbar on the screen"""
         echo_color = "" if gag else echo_color
         sl = line.lstrip()
         if sl == "":

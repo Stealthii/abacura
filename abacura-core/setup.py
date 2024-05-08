@@ -29,4 +29,3 @@ setup(
         abacura=abacura.abacura:main
     """,
 )
-

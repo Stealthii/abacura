@@ -17,8 +17,8 @@ class LOKImage(Static):
         if not height or not width:
             return
         self.img = Pixels.from_image_path("/home/tom/Pictures/Selection_986.jpg", resize=(width, height * 2))
-    
+
     def render(self):
         if self.img:
             return self.img
-        return ""   
+        return ""

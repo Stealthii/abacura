@@ -94,7 +94,7 @@ class RichImage:
             segments.append(Segment("\n"))
 
         return segments
-        
+
 
     def advance_frame(self) -> bool:
         if len(self.frames) == 1:
@@ -130,12 +130,12 @@ class LOKGif(Static):
         self.filename = filename
         self.image = RichImage.from_image_path(filename, (width, height))
         #self.progress_timer = self.set_interval(1, self.make_progress)
-    
+
     def render(self):
         self.image.advance_frame()
         segments = self.image.get_frame_segments(self.image.frame_number)
         yield(segments)
-        
+
 
 if __name__ == "__main__":
     console = Console()

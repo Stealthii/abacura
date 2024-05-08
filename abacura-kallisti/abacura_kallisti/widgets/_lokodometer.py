@@ -105,7 +105,7 @@ class LOKOdometer(Static):
     def on_click(self, event: Click) -> None:
         if len(self.odometers) < 1:
             return
-        
+
         row = event.y-1
         if row >= 0 and row < len(self.odometers):
             detail = LOKOdometerDetailWindow(odometer = self.odometers[row], classes="popover odometer-detail")

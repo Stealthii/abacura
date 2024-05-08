@@ -68,7 +68,7 @@ class MenuItem(Static):
             sub.remove()
         except NoMatches:
             pass
-        
+
         sub_menu = SubMenu(classes="popover", id="submenu")
         sub_menu.add_options(self._submenu_items)
         sub_menu.styles.offset = (self.content_region.x, evt.screen_y + 1)
@@ -93,7 +93,7 @@ class MenuBar(Static):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._menu_items: list[MenuItem] = []
-            
+
     def compose(self) -> ComposeResult:
         with Horizontal():
             for m_item in self._menu_items:

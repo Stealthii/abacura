@@ -216,7 +216,7 @@ class World:
 
         room = self.rooms[vnum]
         room_fields = [getattr(room, pf) for pf in room.persistent_fields()]
-        
+
         room_binds = ",".join("?" * len(room_fields))
 
         self.db_conn.execute("BEGIN TRANSACTION")

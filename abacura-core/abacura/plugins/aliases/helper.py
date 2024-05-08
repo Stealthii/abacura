@@ -46,7 +46,7 @@ class AliasCommand(Plugin):
             tbl = tabulate(aliases, headers=["Command", "Value"])
             self.output(AbacuraPanel(tbl, title=f"'{category}' aliases"))
             return
-        
+
         existing_alias = self.director.alias_manager.get_alias(alias)
 
         if _delete:
@@ -67,6 +67,3 @@ class AliasCommand(Plugin):
             self.director.alias_manager.add_alias(alias, value, _temporary)
             self.output("Alias %s added for [%s]" % (alias, value))
             return
-
-
-            

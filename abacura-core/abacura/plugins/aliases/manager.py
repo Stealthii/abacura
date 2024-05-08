@@ -45,15 +45,15 @@ class AliasManager:
             if a.cmd == cmd and (a.category == category or category is None):
                 return a
 
-        return None    
+        return None
 
     def get_categories(self) -> List[str]:
         unique_categories = {a.category for a in self.aliases}
-        return list(sorted(unique_categories))        
+        return list(sorted(unique_categories))
 
     def get_category(self, category: str) -> List[Alias]:
         return [ali for ali in self.aliases if ali.category.lower() == category.lower()]
-    
+
     def get_alias_by_command(self, cmd: str) -> Alias | None:
         for a in self.aliases:
             if a.cmd == cmd:
@@ -78,7 +78,7 @@ class AliasManager:
             toml_structure[c] = {ali.cmd: ali.value for ali in self.get_category(c) if not ali.temporary}
 
         with open(self.alias_filepath, 'w') as f:
-            tomlkit.dump(toml_structure, f)        
+            tomlkit.dump(toml_structure, f)
 
     def load(self, file: str):
         self.alias_filepath = Path(os.path.join(self.session.config.data_directory(self.session.name), f"{file}"))

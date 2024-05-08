@@ -20,12 +20,12 @@ class LOKAffectsList(Static):
 
     affects: dict = {}
     trigger: reactive[int] = reactive[int](0, always_update=True, layout=True)
-    
+
 
     def __init__(self):
         super().__init__()
         self.msdp: dict[str, str] = {}
-        
+
 
     def on_mount(self) -> None:
         self.msdp = self.screen.session.core_msdp.values
@@ -41,7 +41,7 @@ class LOKAffectsList(Static):
         for aff, val in sorted_dict.items():
             affects.append(Text.assemble((f"{aff:15.15s}", "cyan"),
                                          (f"{val:2s}", OutputColors.value)))
-        
+
         return Columns(affects, width=20)
 
     @event("core.msdp.AFFECTS")
@@ -51,7 +51,7 @@ class LOKAffectsList(Static):
 
 class LOKAffects(Static):
     can_focus_children = False
-    
+
     def compose(self) -> ComposeResult:
         yield Static("Affects", classes="WidgetTitle", markup=True)
         yield LOKAffectsList()

@@ -28,8 +28,8 @@ class RingBufferLogSql:
         self.ring_number = self.get_current_ring_number()
 
     def get_current_ring_number(self):
-        sql = """select ifnull(max(ring_number), 0) 
-                   from ring_log 
+        sql = """select ifnull(max(ring_number), 0)
+                   from ring_log
                   where epoch_ns = (select max(epoch_ns) from ring_log)"""
         cur = self.conn.execute(sql)
         rows = cur.fetchall()
@@ -69,11 +69,11 @@ class RingBufferLogSql:
         sql = """select %s
                    from ring_log
                   where stripped like ?
-                    and epoch_ns > ? 
-                        %s 
+                    and epoch_ns > ?
                         %s
-                  order by 3 desc 
-                  limit ? 
+                        %s
+                  order by 3 desc
+                  limit ?
               """ % (select, clause, group_by)
         c = self.conn.execute(sql, (like, epoch_start, limit))
         results = c.fetchall()

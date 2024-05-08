@@ -24,9 +24,9 @@ class WorldController(LOKPlugin):
 
     def dispatch_map_message(self, vnum: str):
         room = self.world.rooms.get(vnum, None)
-        
+
         wilderness = room is not None and room.area_name == "The Wilderness"
-        
+
         ships = {
             'Aboard a Rundown Fishing Boat',
             'Aboard a Decrepit Old Warship',
@@ -35,7 +35,7 @@ class WorldController(LOKPlugin):
             'Aboard the Good Ship Vilaquia',
             'Aboard the Good Ship Diala',
         }
-        
+
         ship = room is not None and room.name in ships
 
         msg = MapUpdateMessage(start_room=room, world=self.world, current_vnum=vnum,

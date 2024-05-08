@@ -29,5 +29,5 @@ class AbacuraFooter(Footer):
     @event("core.msdp.LEVEL", priority=5)
     def update_level(self, message: MSDPMessage):
         """Update reactive values for level"""
-        
+
         self.level = f"Level: {message.value}"

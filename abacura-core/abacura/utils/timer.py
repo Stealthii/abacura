@@ -56,4 +56,3 @@ class Timer(ContextDecorator):
     def __exit__(self, *exc_info: Any) -> None:
         """Stop the context manager timer"""
         self.stop()
-
