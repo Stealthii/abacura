@@ -104,8 +104,7 @@ class OdometerController(LOKPlugin):
         self.metrics.earn_gold(source, gold, self.last_kill, self.msdp.area_name, self.msdp.room_vnum)
 
     @action(
-        r"^You (mine|gather|chop down|catch|skin|butcher|extract) some (.*) "
-        + "(herbs|cotton|silk|ore|wood|fish|meat|hide|bone)",
+        r"^You (mine|gather|chop down|catch|skin|butcher|extract) some (.*) (herbs|cotton|silk|ore|wood|fish|meat|hide|bone)",
     )
     def harvested(self, skill: str, quality: str, _material: str):
         self.metrics.craft_attempted += 1

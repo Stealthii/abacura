@@ -160,7 +160,8 @@ class LOKCombat(Static):
 
             self.mount_block.add_row(
                 "[cyan] HP:",
-                f"[{percent_color(hpct)}]{hpct}%" "[cyan] SP:",
+                f"[{percent_color(hpct)}]{hpct}%",
+                "[cyan] SP:",
                 f"[{percent_color(spct)}]{spct}%",
             )
 
@@ -184,7 +185,8 @@ class LOKCombat(Static):
 
             self.opponent_block.add_row(
                 "[cyan] HP:",
-                f"[{percent_color(hpct)}]{hpct}%" "[cyan] SP:",
+                f"[{percent_color(hpct)}]{hpct}%",
+                "[cyan] SP:",
                 f"[{percent_color(spct)}]{spct}%",
             )
         else:

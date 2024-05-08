@@ -25,7 +25,6 @@ ignore = [
     "FBT",  # flake8-boolean-trap
     "FIX",  # flake8-fixme
     "INP",  # flake8-no-pep420
-    "ISC",  # flake8-implicit-str-concat
     "N",    # pep8-naming
     "NPY",  # numpy
     "PD",   # pandas-vet
