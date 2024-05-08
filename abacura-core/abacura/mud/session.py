@@ -278,9 +278,9 @@ class Session(BaseSession):
             self.debugtl.markup = markup
             self.debugtl.highlight = highlight
             if type(msg) in (str, "str"):
-                self.debugtl.write(f"{date_time} \[{facility}]: {msg}")
+                self.debugtl.write(rf"{date_time} \[{facility}]: {msg}")
             else:
-                self.debugtl.write(f"{date_time} \[{facility}]")
+                self.debugtl.write(rf"{date_time} \[{facility}]")
                 self.debugtl.write(msg)
 
     def outputlog(self, message: OutputMessage):

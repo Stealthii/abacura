@@ -216,7 +216,7 @@ class LOKComms(LOKPlugin):
         _listener = listener.split()
         if len(_listener) > 1:
             acct = _listener[1]
-            acct = re.sub("\(|\)", "", acct)
+            acct = re.sub(r"\(|\)", "", acct)
             listener = _listener[0]
         self.comms_log(channel, speaker, msg)
 
@@ -233,7 +233,7 @@ class LOKComms(LOKPlugin):
         acct = ""
         if len(_speaker) > 1:
             acct = _speaker[1]
-            acct = re.sub("\(|\)", "", acct)
+            acct = re.sub(r"\(|\)", "", acct)
             speaker = _speaker[0]
         self.comms_log(channel, speaker, msg)
         cm = CommsMessage(

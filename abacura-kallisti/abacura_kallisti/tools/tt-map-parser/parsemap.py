@@ -199,7 +199,7 @@ def main(infile, outfile):
     # pattern for exits gives:
     # to_vnum, direction, commands, BV, '0', 'weight', '0.00'
 
-    pattern = "{([a-zA-Z 0-9\\.;,\-\/'&]+)}"
+    pattern = r"{([a-zA-Z 0-9\\.;,\-\/'&]+)}"
     count = {"total": 0, "rooms": 0, "exits": 0, "bad_rooms": 0, "bad_exits": 0}
 
     with open(infile) as fh:
@@ -207,7 +207,7 @@ def main(infile, outfile):
         for line in fh:
             if line:
                 line = strip_ansi(line)
-                line = re.sub("(;\d\dm)", "", line)
+                line = re.sub(r"(;\d\dm)", "", line)
                 vals = re.findall(pattern, line)
                 vals = list(map(lambda v: v.strip(), vals))
                 record_vals = []
