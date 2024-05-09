@@ -7,10 +7,36 @@ from time import perf_counter_ns
 try:
     from resource import RUSAGE_SELF, getrusage
 except ImportError:
+    from typing import NamedTuple
+
+    # Define the struct_rusage as a namedtuple with fields similar to Unix's getrusage output
+    struct_rusage = NamedTuple(
+        "struct_rusage",
+        [
+            ("ru_utime", float),  # user CPU time used
+            ("ru_stime", float),  # system CPU time used
+            ("ru_maxrss", int),  # maximum resident set size
+            ("ru_ixrss", int),  # integral shared memory size
+            ("ru_idrss", int),  # integral unshared data size
+            ("ru_isrss", int),  # integral unshared stack size
+            ("ru_minflt", int),  # page reclaims (soft page faults)
+            ("ru_majflt", int),  # page faults (hard page faults)
+            ("ru_nswap", int),  # swaps
+            ("ru_inblock", int),  # block input operations
+            ("ru_oublock", int),  # block output operations
+            ("ru_msgsnd", int),  # messages sent
+            ("ru_msgrcv", int),  # messages received
+            ("ru_nsignals", int),  # signals received
+            ("ru_nvcsw", int),  # voluntary context switches
+            ("ru_nivcsw", int),  # involuntary context switches
+        ],
+    )
+
     RUSAGE_SELF = 0
 
-    def getrusage(_who=0):
-        return [0.0, 0.0]  # on non-UNIX platforms cpu_time always 0.0
+    def getrusage(__who: int, /) -> struct_rusage:
+        # on non-UNIX platforms cpu_time always 0.0
+        return struct_rusage(0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 
 @dataclass(slots=True, frozen=True, eq=True)
