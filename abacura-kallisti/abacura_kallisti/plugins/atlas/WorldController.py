@@ -312,4 +312,4 @@ class WorldController(LOKPlugin):
             caption = f" {min(len(rows),_max_rows)}/{len(rows)} rows shown"
             results = tabulate(rows, headers=headers, title="Results", caption=caption, expand=True)
 
-        self.output(AbacuraPanel(Group(pview, Text(), results), "SQL Query", expand=True))
+        self.output(AbacuraPanel(Group(pview, Text(), results), title="SQL Query", expand=True))

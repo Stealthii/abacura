@@ -1,13 +1,15 @@
 from dataclasses import astuple, dataclass, fields, is_dataclass
 from itertools import zip_longest
-from typing import Iterable
+from typing import Any, Callable, ClassVar, Iterable, Protocol
 
-from rich import box
-from rich.console import Group
+from rich import box as rich_box
+from rich.align import AlignMethod
+from rich.console import Group, JustifyMethod, RenderableType
+from rich.padding import PaddingDimensions
 from rich.panel import Panel
-from rich.style import Style
+from rich.style import Style, StyleType
 from rich.table import Table
-from rich.text import Text
+from rich.text import Text, TextType
 
 
 @dataclass
@@ -26,23 +28,52 @@ class OutputColors:
     warning: str = "#FFDD55"  # Yellow
 
 
+class IsDataclass(Protocol):
+    __dataclass_fields__: ClassVar[dict[str, Any]]
+
+
 class AbacuraTable(Table):
-    def __init__(self, *args, **kwargs) -> None:
-        kwargs.setdefault("title_style", Style(color=OutputColors.title))
-        kwargs.setdefault("title_justify", "left")
-        kwargs.setdefault("style", OutputColors.value)
-        kwargs.setdefault("caption_style", OutputColors.caption)
-        kwargs.setdefault("caption_justify", "left")
-        kwargs.setdefault("header_style", Style(color=OutputColors.field, bold=True))
-        kwargs.setdefault("footer_style", Style(color=OutputColors.field, bold=True))
-        kwargs.setdefault("border_style", OutputColors.border)
-        kwargs.setdefault("box", box.HORIZONTALS)
-        super().__init__(*args, **kwargs)
+    def __init__(
+        self,
+        title: TextType | None = None,
+        caption: TextType | None = None,
+        box: rich_box.Box | None = rich_box.HORIZONTALS,
+        expand: bool = False,
+        show_footer: bool = False,
+        style: StyleType = OutputColors.value,
+        header_style: StyleType | None = Style(color=OutputColors.field, bold=True),
+        footer_style: StyleType | None = Style(color=OutputColors.field, bold=True),
+        border_style: StyleType | None = OutputColors.border,
+        title_style: StyleType | None = Style(color=OutputColors.title),
+        caption_style: StyleType | None = OutputColors.caption,
+        title_justify: JustifyMethod = "left",
+        caption_justify: JustifyMethod = "left",
+    ) -> None:
+        super().__init__(
+            title=title,
+            caption=caption,
+            box=box,
+            expand=expand,
+            show_footer=show_footer,
+            style=style,
+            header_style=header_style,
+            footer_style=footer_style,
+            border_style=border_style,
+            title_style=title_style,
+            caption_style=caption_style,
+            title_justify=title_justify,
+            caption_justify=caption_justify,
+        )
 
 
 class AbacuraPropertyGroup(Group):
-    def __init__(self, obj: dict | dataclass, title="Properties", exclude: set = None) -> None:
-        if is_dataclass(obj):
+    def __init__(
+        self,
+        obj: dict | IsDataclass,
+        title: str = "Properties",
+        exclude: set | None = None,
+    ) -> None:
+        if not isinstance(obj, dict):
             obj = {f.name: getattr(obj, f.name) for f in fields(obj)}
 
         kl = max([len(k) for k in obj.keys()])
@@ -60,33 +91,80 @@ class AbacuraPropertyGroup(Group):
 
 
 class AbacuraPanel(Panel):
-    def __init__(self, renderable, title: str = "", *args, **kwargs) -> None:
-        kwargs.setdefault("highlight", True)
-        kwargs.setdefault("expand", False)
-        kwargs.setdefault("border_style", Style(bold=True, bgcolor=OutputColors.panel))
-        kwargs.setdefault("style", Style(bgcolor=OutputColors.panel))
-        kwargs.setdefault("padding", 1)
-        kwargs.setdefault("box", box.ROUNDED)
-        kwargs.setdefault("title_align", "left")
-        p = Panel(*args, renderable=renderable, title=title, **kwargs)
-        super().__init__(p, box=box.SIMPLE, padding=1, expand=False)
+    def __init__(
+        self,
+        renderable: RenderableType,
+        box: rich_box.Box = rich_box.ROUNDED,
+        *,
+        title: TextType = "",
+        title_align: AlignMethod = "left",
+        expand: bool = False,
+        style: StyleType = Style(bgcolor=OutputColors.panel),
+        border_style: StyleType = Style(bold=True, bgcolor=OutputColors.panel),
+        padding: PaddingDimensions = 1,
+        highlight: bool = True,
+    ) -> None:
+        p = Panel(
+            renderable=renderable,
+            box=box,
+            title=title,
+            title_align=title_align,
+            expand=expand,
+            style=style,
+            border_style=border_style,
+            padding=padding,
+            highlight=highlight,
+        )
+        super().__init__(p, box=rich_box.SIMPLE, padding=1, expand=False)
 
 
 class AbacuraWarning(AbacuraPanel):
-    def __init__(self, renderable, title: str, *args, **kwargs) -> None:
-        kwargs.setdefault("border_style", Style(color=OutputColors.warning, bold=True))
-        kwargs.setdefault("box", box.SQUARE)
-        super().__init__(renderable=renderable, title=title, *args, **kwargs)
+    def __init__(
+        self,
+        renderable: RenderableType,
+        box: rich_box.Box = rich_box.SQUARE,
+        *,
+        title: TextType,
+        border_style: StyleType = Style(color=OutputColors.warning, bold=True),
+    ) -> None:
+        super().__init__(
+            renderable=renderable,
+            box=box,
+            title=title,
+            border_style=border_style,
+        )
 
 
 class AbacuraError(AbacuraPanel):
-    def __init__(self, renderable, title: str, *args, **kwargs) -> None:
-        kwargs.setdefault("border_style", Style(color=OutputColors.error, bold=True))
-        kwargs.setdefault("box", box.SQUARE)
-        super().__init__(renderable=renderable, title=title, *args, **kwargs)
+    def __init__(
+        self,
+        renderable: RenderableType,
+        box: rich_box.Box = rich_box.SQUARE,
+        *,
+        title: TextType,
+        border_style: StyleType = Style(color=OutputColors.error, bold=True),
+    ) -> None:
+        super().__init__(
+            renderable=renderable,
+            box=box,
+            title=title,
+            border_style=border_style,
+        )
 
 
-def tabulate(tabular_data, headers=(), float_format="9.3f", row_styler=None, **kwargs) -> AbacuraTable:
+def tabulate(
+    tabular_data: list[dict] | list[IsDataclass] | list[tuple] | list[str],
+    headers: list[str] | str | None = None,
+    float_format: str = "9.3f",
+    row_styler: Callable[[str | dict | IsDataclass | Iterable], str] | None = None,
+    *,
+    title: TextType | None = None,
+    caption: TextType | None = None,
+    box: rich_box.Box | None = rich_box.HORIZONTALS,
+    expand: bool = False,
+    show_footer: bool = False,
+    header_style: StyleType | None = Style(color=OutputColors.field, bold=True),
+) -> AbacuraTable:
     """
     Create a rich Table with automatic justification for numbers and a configurable floating point format.
 
@@ -99,10 +177,19 @@ def tabulate(tabular_data, headers=(), float_format="9.3f", row_styler=None, **k
     # caption="", caption_justify="left", caption_style=None,
     # header_style=None, border_style=None,
 
-    tbl = AbacuraTable(**kwargs)
+    tbl = AbacuraTable(
+        title=title,
+        caption=caption,
+        box=box,
+        expand=expand,
+        show_footer=show_footer,
+        header_style=header_style,
+    )
 
     if isinstance(headers, str):
         headers = [headers]
+    elif headers is None:
+        headers = []
 
     if len(tabular_data) == 0:
         if len(headers) == 0:

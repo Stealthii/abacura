@@ -44,7 +44,7 @@ class QueueRunner(Plugin):
 
         tbl = tabulate(
             rows,
-            headers=("ID", "Queue", "Command", "Prior", "Priority", "Duration", "Delay", "Insertable"),
+            headers=["ID", "Queue", "Command", "Prior", "Priority", "Duration", "Delay", "Insertable"],
             title="Queued Commands",
             float_format="4.1f",
         )
