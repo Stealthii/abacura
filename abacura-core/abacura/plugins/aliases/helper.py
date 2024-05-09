@@ -63,7 +63,7 @@ class AliasCommand(Plugin):
                 raise CommandError(f"Unknown alias {alias}")
 
             self.director.alias_manager.delete_alias(alias)
-            self.output("Alias %s deleted" % alias)
+            self.output(f"Alias {alias} deleted")
             return
 
         if _add:
@@ -74,5 +74,5 @@ class AliasCommand(Plugin):
                 raise CommandError("The alias must have a definition")
 
             self.director.alias_manager.add_alias(alias, value, _temporary)
-            self.output("Alias %s added for [%s]" % (alias, value))
+            self.output(f"Alias {alias} added for [{value}]")
             return

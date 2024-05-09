@@ -3,11 +3,14 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from functools import lru_cache
-from typing import Generator
+from typing import TYPE_CHECKING
 
 import tomlkit
 
 from .mob import Mob
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 
 @dataclass()
@@ -62,13 +65,13 @@ class Area:
         return area_name in [self.name] + self.include_areas
 
     @classmethod
-    def load_from_toml(cls, filename: str) -> "Area":
+    def load_from_toml(cls, filename: str) -> Area:
         new_area = cls()
 
         if not os.path.exists(filename):
             return new_area
 
-        with open(filename, "r") as f:
+        with open(filename) as f:
             doc = tomlkit.load(f)
 
         for attribute, value in doc["area"].items():

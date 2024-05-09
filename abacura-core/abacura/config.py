@@ -35,7 +35,7 @@ class Config:
         """Reload configuration file from disk"""
         cfile = Path(self._config_file).expanduser()
         try:
-            self._config = parse(open(cfile, "r", encoding="UTF-8").read())
+            self._config = parse(open(cfile, encoding="UTF-8").read())
 
         except Exception as config_exception:
             raise (config_exception)

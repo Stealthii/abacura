@@ -28,7 +28,7 @@ class HalfBlock:
 
     @staticmethod
     @lru_cache(maxsize=1024 * 16)
-    def get_half_block(top_rgba: tuple, bottom_rgba: tuple) -> "HalfBlock":
+    def get_half_block(top_rgba: tuple, bottom_rgba: tuple) -> HalfBlock:
         top_r, top_g, top_b, top_a = top_rgba
         bot_r, bot_g, bot_b, bot_a = bottom_rgba
 

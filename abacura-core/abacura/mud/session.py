@@ -6,7 +6,7 @@ import re
 import time
 from datetime import datetime
 from importlib import import_module
-from typing import TYPE_CHECKING, Any, Generator
+from typing import TYPE_CHECKING, Any
 
 from rich.segment import Segment, Segments
 from rich.style import Style
@@ -30,6 +30,7 @@ from abacura.utils.ring_buffer import RingBufferLogSql
 
 if TYPE_CHECKING:
     from asyncio import StreamWriter
+    from collections.abc import Generator
 
     from abacura.abacura import Abacura
     from abacura.config import Config

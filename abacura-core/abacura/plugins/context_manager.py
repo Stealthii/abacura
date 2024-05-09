@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Self, Type
+from typing import TYPE_CHECKING, Any, Self
 
 if TYPE_CHECKING:
     from types import TracebackType
@@ -26,7 +26,7 @@ class PluginContextManager:
 
     def __exit__(
         self,
-        exception_type: Type[BaseException] | None,
+        exception_type: type[BaseException] | None,
         exception_value: BaseException | None,
         exception_traceback: TracebackType | None,
     ) -> None:

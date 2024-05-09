@@ -39,7 +39,6 @@ ignore = [
     "T20",  # flake8-print
     "TD",   # flake8-todos
     "TRY",  # tryceratops
-    "UP",   # pyupgrade
 ]
 select = ["ALL"]
 isort.required-imports = ["from __future__ import annotations"]

@@ -138,11 +138,11 @@ class WildernessMap:
         bg_color = bg_color.replace("bright_", "")
 
         # return '<B%s>' % TINTIN_COLORS[bg_color]
-        return "<%s>" % TINTIN_COLORS[bg_color].upper()
+        return f"<{TINTIN_COLORS[bg_color].upper()}>"
 
     @staticmethod
     def get_fg_color_code(fg_color: str) -> str:
-        return "<%s>" % TINTIN_COLORS[fg_color]
+        return f"<{TINTIN_COLORS[fg_color]}>"
 
     def get_map(self, width: int, height: int, you_vnum: str, symbol_overrides: dict[str, str]) -> list[str]:
         map_lines: list[str] = []

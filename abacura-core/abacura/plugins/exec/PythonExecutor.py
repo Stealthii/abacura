@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import ast
 import uuid
-from typing import Callable
+from typing import TYPE_CHECKING
 
 from rich.panel import Panel
 from rich.pretty import Pretty
 
 from abacura.plugins import Plugin, command
 from abacura.plugins.events import AbacuraMessage, event
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class PythonExecutor(Plugin):
@@ -67,10 +70,10 @@ class PythonExecutor(Plugin):
 
             self.session.output(f"# Running script {filename}", actionable=False)
 
-            source_code = open(filename, "r").read()
+            source_code = open(filename).read()
             ast.parse(source_code)
 
-            source = open(filename, "r").read()
+            source = open(filename).read()
             ast.parse(source)
 
             result = exec(source_code, self.get_globals(), self.exec_locals)

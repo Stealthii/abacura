@@ -42,7 +42,7 @@ class AreaController(LOKPlugin):
             match_areas = [a for a in areas.keys() if a.lower().startswith(area.lower())]
             match_areas.sort(key=lambda a: 100 - abs(len(a) - len(area)))
             if len(match_areas) == 0:
-                raise CommandError("Unknown area %s" % area)
+                raise CommandError(f"Unknown area {area}")
             area = match_areas[0]
 
         rooms = [r for r in self.world.rooms.values() if r.area_name == area]

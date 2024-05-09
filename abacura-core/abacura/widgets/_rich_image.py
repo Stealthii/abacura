@@ -30,7 +30,7 @@ class HalfBlock:
 
     @staticmethod
     @lru_cache(maxsize=1000)
-    def get_half_block(top_rgba: tuple, bottom_rgba: tuple) -> "HalfBlock":
+    def get_half_block(top_rgba: tuple, bottom_rgba: tuple) -> HalfBlock:
         top_r, top_g, top_b, top_a = top_rgba
         bot_r, bot_g, bot_b, bot_a = bottom_rgba
 
@@ -63,7 +63,7 @@ class RichImage:
         self.current_frame: Image = self.frames[self.frame_number]
 
     @staticmethod
-    def from_image_path(path: PurePath | str, resize: tuple[int, int] | None = None) -> "RichImage":
+    def from_image_path(path: PurePath | str, resize: tuple[int, int] | None = None) -> RichImage:
         """Create a RichImage object from an image file.
 
         Args:

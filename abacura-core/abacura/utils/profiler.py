@@ -5,9 +5,10 @@ import threading
 from collections import deque
 from dataclasses import dataclass
 from time import perf_counter_ns
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from types import FrameType
 
 try:
@@ -15,28 +16,23 @@ try:
 except ImportError:
     from typing import NamedTuple
 
-    # Define the struct_rusage as a namedtuple with fields similar to Unix's getrusage output
-    struct_rusage = NamedTuple(
-        "struct_rusage",
-        [
-            ("ru_utime", float),  # user CPU time used
-            ("ru_stime", float),  # system CPU time used
-            ("ru_maxrss", int),  # maximum resident set size
-            ("ru_ixrss", int),  # integral shared memory size
-            ("ru_idrss", int),  # integral unshared data size
-            ("ru_isrss", int),  # integral unshared stack size
-            ("ru_minflt", int),  # page reclaims (soft page faults)
-            ("ru_majflt", int),  # page faults (hard page faults)
-            ("ru_nswap", int),  # swaps
-            ("ru_inblock", int),  # block input operations
-            ("ru_oublock", int),  # block output operations
-            ("ru_msgsnd", int),  # messages sent
-            ("ru_msgrcv", int),  # messages received
-            ("ru_nsignals", int),  # signals received
-            ("ru_nvcsw", int),  # voluntary context switches
-            ("ru_nivcsw", int),  # involuntary context switches
-        ],
-    )
+    class struct_rusage(NamedTuple):
+        ru_utime: float  # user CPU time used
+        ru_stime: float  # system CPU time used
+        ru_maxrss: int  # maximum resident set size
+        ru_ixrss: int  # integral shared memory size
+        ru_idrss: int  # integral unshared data size
+        ru_isrss: int  # integral unshared stack size
+        ru_minflt: int  # page reclaims (soft page faults)
+        ru_majflt: int  # page faults (hard page faults)
+        ru_nswap: int  # swaps
+        ru_inblock: int  # block input operations
+        ru_oublock: int  # block output operations
+        ru_msgsnd: int  # messages sent
+        ru_msgrcv: int  # messages received
+        ru_nsignals: int  # signals received
+        ru_nvcsw: int  # voluntary context switches
+        ru_nivcsw: int  # involuntary context switches
 
     RUSAGE_SELF = 0
 

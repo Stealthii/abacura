@@ -5,7 +5,8 @@ import re
 import unicodedata
 from dataclasses import asdict, fields
 from itertools import takewhile
-from typing import TYPE_CHECKING, Pattern
+from re import Pattern
+from typing import TYPE_CHECKING
 
 from rich.console import Group
 from rich.text import Text

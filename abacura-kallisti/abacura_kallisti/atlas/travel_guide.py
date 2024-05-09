@@ -3,12 +3,14 @@ from __future__ import annotations
 import heapq
 from dataclasses import dataclass
 from itertools import chain, groupby
-from typing import TYPE_CHECKING, Callable, Generator
+from typing import TYPE_CHECKING
 
 from abacura_kallisti.atlas.room import Area, Exit, Room
 from abacura_kallisti.atlas.wilderness import WildernessGrid
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Generator
+
     from abacura_kallisti.atlas.world import World
     from abacura_kallisti.mud.player import PlayerCharacter
 

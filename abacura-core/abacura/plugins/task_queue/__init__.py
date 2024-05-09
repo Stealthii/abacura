@@ -11,11 +11,14 @@ import bisect
 import itertools
 from dataclasses import dataclass, field
 from time import monotonic
-from typing import Callable, Self
+from typing import TYPE_CHECKING, Self
 
 from textual import log
 
 from abacura.plugins.events import AbacuraMessage
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class InvalidQueueName(Exception):

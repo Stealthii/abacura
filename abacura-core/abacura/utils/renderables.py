@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Callable, Iterable
 from dataclasses import astuple, dataclass, fields, is_dataclass
 from itertools import zip_longest
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, Iterable, Protocol
+from typing import TYPE_CHECKING, Any, ClassVar, Protocol
 
 from rich import box as rich_box
 from rich.console import Group, JustifyMethod, RenderableType

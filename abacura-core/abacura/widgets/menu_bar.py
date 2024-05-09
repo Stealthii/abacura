@@ -6,7 +6,7 @@ Intended for top of screen but you do you
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
@@ -14,6 +14,8 @@ from textual.css.query import NoMatches
 from textual.widgets import Input, OptionList, Static
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from rich.console import RenderableType
     from textual.events import Click
 
@@ -100,8 +102,7 @@ class MenuBar(Static):
 
     def compose(self) -> ComposeResult:
         with Horizontal():
-            for m_item in self._menu_items:
-                yield m_item
+            yield from self._menu_items
 
     def add_menu_item(self, menu_item: MenuItem) -> None:
         """Add an item to the menu"""

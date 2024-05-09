@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 from abacura.plugins.actions import Action
 from abacura.plugins.commands import CommandArgumentError, CommandError
 from abacura.plugins.tickers import Ticker
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from typing import Any, TypeVar
 
     from abacura.config import Config

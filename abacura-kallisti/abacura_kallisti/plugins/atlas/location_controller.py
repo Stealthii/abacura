@@ -75,7 +75,7 @@ class LocationController(LOKPlugin):
                 raise CommandError(f"Unknown location {location}")
 
             self.locations.delete_location(location)
-            self.session.output("Alias %s deleted" % location)
+            self.session.output(f"Alias {location} deleted")
 
             return
 
@@ -87,7 +87,7 @@ class LocationController(LOKPlugin):
                 destination = self.world.rooms[self.msdp.room_vnum]
 
             self.locations.add_location(location, destination.vnum)
-            self.session.output("Alias %s added for [%s]" % (location, destination.vnum))
+            self.session.output(f"Alias {location} added for [{destination.vnum}]")
             return
 
         if existing_location is None:

@@ -3,7 +3,11 @@ from __future__ import annotations
 import time
 from contextlib import ContextDecorator
 from dataclasses import dataclass, field
-from typing import Callable, ClassVar
+from typing import TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from typing import Self
 
 
 class TimerError(Exception):
@@ -50,7 +54,7 @@ class Timer(ContextDecorator):
 
         return elapsed_time
 
-    def __enter__(self) -> "Timer":
+    def __enter__(self) -> Self:
         """Start a new timer as a context manager"""
         self.start()
         return self

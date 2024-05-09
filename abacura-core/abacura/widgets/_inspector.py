@@ -33,7 +33,8 @@ SOFTWARE.
 import asyncio
 import inspect
 import os
-from typing import TYPE_CHECKING, Any, Iterable, NamedTuple, TypeGuard
+from collections.abc import Iterable
+from typing import TYPE_CHECKING, Any, NamedTuple, TypeGuard
 
 from rich.highlighter import ReprHighlighter
 from rich.markup import escape
@@ -139,7 +140,7 @@ class DOMTree(Tree[DOMNode]):
 
         def __init__(
             self,
-            tree: "DOMTree",
+            tree: DOMTree,
             tree_node: TreeNode[DOMNode] | None,
             dom_node: DOMNode | None,
         ) -> None:
@@ -175,7 +176,7 @@ class DOMTree(Tree[DOMNode]):
 
         def __init__(
             self,
-            tree: "DOMTree",
+            tree: DOMTree,
             tree_node: TreeNode[DOMNode],
             dom_node: DOMNode,
         ) -> None:
@@ -527,7 +528,7 @@ class PropertiesTree(Tree[object]):
                     Text.from_markup(f"[i][#808080](getter error: [red]{escape(repr(exception))}[/red])[/#808080][/i]"),
                 ),
             )
-        elif isinstance(data, (list, set, frozenset, tuple)):
+        elif isinstance(data, list | set | frozenset | tuple):
             length = len(data)  # type: ignore
             # node.set_label(Text(f"{name} ({length})"))
             # node.set_label(with_name(PropertiesTree.highlighter(repr(data))))
@@ -550,7 +551,7 @@ class PropertiesTree(Tree[object]):
             )
             # Can I perhaps DRY with with_name() with with_name taking a length parameter? In other words:
             # Can I maybe DRY this with with_name with with_name with with_name(text, length) as the signature?
-        elif isinstance(data, (str, bytes, int, float, bool, type(None))):
+        elif isinstance(data, str | bytes | int | float | bool | type(None)):
             node.allow_expand = False
             node.set_label(with_name(PropertiesTree.highlighter(repr(data))))
         elif callable(data):
@@ -594,7 +595,7 @@ class NodeInfo(Container):
 
         def __init__(
             self,
-            node_info: "NodeInfo",
+            node_info: NodeInfo,
             *,
             name: str | None = None,
             id: str | None = None,

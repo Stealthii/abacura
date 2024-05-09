@@ -3,9 +3,11 @@ from __future__ import annotations
 import sqlite3
 import time
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from abacura.mud import OutputMessage
 
 
@@ -81,15 +83,15 @@ class RingBufferLogSql:
             select = "message, max(ring_number), max(epoch_ns), last_value(context) over (order by epoch_ns desc)"
             group_by = "group by message"
 
-        sql = """select %s
+        sql = f"""select {select}
                    from ring_log
                   where stripped like ?
                     and epoch_ns > ?
-                        %s
-                        %s
+                        {clause}
+                        {group_by}
                   order by 3 desc
                   limit ?
-              """ % (select, clause, group_by)
+              """
         c = self.conn.execute(sql, (like, epoch_start, limit))
         results = c.fetchall()
 
@@ -107,5 +109,5 @@ class RingBufferLogSql:
     def checkpoint(self, method: str = "truncate") -> None:
         self.commit()
         if method.lower() not in ["truncate", "passive", "full", "restart"]:
-            raise ValueError("Invalid checkpoint method %s" % method)
-        self.conn.execute("pragma wal_checkpoint(%s)" % method)
+            raise ValueError(f"Invalid checkpoint method {method}")
+        self.conn.execute(f"pragma wal_checkpoint({method})")

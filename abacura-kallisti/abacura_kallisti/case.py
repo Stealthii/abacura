@@ -5,7 +5,7 @@ Convert CamelCase to snake_case for easier naming of files
 from __future__ import annotations
 
 import re
-from typing import Match, Pattern
+from re import Match, Pattern
 
 
 def camel_to_snake(name: str, _re_snake: Pattern[str] = re.compile("[a-z][A-Z]")) -> str:

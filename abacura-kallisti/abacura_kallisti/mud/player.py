@@ -89,7 +89,7 @@ class PlayerCharacter:
             with open(char_file, "w", encoding="UTF-8") as fp:
                 fp.write(f"char_name = '{self.char_name}'\n")
 
-        self._config = parse(open(char_file, "r", encoding="UTF-8").read())
+        self._config = parse(open(char_file, encoding="UTF-8").read())
         for key, val in self._config.items():
             if hasattr(self, key):
                 setattr(self, key, val)

@@ -6,11 +6,12 @@ import inspect
 from collections import Counter
 from dataclasses import dataclass, field
 from queue import PriorityQueue
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 from textual import log
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from typing import TypeVar
 
     T = TypeVar("T", bound=Callable[..., Any])

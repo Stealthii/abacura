@@ -59,7 +59,7 @@ class RoomRecord:
     )
 
     def __init__(self) -> None:
-        self.vnum = int()
+        self.vnum = 0
         self.name = ""
         self.terrain_name = ""
         self.area_name = ""
@@ -98,9 +98,9 @@ class ExitRecord:
     fixed_commands = ["turn", "enter", "push", "pull", "visit", "say"]
 
     def __init__(self) -> None:
-        self.from_vnum = int()
+        self.from_vnum = 0
         self.direction = ""
-        self.to_vnum = int()
+        self.to_vnum = 0
         self.door = ""
         self.closes = 0
         self.locks = 0

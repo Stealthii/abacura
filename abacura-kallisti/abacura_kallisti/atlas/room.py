@@ -35,7 +35,7 @@ class Exit:
     _temporary: bool = False
 
     @classmethod
-    @lru_cache()
+    @lru_cache
     def persistent_fields(cls) -> list[str]:
         return [f.name for f in fields(cls) if not f.name.startswith("_")]
 
@@ -84,7 +84,7 @@ class Room:
         return TERRAIN[self.terrain_name]
 
     @classmethod
-    @lru_cache()
+    @lru_cache
     def persistent_fields(cls) -> list[str]:
         return [f.name for f in fields(cls) if not f.name.startswith("_")]
 
