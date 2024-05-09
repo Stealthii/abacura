@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass, field
 from functools import lru_cache
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import tomlkit
@@ -65,13 +65,15 @@ class Area:
         return area_name in [self.name] + self.include_areas
 
     @classmethod
-    def load_from_toml(cls, filename: str) -> Area:
+    def load_from_toml(cls, filename: Path | str) -> Area:
+        if isinstance(filename, str):
+            filename = Path(filename)
         new_area = cls()
 
-        if not os.path.exists(filename):
+        if not filename.exists():
             return new_area
 
-        with open(filename) as f:
+        with filename.open() as f:
             doc = tomlkit.load(f)
 
         for attribute, value in doc["area"].items():

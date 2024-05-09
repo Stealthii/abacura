@@ -7,6 +7,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
 from importlib.util import find_spec
+from pathlib import Path
 
 from textual import log
 
@@ -27,8 +28,9 @@ class PluginModule:
     @property
     def import_path(self) -> str:
         """Compute the package to import by removing the .py extension and changing path separator to ."""
-        name = os.path.splitext(self.relative_filename)[0]
-        return name.replace(os.sep, ".")
+        path = Path(self.relative_filename)
+        name = path.parent / path.stem
+        return str(name).replace(os.sep, ".")
 
 
 class PluginLoader:
@@ -123,19 +125,22 @@ class PluginLoader:
             return []
 
         for pathspec in spec.submodule_search_locations:
-            for dirpath, _, filenames in os.walk(pathspec):
-                for filename in [f for f in filenames if f.endswith(".py") and not f.startswith("_")]:
-                    absolute_filename = os.path.join(dirpath, filename)
-                    if absolute_filename == __file__:
-                        continue
+            specpath = Path(pathspec)
+            for dirpath in specpath.rglob("*"):
+                if dirpath.is_dir():
+                    for filename in dirpath.glob("*.py"):
+                        if not filename.name.startswith("_"):
+                            absolute_filename = filename.resolve()
+                            if absolute_filename == Path(__file__).resolve():
+                                continue
 
-                    relative_path = os.path.relpath(dirpath, pathspec)
-                    if dirpath == pathspec:
-                        relative_path = ""
-                    relative_filename = os.path.join(module_path, relative_path, filename)
-                    mtime = os.path.getmtime(absolute_filename)
-                    pm = PluginModule(module_path, absolute_filename, relative_filename, modified_time=mtime)
-                    discovered.append(pm)
+                            relative_path = dirpath.relative_to(specpath)
+                            if dirpath == specpath:
+                                relative_path = Path()
+                            relative_filename = Path(module_path) / relative_path / filename.name
+                            mtime = absolute_filename.stat().st_mtime
+                            pm = PluginModule(module_path, str(absolute_filename), str(relative_filename), modified_time=mtime)
+                            discovered.append(pm)
 
         return discovered
 

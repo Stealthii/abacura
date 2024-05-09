@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import csv
 import io
-import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -77,18 +76,18 @@ class AliasManager:
         for c in self.get_categories():
             toml_structure[c] = {ali.cmd: ali.value for ali in self.get_category(c) if not ali.temporary}
 
-        with open(self.alias_filepath, "w") as f:
+        with self.alias_filepath.open("w") as f:
             tomlkit.dump(toml_structure, f)
 
     def load(self, file: str) -> None:
-        self.alias_filepath = Path(os.path.join(self.session.config.data_directory(self.session.name), f"{file}"))
+        self.alias_filepath = Path(self.session.config.data_directory(self.session.name)) / f"{file}"
         if not self.alias_filepath.exists():
             self.alias_filepath.parent.mkdir(parents=True, exist_ok=True)
             self.alias_filepath.touch()
 
-        if os.path.isfile(self.alias_filepath):
+        if self.alias_filepath.is_file():
             self.session.debuglog(msg=f"Import aliases from '{self.alias_filepath}'")
-            with open(self.alias_filepath) as f:
+            with self.alias_filepath.open() as f:
                 toml_structure = tomlkit.load(f)
             aliases: list[Alias] = []
             for c in toml_structure.keys():

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import uuid
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from rich.panel import Panel
@@ -56,13 +57,15 @@ class PythonExecutor(Plugin):
         self.add_action(pattern, do_response, flags=flags, name=name)
 
     @command
-    def run(self, filename: str, reset_locals: bool = False) -> bool | None:
+    def run(self, filename: str | Path, reset_locals: bool = False) -> bool | None:
         """
         Execute python code and display results
 
         :param filename: The filename containing the script to execute
         :param reset_locals: Reset local variables before running the script
         """
+        if isinstance(filename, str):
+            filename = Path(filename)
 
         try:
             if self.exec_locals is None or reset_locals:
@@ -70,10 +73,10 @@ class PythonExecutor(Plugin):
 
             self.session.output(f"# Running script {filename}", actionable=False)
 
-            source_code = open(filename).read()
+            source_code = filename.read_bytes()
             ast.parse(source_code)
 
-            source = open(filename).read()
+            source = filename.read_bytes()
             ast.parse(source)
 
             result = exec(source_code, self.get_globals(), self.exec_locals)

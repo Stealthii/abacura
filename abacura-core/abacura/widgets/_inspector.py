@@ -32,8 +32,8 @@ SOFTWARE.
 
 import asyncio
 import inspect
-import os
 from collections.abc import Iterable
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, NamedTuple, TypeGuard
 
 from rich.highlighter import ReprHighlighter
@@ -754,7 +754,7 @@ class NodeInfo(Container):
             else:
                 file, line_number = location
                 action = f"open_file({file!r}, {line_number!r})"
-                file_name = os.path.basename(file)
+                file_name = Path(file).name
                 location_string = f"{file_name}:{line_number}" if line_number is not None else file_name
                 return Text.styled(location_string, Style(meta={"@click": action}))
 
@@ -821,7 +821,7 @@ class NodeInfo(Container):
                 # parse the python file to find the line number of the widget definition
                 # could use `ast` module for robustness
                 # to avoid things like finding DEFAULT_CSS from the wrong widget
-                with open(path) as f:
+                with Path(path).open() as f:
                     lines = f.readlines()
                 for i, line in enumerate(lines):
                     if f"class {widget_name}" in line:

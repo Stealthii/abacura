@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import os
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from abacura.plugins import ContextProvider
@@ -17,12 +17,12 @@ if TYPE_CHECKING:
 
 class LOKContextProvider(ContextProvider):
     def __init__(self, config: Config, session_name: str) -> None:
-        data_dir = config.data_directory(session_name)
+        data_dir = Path(config.data_directory(session_name))
         super().__init__(config, session_name)
-        self.world: World = World(os.path.join(data_dir, "world.db"))
+        self.world: World = World(data_dir / "world.db")
         self.msdp: TypedMSDP = TypedMSDP()
         self.pc: PlayerCharacter = PlayerCharacter()
-        self.locations: LocationList = LocationList(os.path.join(data_dir, "locations.toml"))
+        self.locations: LocationList = LocationList(data_dir / "locations.toml")
         self.room: ScannedRoom = ScannedRoom()
         self.odometer: Odometer = Odometer(self.msdp)
 

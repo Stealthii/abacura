@@ -16,9 +16,11 @@ class Location:
 
 
 class LocationList:
-    def __init__(self, loc_file: str) -> None:
+    def __init__(self, loc_file: Path | str) -> None:
+        if isinstance(loc_file, str):
+            loc_file = Path(loc_file)
         self.locations: list[Location] = []
-        self.loc_filepath = Path(loc_file)
+        self.loc_filepath = loc_file
 
         self.load()
 
@@ -27,7 +29,7 @@ class LocationList:
         for c in self.get_categories().keys():
             toml_structure[c] = {loc.name: loc.vnum for loc in self.get_category(c) if not loc.temporary}
 
-        with open(self.loc_filepath, "w") as f:
+        with self.loc_filepath.open("w") as f:
             tomlkit.dump(toml_structure, f)
 
     def load(self) -> None:
@@ -35,7 +37,7 @@ class LocationList:
             self.loc_filepath.parent.mkdir(parents=True, exist_ok=True)
             self.loc_filepath.touch()
 
-        with open(self.loc_filepath) as f:
+        with self.loc_filepath.open() as f:
             toml_structure = tomlkit.load(f)
             locations: list[Location] = []
             for c in toml_structure.keys():

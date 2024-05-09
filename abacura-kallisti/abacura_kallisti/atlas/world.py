@@ -14,8 +14,10 @@ ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 
 
 class World:
-    def __init__(self, db_filename: str) -> None:
-        db_path = Path(db_filename).expanduser()
+    def __init__(self, db_filename: Path | str) -> None:
+        if isinstance(db_filename, str):
+            db_filename = Path(db_filename)
+        db_path = db_filename.expanduser()
 
         self.rooms: dict[str, Room] = {}
         self.wilderness_loaded: bool = False

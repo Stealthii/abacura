@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import re
 import sqlite3
+from pathlib import Path
 
 import click
 
@@ -204,7 +205,7 @@ def main(infile: str, outfile: str) -> None:
     pattern = r"{([a-zA-Z 0-9\\.;,\-\/'&]+)}"
     count = {"total": 0, "rooms": 0, "exits": 0, "bad_rooms": 0, "bad_exits": 0}
 
-    with open(infile) as fh:
+    with Path(infile).open() as fh:
         last_rnum = None
         for line in fh:
             if line:

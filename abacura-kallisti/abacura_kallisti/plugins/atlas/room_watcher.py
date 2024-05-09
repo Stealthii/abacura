@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import os
 import re
 import unicodedata
 from dataclasses import asdict, fields
 from itertools import takewhile
+from pathlib import Path
 from re import Pattern
 from typing import TYPE_CHECKING
 
@@ -409,8 +409,8 @@ class RoomWatcher(LOKPlugin):
         if area_name.lower() == "Unknown":
             return Area()
 
-        data_dir = self.config.data_directory(self.session.name)
-        filename = os.path.join(data_dir, "areas", self.slugify(area_name) + ".toml")
+        data_dir = Path(self.config.data_directory(self.session.name))
+        filename = data_dir / "areas" / f"{self.slugify(area_name)}.toml"
         new_area = Area.load_from_toml(filename)
         self.debuglog(msg=f"Loaded area file '{filename}'")
         return new_area
@@ -530,7 +530,7 @@ class RoomWatcher(LOKPlugin):
         data_dir.mkdir(exist_ok=True)
 
         file = data_dir / f"{self.msdp.room_vnum}.pkl"
-        with open(file, "wb") as f:
+        with file.open("wb") as f:
             pickle.dump(self.last_room_messages, f)
         self.output(f"Dumped [ {self.msdp.room_vnum} ] messages into {file}", highlight=True)
 
@@ -545,7 +545,7 @@ class RoomWatcher(LOKPlugin):
             self.output(f"{file} does not exist")
             return
 
-        with open(file, "rb") as f:
+        with file.open("rb") as f:
             messages = pickle.load(f)
 
         for msg in messages:

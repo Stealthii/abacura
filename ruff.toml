@@ -30,7 +30,6 @@ ignore = [
     "PERF", # perflint
     "PGH",  # pygrep-hooks
     "PL",   # pylint
-    "PTH",  # flake8-use-pathlib
     "RET",  # flake8-return
     "RUF",  # ruff
     "S",    # flake8-bandit
