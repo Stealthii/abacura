@@ -4,9 +4,14 @@ import inspect
 from collections import Counter
 from dataclasses import dataclass, field
 from queue import PriorityQueue
-from typing import Callable
+from typing import TYPE_CHECKING, Any, Callable
 
 from textual import log
+
+if TYPE_CHECKING:
+    from typing import TypeVar
+
+    T = TypeVar("T", bound=Callable[..., Any])
 
 
 @dataclass
@@ -27,13 +32,12 @@ class EventTask:
     trigger: str
 
 
-def event(trigger: str = "", priority: int = 5):
+def event(trigger: str = "", priority: int = 5) -> Callable[[T], T]:
     """Decorator for event functions"""
 
-    def add_event(fn):
-        fn.event_trigger = trigger
-        fn.event_priority = priority
-
+    def add_event(fn: T) -> T:
+        setattr(fn, "event_trigger", trigger)
+        setattr(fn, "event_priority", priority)
         return fn
 
     return add_event
@@ -69,7 +73,7 @@ class EventManager:
 
         self.events.setdefault(trigger, PriorityQueue()).put(task)
 
-    def dispatch(self, message: AbacuraMessage):
+    def dispatch(self, message: AbacuraMessage) -> Any:
         """Dispatch events"""
         if message.event_type not in self.events:
             return

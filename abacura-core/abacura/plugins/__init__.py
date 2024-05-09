@@ -7,6 +7,8 @@ from abacura.plugins.commands import CommandArgumentError, CommandError
 from abacura.plugins.tickers import Ticker
 
 if TYPE_CHECKING:
+    from typing import Any, TypeVar
+
     from abacura.config import Config
     from abacura.mud import OutputMessage
     from abacura.mud.options.msdp import MSDP
@@ -14,6 +16,8 @@ if TYPE_CHECKING:
     from abacura.plugins.director import Director
     from abacura.plugins.task_queue import TaskManager
     from abacura.utils.fifo_buffer import FIFOBuffer
+
+    T = TypeVar("T", bound=Callable[..., Any])
 
 
 class ContextProvider:
@@ -47,10 +51,10 @@ class Plugin:
     def set_context(cls, context: dict) -> None:
         cls._context = context
 
-    def get_name(self):
+    def get_name(self) -> str:
         return self.__class__.__name__
 
-    def get_help(self):
+    def get_help(self) -> Any:
         doc = getattr(self, "__doc__", None)
         return doc
 
@@ -78,22 +82,22 @@ class Plugin:
         self.session.send(message, raw=raw, echo_color=echo_color)
 
 
-def action(pattern: str, flags: int = 0, color: bool = False, priority: int = 0):
-    def add_action(action_fn):
-        action_fn.action_pattern = pattern
-        action_fn.action_color = color
-        action_fn.action_flags = flags
-        action_fn.action_priority = priority
+def action(pattern: str, flags: int = 0, color: bool = False, priority: int = 0) -> Callable[[T], T]:
+    def add_action(action_fn: T) -> T:
+        setattr(action_fn, "action_pattern", pattern)
+        setattr(action_fn, "action_color", color)
+        setattr(action_fn, "action_flags", flags)
+        setattr(action_fn, "action_priority", priority)
         return action_fn
 
     return add_action
 
 
-def command(function=None, name: str = "", hide: bool = False, override: bool = False):
-    def add_command(fn):
-        fn.command_name = name or fn.__name__
-        fn.command_hide = hide
-        fn.command_override = override
+def command(function: T | None = None, name: str = "", hide: bool = False, override: bool = False) -> Callable[[T], T]:
+    def add_command(fn: T) -> T:
+        setattr(fn, "command_name", name or fn.__name__)
+        setattr(fn, "command_hide", hide)
+        setattr(fn, "command_override", override)
         return fn
 
     if function:
@@ -102,11 +106,11 @@ def command(function=None, name: str = "", hide: bool = False, override: bool = 
     return add_command
 
 
-def ticker(seconds: float, repeats=-1, name=""):
-    def add_ticker(fn):
-        fn.ticker_seconds = seconds
-        fn.ticker_repeats = repeats
-        fn.ticker_name = name
+def ticker(seconds: float, repeats: int = -1, name: str = "") -> Callable[[T], T]:
+    def add_ticker(fn: T) -> T:
+        setattr(fn, "ticker_seconds", seconds)
+        setattr(fn, "ticker_repeats", repeats)
+        setattr(fn, "ticker_name", name)
         return fn
 
     return add_ticker

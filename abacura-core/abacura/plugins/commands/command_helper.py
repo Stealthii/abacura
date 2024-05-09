@@ -161,7 +161,7 @@ class CommandHelper(Plugin):
             self.add_ticker(0.1, do_repeat, repeats=n, name="_repeat")
 
     @command(hide=True)
-    def error(self, error_str, _warning: bool = False) -> None:
+    def error(self, error_str: str, _warning: bool = False) -> None:
         title = "Ooops!"
         if _warning:
             self.session.show_warning(f"{error_str}", title=title)

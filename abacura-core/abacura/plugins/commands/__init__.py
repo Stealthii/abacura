@@ -9,6 +9,8 @@ from rich.markup import escape
 from textual import log
 
 if TYPE_CHECKING:
+    from typing import Any
+
     from abacura.mud.session import Session
 
 
@@ -44,7 +46,7 @@ class Command:
 
         return True
 
-    def evaluate_value(self, parameter: inspect.Parameter, submitted_value: str):
+    def evaluate_value(self, parameter: inspect.Parameter, submitted_value: str) -> float | str:
         if parameter.annotation in [int, "int"]:
             return int(submitted_value)
 
@@ -60,7 +62,7 @@ class Command:
 
         return submitted_value
 
-    def evaluate_arguments(self, submitted_arguments: list[str], cmd_str: str) -> dict:
+    def evaluate_arguments(self, submitted_arguments: list[str], cmd_str: str) -> dict[str, Any]:
         """evaluate arguments to command functions"""
         command_parameters = self.get_parameters()
         evaluated_args = {}
@@ -82,7 +84,7 @@ class Command:
 
         return evaluated_args
 
-    def evaluate_options(self, submitted_options: list[str]) -> dict[str, any]:
+    def evaluate_options(self, submitted_options: list[str]) -> dict[str, Any]:
         """evaluate options to command functions"""
         if len([so for so in submitted_options if so.lower() in ("h", "help", "?")]):
             return {"help": True}

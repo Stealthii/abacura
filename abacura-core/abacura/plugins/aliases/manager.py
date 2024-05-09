@@ -32,7 +32,7 @@ class AliasManager:
         self.re_param = re.compile(r"^%([0-9]+)")
 
     @staticmethod
-    def parse_alias(alias) -> (str, str):
+    def parse_alias(alias: str) -> tuple[str, str | None]:
         s = alias.split(".")
         name = s[1] if len(s) > 1 else s[0]
         category = s[0] if len(s) > 1 else None
@@ -96,7 +96,7 @@ class AliasManager:
 
             self.aliases = aliases
 
-    def handle(self, cmd, line) -> bool:
+    def handle(self, cmd: str, line: str) -> bool:
         """Handle aliases, return True if success, False if missing"""
         alias = self.get_alias_by_command(cmd)
         if alias:

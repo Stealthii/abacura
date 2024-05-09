@@ -10,7 +10,7 @@ from textual import log
 from abacura.mud import OutputMessage
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from typing import Callable, Self
 
 
 class ActionError(Exception):
@@ -61,7 +61,7 @@ class Action:
         if invalid_types:
             raise TypeError(f"Invalid action parameter type: {callback}({invalid_types})")
 
-    def __lt__(self, other):
+    def __lt__(self, other: Self) -> bool:
         return self.priority < other.priority
 
 
