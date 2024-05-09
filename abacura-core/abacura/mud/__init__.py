@@ -4,6 +4,8 @@ The mud module contains Session objects and protocol handlers
 
 import re
 import traceback
+from abc import abstractmethod
+from typing import Any
 
 from rich import box
 from rich.traceback import Traceback
@@ -26,19 +28,37 @@ class OutputMessage:
 class BaseSession:
     """Base class for all Session objects"""
 
-    def output(self, msg, **kwargs) -> None:
+    @abstractmethod
+    def output(
+        self,
+        msg: Any,
+        markup: bool = False,
+        highlight: bool = False,
+        ansi: bool = False,
+        actionable: bool = True,
+        gag: bool = False,
+        loggable: bool = True,
+    ) -> None:
         """Subclasses will handle this"""
 
-    def debuglog(self, msg, **kwargs) -> None:
+    @abstractmethod
+    def debuglog(
+        self,
+        msg: Any,
+        facility: str = "info",
+        markup: bool = True,
+        highlight: bool = True,
+    ) -> None:
         """Subclasses will handle this"""
 
+    @abstractmethod
     def outputlog(self, message: OutputMessage) -> None:
         """Subclasses will handle this"""
 
-    def show_warning(self, msg, title: str = "Warning") -> None:
+    def show_warning(self, msg: str, title: str = "Warning") -> None:
         self.output(AbacuraWarning(msg, title=title), markup=True, highlight=True)
 
-    def show_error(self, msg, title: str = "Error") -> None:
+    def show_error(self, msg: str, title: str = "Error") -> None:
         self.output(AbacuraError(msg, title=title), markup=True, highlight=True)
 
     def show_exception(self, exc: Exception, msg: str = "", show_tb: bool = True, to_debuglog: bool = False) -> None:

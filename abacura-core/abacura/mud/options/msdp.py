@@ -2,12 +2,24 @@
 
 import re
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from textual import log
 
 from abacura.mud import OutputMessage
 from abacura.mud.options import IAC, SB, SE, TelnetOption
+from abacura.mud.session import Session
 from abacura.plugins.events import AbacuraMessage
+
+if TYPE_CHECKING:
+    from typing import Protocol
+
+    class Handler(Protocol):
+        def __call__(self, buf: bytes) -> None: ...
+
+    class Writer(Protocol):
+        def __call__(self, buf: bytes, echo_color: str) -> None: ...
+
 
 VAR = b"\x01"
 VAL = b"\x02"
@@ -43,7 +55,7 @@ class MSDP(TelnetOption):
     code: int = 69
     name: str = "MSDP"
 
-    def __init__(self, handler, writer, session) -> None:
+    def __init__(self, handler: Handler, writer: Writer, session: Session) -> None:
         self.hexcode = b"\x45"
         self.handler = handler
         self.writer = writer
@@ -51,34 +63,34 @@ class MSDP(TelnetOption):
         self.values = {}
         self.initialized: bool = False
 
-    def msdpvar(self, buf) -> tuple[bytes, bytes]:
+    def msdpvar(self, buf: bytes) -> tuple[bytes, bytes]:
         """Handle MSDP VAR sequences"""
         buf = buf[1:]
         name, _, remainder = buf.partition(VAL)
         return name, remainder
 
-    def msdpval(self, buf) -> tuple[bytes, bytes]:
+    def msdpval(self, buf: bytes) -> tuple[bytes, bytes]:
         """Handle MSDP VAL sequences"""
         val, _, remainder = buf.partition(IAC)
         return val, remainder
 
     # TODO generic handler for MSDP array and tables needed
-    def msdparray(self, buf) -> None:
+    def msdparray(self, buf: bytes) -> None:
         """NotImplemented: generic MSDP array parser"""
 
-    def msdptable(self, buf) -> None:
+    def msdptable(self, buf: bytes) -> None:
         """NotImplemented: generic MSDP table parser"""
 
     # TODO move this to abacura-kallisti once we have config options for MSDP parser
-    def parse_reportable_variables(self, buf) -> list:
+    def parse_reportable_variables(self, buf: bytes) -> list[str]:
         """Kallisti-specific parser for REPORTABLE_VARIABLES"""
         buf = buf[1:-1]
         return [x.decode("UTF-8") for x in buf.split(VAL) if len(x) > 1]
 
-    def parse_group(self, buf) -> list:
+    def parse_group(self, buf: bytes) -> list[str]:
         """Kallisti-specifc parser for GROUP"""
 
-        def parse_group_member(line) -> dict:
+        def parse_group_member(line: bytes) -> dict:
             items = line.split(b"\x01")
             member = {}
             items = items[1:]
@@ -108,7 +120,7 @@ class MSDP(TelnetOption):
         log(element_list)
         return element_list
 
-    def parse_exits(self, buf) -> dict:
+    def parse_exits(self, buf: bytes) -> dict[str, str]:
         """Kallisti-specific parser for ROOM_EXITS"""
         if buf == b"":
             return {}
@@ -139,7 +151,7 @@ class MSDP(TelnetOption):
         response = [IAC, SB, self.hexcode, VAR, b"LIST", VAL, b"REPORTABLE_VARIABLES", IAC, SE]
         self.writer(b"".join(response), echo_color="")
 
-    def sb(self, sb) -> None:
+    def sb(self, sb: bytes) -> None:
         log.debug("MSDP SB parsing")
         sb = sb[1:]
         first = sb[0:1]

@@ -4,12 +4,13 @@ from datetime import datetime
 from functools import lru_cache
 from itertools import groupby
 from pathlib import Path, PurePath
+from typing import Any
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
 from PIL.Image import Image
 from rich.color import Color
-from rich.console import Console, ConsoleOptions, RenderResult
+from rich.console import Console, ConsoleOptions, RenderableType, RenderResult
 from rich.live import Live
 from rich.segment import Segment
 from rich.style import Style
@@ -40,6 +41,8 @@ class HalfBlock:
             return HalfBlock("▄", bot_color, None)
         elif bot_a == 0:
             return HalfBlock("▀", top_color, None)
+        else:
+            raise ValueError("Invalid RGBA values")
 
 
 class RichImage:
@@ -67,7 +70,7 @@ class RichImage:
         return RichImage(PILImageModule.open(Path(path)), resize=resize)
 
     @lru_cache(1000)
-    def get_frame_segments(self, frame_number) -> list[Segment]:
+    def get_frame_segments(self, frame_number: int) -> list[Segment]:
         transparent_black = (0, 0, 0, 0)
         segments = []
         rgba_image = self.frames_rgba[self.frame_number]
@@ -126,13 +129,13 @@ class RichImage:
 class LOKGif(Static):
     progress_timer: Timer
 
-    def __init__(self, filename: str, width: int = 0, height: int = 0, **kwargs) -> None:
+    def __init__(self, filename: str, width: int = 0, height: int = 0, **kwargs: Any) -> None:
         super().__init__(*kwargs)
         self.filename = filename
         self.image = RichImage.from_image_path(filename, (width, height))
         # self.progress_timer = self.set_interval(1, self.make_progress)
 
-    def render(self):
+    def render(self) -> RenderableType:
         self.image.advance_frame()
         segments = self.image.get_frame_segments(self.image.frame_number)
         yield segments

@@ -38,7 +38,7 @@ speedwalk_pattern = r"^(\d*[neswud])+$"
 speedwalk_step_pattern = r"\d*[neswud]"
 
 
-def load_class(class_name: str, default=None):
+def load_class(class_name: str, default: Any = None) -> Any:
     """dynamically load a class"""
     if not class_name:
         return default
@@ -157,7 +157,7 @@ class Session(BaseSession):
         else:
             log(f"Session: {self.name} created in disconnected state due to no host or port")
 
-    def input_splitter(self, line) -> Generator[str, Any, Any]:
+    def input_splitter(self, line: str) -> Generator[str, Any, Any]:
         buf: str = ""
 
         while line:
@@ -177,7 +177,7 @@ class Session(BaseSession):
         if len(buf) > 0:
             yield buf
 
-    def player_input(self, line, gag: bool = False, echo_color: str = "white") -> None:
+    def player_input(self, line: str, gag: bool = False, echo_color: str = "white") -> None:
         """This is entry point of the inputbar on the screen"""
         echo_color = "" if gag else echo_color
         sl = line.lstrip()
@@ -237,7 +237,7 @@ class Session(BaseSession):
         else:
             self.output(f"[bold red]# NO-SESSION SEND: {msg}", markup=True, highlight=True)
 
-    def echo_command(self, cmd, color="white") -> None:
+    def echo_command(self, cmd: str, color: str = "white") -> None:
         if not self.tl or len(self.tl.lines) < 2:
             return
 
@@ -260,7 +260,7 @@ class Session(BaseSession):
         self.output(Segments([cmd_segment]))
 
     @command(name="debuglog")
-    def debuglog_command(self, msg: str, _facility: str = "info", markup: bool = True, highlight: bool = True) -> None:
+    def debuglog_command(self, msg: Any, _facility: str = "info", markup: bool = True, highlight: bool = True) -> None:
         """
         Send output to debug window
 
@@ -271,7 +271,7 @@ class Session(BaseSession):
         """
         self.debuglog(facility=_facility, msg=msg, markup=markup, highlight=highlight)
 
-    def debuglog(self, msg, facility: str = "info", markup: bool = True, highlight: bool = True) -> None:
+    def debuglog(self, msg: Any, facility: str = "info", markup: bool = True, highlight: bool = True) -> None:
         if self.debugtl:
             date_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
             self.debugtl.markup = markup
@@ -289,7 +289,7 @@ class Session(BaseSession):
 
     def output(
         self,
-        msg,
+        msg: Any,
         markup: bool = False,
         highlight: bool = False,
         ansi: bool = False,

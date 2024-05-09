@@ -4,6 +4,7 @@ Experimental pixel image widget
 This depends on the vertical resolution doubling patch to rich-pixels
 """
 
+from rich.console import RenderableType
 from rich_pixels import Pixels
 from textual.widgets import Static
 
@@ -16,7 +17,5 @@ class LOKImage(Static):
             return
         self.img = Pixels.from_image_path("/home/tom/Pictures/Selection_986.jpg", resize=(width, height * 2))
 
-    def render(self):
-        if self.img:
-            return self.img
-        return ""
+    def render(self) -> RenderableType:
+        return self.img or ""

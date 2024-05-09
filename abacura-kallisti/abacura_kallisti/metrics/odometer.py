@@ -46,7 +46,7 @@ class Odometer:
         self.start(mission=self.msdp.area_name)
 
     @staticmethod
-    def get_quality_number(quality: str):
+    def get_quality_number(quality: str) -> int:
         qualities = {
             "junk": 1,
             "rough": 2,
@@ -63,7 +63,7 @@ class Odometer:
         return qualities.get(quality, 0)
 
     @staticmethod
-    def get_quality_value(quality: str) -> int:
+    def get_quality_value(quality: str) -> float:
         qualities = {
             "junk": 0,
             "rough": 0,

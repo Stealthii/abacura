@@ -5,6 +5,7 @@ Logging module for sessions
 import logging
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 from abacura import Config
 
@@ -23,14 +24,14 @@ class AbacuraLogger:
         else:
             self.logger = None
 
-    def info(self, msg, **kwargs) -> None:
+    def info(self, msg: str, **kwargs: Any) -> None:
         if self.logger:
             self.logger.info(msg, *kwargs)
 
-    def warn(self, msg, **kwargs) -> None:
+    def warn(self, msg: str, **kwargs: Any) -> None:
         if self.logger:
             self.logger.warning(msg, *kwargs)
 
-    def error(self, msg, **kwargs) -> None:
+    def error(self, msg: str, **kwargs: Any) -> None:
         if self.logger:
             self.logger.error(msg, *kwargs)

@@ -51,7 +51,7 @@ class TravelPath:
     def get_travel_cost(self) -> float:
         return sum(s.cost for s in self.steps)
 
-    def get_simplified_path(self):
+    def get_simplified_path(self) -> str:
         #     exits = room.known_exits
         #     exits = [e for e in exits.values() if is_allowed(e.to_vnum)]
         #     exits.sort(key=lambda x: area_tracking[x.to_vnum])
@@ -144,14 +144,14 @@ class TravelGuide:
         return path
 
     def _get_special_exits(self) -> list[SpecialExit]:
-        def can_go_home(room: Room):
+        def can_go_home(room: Room) -> bool:
             if room.area_name == "The Wilderness":
                 return False
             home_allowed = room.area_name in [HOMETOWN, HOME_AREA_NAME]
             has_home = self.pc.home_vnum != ""
             return not self.avoid_home and home_allowed and has_home
 
-        def can_depart(room: Room):
+        def can_depart(room: Room) -> bool:
             if room.area_name == "The Wilderness":
                 return False
 
@@ -159,7 +159,7 @@ class TravelGuide:
             has_egress = self.pc.egress_vnum != ""
             return not self.avoid_home and is_home and has_egress
 
-        def can_recall(room: Room):
+        def can_recall(room: Room) -> bool:
             if room.area_name == "The Wilderness":
                 return False
 

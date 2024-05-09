@@ -33,8 +33,8 @@ class LOKExperience(Static):
     c_remorts: reactive[int] = reactive[int](0)
     c_laps_in_class: reactive[int] = reactive[int](0)
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__()
+    def __init__(self, id: str | None = None) -> None:
+        super().__init__(id=id)
         self.remort_line = Static(id="remorts")
 
     def setup_progress_bars(self) -> None:

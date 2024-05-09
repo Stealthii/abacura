@@ -5,7 +5,7 @@ from rich.text import Text
 import abacura.utils.renderables as tblt
 from abacura.plugins import command
 from abacura.plugins.events import AbacuraMessage, event
-from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, Group, OutputColors, Style, tabulate
+from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, AbacuraTable, Group, OutputColors, Style, tabulate
 from abacura_kallisti.atlas.messages import MapUpdateMessage, MapUpdateRequest
 from abacura_kallisti.atlas.wilderness import WildernessGrid
 from abacura_kallisti.atlas.world import Room
@@ -62,7 +62,7 @@ class WorldController(LOKPlugin):
     def map_update_request(self, _message: MapUpdateRequest) -> None:
         self.dispatch_map_message(self.msdp.room_vnum)
 
-    def get_table_of_exits(self, vnum: str):
+    def get_table_of_exits(self, vnum: str) -> AbacuraTable:
         exits = []
         for e in self.world.rooms[vnum].exits.values():
             known = e.to_vnum in self.world.rooms
@@ -114,7 +114,7 @@ class WorldController(LOKPlugin):
     @command(name="room")
     def room_command(
         self,
-        location: Room = None,
+        location: Room | None = None,
         delete: bool = False,
         silent: bool = False,
         deathtrap: bool = False,

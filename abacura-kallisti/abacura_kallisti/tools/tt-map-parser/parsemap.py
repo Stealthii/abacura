@@ -42,7 +42,7 @@ import sqlite3
 import click
 
 
-def strip_ansi(text):
+def strip_ansi(text: str) -> str:
     # https://stackoverflow.com/questions/14693701/how-can-i-remove-the-ansi-escape-sequences-from-a-string-in-python
     ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
     result = ansi_escape.sub("", text)
@@ -109,19 +109,19 @@ class ExitRecord:
         self.deathtrap = 0
         self.commands = ""
 
-    def translate_exit(self, _exit):
+    def translate_exit(self, _exit: str) -> str:
         if _exit in ExitRecord.full_dirs.keys():
             return ExitRecord.full_dirs[_exit]
         else:
             return _exit
 
-    def clean_commands(self, _command):
+    def clean_commands(self, _command: str) -> str | None:
         if _command in ExitRecord.full_dirs.keys():
             return None
         else:
             return _command
 
-    def parse_command(self, _command):
+    def parse_command(self, _command: str) -> str | None:
         command = _command
         if command == "1.5":
             return "say yes"
@@ -140,7 +140,7 @@ class ExitRecord:
             command = cmd[0]
         return command
 
-    def parse_dirs(self, _dir):
+    def parse_dirs(self, _dir: str) -> str:
         """"""
         dir = _dir
         if _dir.startswith("secret"):
@@ -174,7 +174,7 @@ class ExitRecord:
     help='Output file for abacura map database (default "worldtest.db")',
     default="worldtest.db",
 )
-def main(infile, outfile) -> None:
+def main(infile: str, outfile: str) -> None:
     """"""
     con = sqlite3.connect(outfile)
     cur = con.cursor()

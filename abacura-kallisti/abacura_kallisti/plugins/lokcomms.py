@@ -74,7 +74,7 @@ class LOKComms(LOKPlugin):
     for channel in channels:
         comms_toggles[channel] = "on"
 
-    def comms_log(self, channel, speaker, msg) -> None:
+    def comms_log(self, channel: str, speaker: str, msg: OutputMessage) -> None:
         channel = channel.lower()
         speaker = speaker.lower()
         if channel not in self.channels:
@@ -251,7 +251,7 @@ class LOKComms(LOKPlugin):
 
     # commsgag <channel/speaker> <arg> <on/off>
     @command(name="commstog")
-    def comms_toggle(self, channel_or_speaker: str = None, name: str = None, on_off: str = "") -> None:
+    def comms_toggle(self, channel_or_speaker: str | None = None, name: str | None = None, on_off: str = "") -> None:
         """
         Turn a channel or speaker on/off
 

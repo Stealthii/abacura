@@ -9,8 +9,8 @@ from abacura.plugins.task_queue import CQMessage
 
 
 class LOKTaskQueue(Static):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, *, id: str | None = None) -> None:
+        super().__init__(id=id)
         self.queue_display = DataTable(show_cursor=False)
         self.queue_display.can_focus = False
         self.queue_title = Static("Task Queue", classes="WidgetTitle", id="tq_title")

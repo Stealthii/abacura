@@ -287,7 +287,7 @@ class World:
 
         # print(len(rows), "exits loaded from db")
 
-    def get_area_transits(self):
+    def get_area_transits(self) -> dict[str, str]:
         """Return a list of rooms you can get to from each area"""
         area_transits = {}
 

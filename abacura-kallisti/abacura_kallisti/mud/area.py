@@ -1,6 +1,7 @@
 import os
 from dataclasses import dataclass, field
 from functools import lru_cache
+from typing import Generator
 
 import tomlkit
 
@@ -10,7 +11,7 @@ from .mob import Mob
 @dataclass()
 class Area:
     name: str = ""
-    include_areas: list | None = field(default_factory=list)
+    include_areas: list[str] = field(default_factory=list)
     route: str = "LRV"
     room_range: str = "-"
     room_min_level: dict[str, int] = field(default_factory=dict)
@@ -20,7 +21,7 @@ class Area:
     track_random_portals: bool = False
     mobs: list[Mob] = field(default_factory=list)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         # add the cache here to ensure it is an instance level cache
         self.get_excluded_room_vnums = lru_cache(100)(self.get_excluded_room_vnums)
         self.is_allowed_vnum = lru_cache(100)(self.is_allowed_vnum)
@@ -35,7 +36,7 @@ class Area:
         # print('Exclude rooms %s ' % exclude)
         return exclude
 
-    def get_allowed_ranges(self):
+    def get_allowed_ranges(self) -> Generator[tuple[str, str], None, None]:
         for r in self.room_range.split(","):
             s = r.split("-")
             if len(s) == 2:
@@ -55,7 +56,7 @@ class Area:
 
         return in_range and not avoid
 
-    def is_allowed_area(self, area_name) -> bool:
+    def is_allowed_area(self, area_name: str) -> bool:
         return area_name in [self.name] + self.include_areas
 
     @classmethod

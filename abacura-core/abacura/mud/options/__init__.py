@@ -1,5 +1,7 @@
 """Telnet Options handler module"""
 
+from abc import abstractmethod
+
 SB = b"\xfa"
 SE = b"\xf0"
 WILL = b"\xfb"
@@ -16,9 +18,6 @@ class TelnetOption:
     code: int = 0
     name: str = "TelnetOption"
 
-    def __init__(self, code: int) -> None:
-        pass
-
     def do(self) -> None:
         """IAC DO handler"""
 
@@ -31,5 +30,6 @@ class TelnetOption:
     def wont(self) -> None:
         """IAC WONT handler"""
 
-    def sb(self, sb) -> None:
+    @abstractmethod
+    def sb(self, sb: bytes) -> None:
         """IAC SB handler"""

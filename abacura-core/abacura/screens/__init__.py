@@ -17,6 +17,7 @@ from abacura.widgets.sidebar import Sidebar
 if TYPE_CHECKING:
     from textual import events
     from textual.app import ComposeResult
+    from textual.widget import Widget
 
     from abacura.mud.session import Session
 
@@ -141,8 +142,8 @@ class SessionScreen(Screen):
 class AbacuraWindow(Container):
     BINDINGS = [("escape", "escape", "Close Window")]
 
-    def __init__(self, title="Window", *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, *children: Widget, title: str = "Window") -> None:
+        super().__init__(*children)
 
         self.close_color = "red"
         self.border_title = f"[[{self.close_color}] X [/{self.close_color}]] [bold cyan]{title}"

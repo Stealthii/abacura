@@ -81,7 +81,7 @@ class Abacura(App):
 @click.option("-d", "--debug", "debug", type=str)
 @click.option("-s", "--start", "start", type=str)
 @click.option("-i", "--inspector", "inspector", is_flag=True, default=False)
-def main(config, debug, start, inspector) -> None:
+def main(config: str, debug: str, start: str, inspector: bool) -> None:
     if debug:
         host, port = debug.split(":")
         pycharm.PycharmDebugger().connect(host, int(port))

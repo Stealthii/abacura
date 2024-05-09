@@ -19,7 +19,7 @@ def percent_color(cval: Real) -> str:
     return "dark_red"
 
 
-def human_format(num) -> str:
+def human_format(num: str | float) -> str:
     if isinstance(num, str):
         num = int(num)
     num = float("{:.3g}".format(num))

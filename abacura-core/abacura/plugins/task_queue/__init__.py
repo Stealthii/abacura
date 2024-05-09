@@ -9,7 +9,7 @@ import bisect
 import itertools
 from dataclasses import dataclass, field
 from time import monotonic
-from typing import Callable, Optional
+from typing import Callable, Self
 
 from textual import log
 
@@ -24,13 +24,17 @@ _DEFAULT_PRIORITY = 50
 _DEFAULT_DURATION: float = 1.0
 
 
+def default_insert_check() -> bool:
+    return True
+
+
 @dataclass
 class TaskQueue:
     priority: int = _DEFAULT_PRIORITY
-    insert_check: Callable = lambda: True
+    insert_check: Callable[[], bool] = default_insert_check
 
     @property
-    def insertable(self):
+    def insertable(self) -> bool:
         return self.insert_check()
 
 
@@ -48,12 +52,12 @@ class Task:
     timeout: float = 0
     exclusive: bool = False
     queued_time: float = field(default_factory=monotonic)
-    insert_check: Callable = lambda: True
-    _wait_prior: Optional["Task"] = None
+    insert_check: Callable[[], bool] = default_insert_check
+    _wait_prior: Self | None = None
     _inserted: bool = field(default=False, init=True)
     _queue: TaskQueue = field(default_factory=TaskQueue, init=True)
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return self.id
 
     @property
@@ -65,7 +69,7 @@ class Task:
         return 0 < self.timeout < (monotonic() - self.queued_time)
 
     @property
-    def insertable(self):
+    def insertable(self) -> bool:
         checks = [
             self.remaining_delay == 0,
             self._queue.insertable,
@@ -76,17 +80,17 @@ class Task:
         return all(checks)
 
     @property
-    def overall_priority(self):
+    def overall_priority(self) -> tuple[int, int, int]:
         return self._queue.priority, self.priority, self.id
 
-    def __lt__(self, other):
+    def __lt__(self, other: Self) -> bool:
         return self.overall_priority < other.overall_priority
 
     def set_queue(self, queue: TaskQueue) -> None:
         self._queue = queue
 
     @property
-    def inserted(self):
+    def inserted(self) -> bool:
         return self._inserted
 
     @inserted.setter
@@ -94,11 +98,11 @@ class Task:
         self._inserted = value
 
     @property
-    def wait_prior(self):
+    def wait_prior(self) -> Self | None:
         return self._wait_prior
 
     @wait_prior.setter
-    def wait_prior(self, value: "Task") -> None:
+    def wait_prior(self, value: Self | None) -> None:
         self._wait_prior = value
 
 
@@ -192,7 +196,7 @@ class TaskManager:
         # self._pq.put(task)
         self.run_tasks()
 
-    def add_chain(self, *tasks) -> None:
+    def add_chain(self, *tasks: Task) -> None:
         prior = None
         for task in tasks:
             task._wait_prior = prior

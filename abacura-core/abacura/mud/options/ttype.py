@@ -1,5 +1,7 @@
 """TERMINAL-TYPE SUPPORT"""
 
+from asyncio.streams import StreamWriter
+
 from textual import log
 
 from abacura.mud.options import IAC, SB, SE, WILL, TelnetOption
@@ -15,7 +17,7 @@ class TerminalTypeOption(TelnetOption):
     code: int = 24
     name: str = "TerminalType"
 
-    def __init__(self, writer) -> None:
+    def __init__(self, writer: StreamWriter) -> None:
         self.writer = writer
         self.count = 0
 
@@ -24,7 +26,7 @@ class TerminalTypeOption(TelnetOption):
         self.writer.write(IAC + WILL + TTYPE)
         log.warning("IAC WILL TTYPE")
 
-    def sb(self, sb) -> None:
+    def sb(self, sb: bytes) -> None:
         """IAC SB handler"""
         log.debug(f"TTYPE SB RECEIVED: {sb} on {self.count}")
         if sb[1:2] == SEND:

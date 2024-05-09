@@ -44,8 +44,8 @@ class HalfBlock:
 
 
 class ImageWidget(Widget):
-    def __init__(self, image_path: str, show_debug: bool = False, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, image_path: str, show_debug: bool = False) -> None:
+        super().__init__()
 
         self.image_path = image_path
         self.image: Image = PILImageModule.open(image_path)

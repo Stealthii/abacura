@@ -89,7 +89,7 @@ class WildernessGrid:
     split_re = re.compile(r"(\x1b\[[^m]+m)")
     color_re = re.compile(r"\x1b\[(\d);(\d+)m")
 
-    def parse_minimap(self, lines, you_vnum: str = "") -> list[list[WildernessRoom]]:
+    def parse_minimap(self, lines: list[str], you_vnum: str = "") -> list[list[WildernessRoom]]:
         cur_color: int = 32
         cur_bright: bool = False
         rows: list[list[WildernessRoom]] = []
@@ -162,7 +162,7 @@ class WildernessGrid:
 
         return str(vnum)
 
-    def get_point(self, vnum: str):
+    def get_point(self, vnum: str) -> tuple[int, int]:
         v = int(vnum)
 
         # everything is shifted due to the hole
@@ -174,7 +174,7 @@ class WildernessGrid:
         x = d % self.WIDTH
         return x, y
 
-    def get_orienteering_point(self, vnum: str):
+    def get_orienteering_point(self, vnum: str) -> tuple[int, int]:
         x, y = self.get_point(vnum)
 
         ox = x + 1
@@ -190,7 +190,7 @@ class WildernessGrid:
         return distance
 
     @lru_cache(5000)
-    def get_exits(self, vnum: str) -> {}:
+    def get_exits(self, vnum: str) -> dict[str, str]:
         remove_exits = {"87172": "south", "87522": "east", "87523": "west", "87873": "north"}
 
         x, y = self.get_point(vnum)

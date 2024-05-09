@@ -103,7 +103,7 @@ class RoomMessageParser:
         return 1
 
     @staticmethod
-    def _parse_junk(msg) -> str | bool:
+    def _parse_junk(msg: OutputMessage) -> str | bool:
         if msg.stripped.startswith("You find yourself"):
             return "recall"
         elif msg.stripped.strip() == "":
@@ -117,14 +117,14 @@ class RoomMessageParser:
 
         return False
 
-    def _parse_follower_arriving(self, msg):
+    def _parse_follower_arriving(self, msg: OutputMessage) -> RoomPlayer | None:
         if m := self.re_followers.match(msg.stripped):
             player_name, mount_name = m.groups()
             p = RoomPlayer(line=msg.message, name=player_name, riding=mount_name)
             self.players.append(p)
             return p
 
-    def _parse_player(self, msg):
+    def _parse_player(self, msg: OutputMessage) -> RoomPlayer | None:
         m = self.re_player.match(msg.message)
         if m:
             flags = {k for k in self.KEYWORDS if msg.stripped.find(k) >= 0}
@@ -140,7 +140,7 @@ class RoomMessageParser:
             self.players.append(p)
             return p
 
-    def _parse_mob(self, msg: OutputMessage):
+    def _parse_mob(self, msg: OutputMessage) -> RoomMob | str | None:
         # TODO: Test as Imm
         # starts with bold white, or starts with white followed by bold color
 
@@ -180,7 +180,7 @@ class RoomMessageParser:
             self.mobs.append(mob)
             return mob
 
-    def _parse_player_mob(self, msg: OutputMessage):
+    def _parse_player_mob(self, msg: OutputMessage) -> RoomPlayer | RoomMob | str | None:
         if p := self._parse_follower_arriving(msg):
             return p
 
@@ -189,7 +189,7 @@ class RoomMessageParser:
 
         return self._parse_mob(msg)
 
-    def _parse_item(self, msg: OutputMessage):
+    def _parse_item(self, msg: OutputMessage) -> RoomItem | RoomCorpse | None:
         # TODO: Test as Imm
 
         if self.re_item.match(msg.message):
@@ -218,7 +218,7 @@ class RoomMessageParser:
             return item
 
     @staticmethod
-    def _parse_any(_msg) -> str:
+    def _parse_any(_: OutputMessage) -> str:
         return "any"
 
     def _parse_blood(self, msg: OutputMessage) -> str | None:
@@ -391,7 +391,7 @@ class RoomWatcher(LOKPlugin):
             self.room_header_entry_id = self.output_history.entry_id
 
     @staticmethod
-    def slugify(value):
+    def slugify(value: str) -> str:
         """
         Normalizes string, converts to lowercase, removes non-alpha characters,
         and converts spaces to hyphens.
@@ -432,7 +432,7 @@ class RoomWatcher(LOKPlugin):
         if len(past_50_lines) > 0 and past_50_lines[0].stripped.strip(" ") == "":
             past_50_lines = past_50_lines[1:]
 
-        def looks_like_minimap(m):
+        def looks_like_minimap(m: OutputMessage) -> bool:
             return m.stripped.strip() != "" and m.stripped.startswith(" ")
 
         minimap_lines = list(takewhile(looks_like_minimap, past_50_lines))

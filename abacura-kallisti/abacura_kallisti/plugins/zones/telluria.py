@@ -121,7 +121,7 @@ class Telluria(LOKPlugin):
         self.output(f"Telluria Location: {telluria_location} : '{t}'")
 
     @property
-    def grid_coordinate(self):
+    def grid_coordinate(self) -> TelluriaGrid | None:
         terrain_symbols = {"Forest": "*", "Desert": ".", "Tundra": "~", "Inside": "o"}
         t = terrain_symbols.get(self.msdp.room_terrain, " ")
         t += self.room.minimap.grid.get((0, -1), " ")

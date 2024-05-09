@@ -16,11 +16,11 @@ class Skill:
     follower: str = ""
     group: bool = False  # can take "group" argument if grouped
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.command = self.command or self.skill_name
         self.affect_name = self.affect_name or self.skill_name
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.skill_name)
 
 

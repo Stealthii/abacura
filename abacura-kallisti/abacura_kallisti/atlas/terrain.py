@@ -121,9 +121,9 @@ _TERRAIN: dict[str, Terrain] = {t.name: t for t in _TERRAIN_LIST}
 
 class TerrainFactory:
     @lru_cache(maxsize=500)
-    def __getitem__(self, item) -> Terrain:
-        if type(item) not in (str, "str"):
-            raise KeyError(item)
+    def __getitem__(self, item: str) -> Terrain:
+        if not isinstance(item, str):
+            raise TypeError(f"Expected str, got {type(item)}")
 
         terrain_name: str = item
         names = [name for name in terrain_name.split(" ") if name in _TERRAIN]

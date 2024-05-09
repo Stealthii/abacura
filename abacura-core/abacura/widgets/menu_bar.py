@@ -6,6 +6,7 @@ Intended for top of screen but you do you
 
 from typing import Callable
 
+from rich.console import RenderableType
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.css.query import NoMatches
@@ -26,8 +27,8 @@ class SubMenu(OptionList):
     """
     BINDINGS = [("escape", "remove", "close menu")]
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, *, id: str | None = None, classes: str | None = None) -> None:
+        super().__init__(id=id, classes=classes)
         self._options_callable: dict[str, Callable] = {}
 
     def action_remove(self) -> None:
@@ -51,8 +52,8 @@ class MenuItem(Static):
     }
     """
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, renderable: RenderableType = "") -> None:
+        super().__init__(renderable)
         self._submenu_items: dict[str, Callable] = {}
 
     def add_submenu_item(self, label: str, callback: Callable) -> None:
@@ -89,8 +90,8 @@ class MenuBar(Static):
         }
     """
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self) -> None:
+        super().__init__()
         self._menu_items: list[MenuItem] = []
 
     def compose(self) -> ComposeResult:
@@ -133,16 +134,16 @@ class MenuApp(App):
         yield self.static
         yield Input()
 
-    def test_called(self, *args, **kwargs) -> None:
+    def test_called(self) -> None:
         self.static.update("You clicked test")
 
-    def best_called(self, *args, **kwargs) -> None:
+    def best_called(self) -> None:
         self.static.update("You clicked best")
 
-    def woop_called(self, *args, **kwargs) -> None:
+    def woop_called(self) -> None:
         self.static.update("You clicked woop")
 
-    def womp_called(self, *args, **kwargs) -> None:
+    def womp_called(self) -> None:
         self.static.update("You clicked wonp")
 
 

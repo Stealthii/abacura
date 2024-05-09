@@ -1,5 +1,6 @@
 """Debug console widget"""
 
+from textual.app import ComposeResult
 from textual.widget import Widget
 from textual.widgets import RichLog
 
@@ -14,6 +15,6 @@ class DebugDock(Widget):
         self.tl = RichLog(id="debug", max_lines=2000, wrap=True)
         self.tl.can_focus = False
 
-    def compose(self):
+    def compose(self) -> ComposeResult:
         yield ResizeHandle(self, "top")
         yield self.tl

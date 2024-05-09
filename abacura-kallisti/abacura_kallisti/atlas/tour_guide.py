@@ -182,7 +182,7 @@ class TourGuide:
         """Choose an exit based on least recently visited vnum"""
         exits = scanned_room.exits.values()
 
-        def _is_allowed_room(vnum: str):
+        def _is_allowed_room(vnum: str) -> bool:
             if vnum not in self.world.rooms:
                 return False
 

@@ -1,3 +1,7 @@
+from types import TracebackType
+from typing import Any, Self, Type
+
+
 class ContextError(Exception):
     pass
 
@@ -6,17 +10,22 @@ class PluginContextManager:
     _session_contexts: dict[str, dict] = {}
     current_context: dict | None = None
 
-    def __init__(self, session_name: str = "", **kwargs) -> None:
+    def __init__(self, session_name: str = "", **kwargs: Any) -> None:
         self.previous_context: dict | None = None
         self.session_name = session_name
         PluginContextManager._session_contexts[session_name] = kwargs.copy()
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         self.previous_context = self.current_context
         PluginContextManager.current_context = self._session_contexts.setdefault(self.session_name, {})
         print("enter")
 
-    def __exit__(self, exception_type, exception_value, exception_traceback):
+    def __exit__(
+        self,
+        exception_type: Type[BaseException] | None,
+        exception_value: BaseException | None,
+        exception_traceback: TracebackType | None,
+    ) -> None:
         PluginContextManager.current_context = self.previous_context
         print("exit")
 
@@ -38,7 +47,7 @@ class Plugin:
     def __init__(self, n: int) -> None:
         print(n)
 
-    def __new__(cls, context: dict):
+    def __new__(cls, context: dict) -> Self:
         instance = super().__new__(cls)
         instance._context = context
         print("context", context)

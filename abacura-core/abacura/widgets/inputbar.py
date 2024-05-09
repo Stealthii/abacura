@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 # TODO: screen and widget definitions should go under the hierarchy, not in __init__
-from typing import Any, Coroutine
+from typing import TYPE_CHECKING
 
 from textual import on
 from textual.binding import Binding
@@ -12,6 +12,9 @@ from textual.suggester import Suggester
 from textual.widgets import Input
 
 from abacura.plugins.events import AbacuraMessage, event
+
+if TYPE_CHECKING:
+    from abacura.mud.session import Session
 
 
 class InputBar(Input):
@@ -39,7 +42,7 @@ class InputBar(Input):
         self.styles.padding = (0, 0)
 
     def on_mount(self) -> None:
-        self.suggester = AbacuraSuggester(self.screen.session)
+        self.suggester: AbacuraSuggester = AbacuraSuggester(self.screen.session)
         self.screen.session.add_listener(self.password_mode)
 
     @event("core.password_mode")
@@ -76,7 +79,7 @@ class InputBar(Input):
         self.value = self.history[self.history_ptr]
 
     @on(Input.Changed)
-    async def stop_input_change_propagation(self, message) -> None:
+    async def stop_input_change_propagation(self, message: Input.Changed) -> None:
         message.stop()
 
     def on_input_submitted(self, message: Input.Submitted) -> None:
@@ -95,16 +98,16 @@ class InputBar(Input):
 
 
 class AbacuraSuggester(Suggester):
-    def __init__(self, session) -> None:
+    def __init__(self, session: Session) -> None:
         super().__init__(use_cache=False)
         self.session = session
         self.history = []
         self.command_char = self.session.config.get_specific_option(self.session.name, "command_char", "#")
 
-    def add_entry(self, value) -> None:
+    def add_entry(self, value: str) -> None:
         self.history.insert(0, value)
 
-    async def get_suggestion(self, value: str) -> Coroutine[Any, Any, str] | None:
+    async def get_suggestion(self, value: str) -> str | None:
         if value.startswith(self.command_char):
             value = value[1:]
             for commandstr, command in self.session.director.command_manager.commands.items():

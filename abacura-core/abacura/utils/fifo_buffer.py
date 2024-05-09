@@ -13,7 +13,7 @@ class FIFOBuffer(Generic[T]):
         self._max_size = max_size
         self.entry_id: int = 0
 
-    def __getitem__(self, k) -> T:
+    def __getitem__(self, k: int) -> T:
         return self._entries.__getitem__(k)
 
     def __len__(self) -> int:

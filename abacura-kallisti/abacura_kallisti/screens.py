@@ -109,15 +109,22 @@ class MapScreen(ModalScreen[bool]):
 
     CSS_PATH = "css/kallisti.css"
 
-    def __init__(self, session: Session, **kwargs) -> None:
-        super().__init__(id=kwargs["id"], *kwargs)
+    def __init__(
+        self,
+        session: Session,
+        *,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -> None:
+        super().__init__(name=name, id=id, classes=classes)
         self.bigmap: LOKMap = LOKMap(id="bigmap", resizer=False)
         self.session = session
 
     def compose(self) -> ComposeResult:
         yield Grid(Container(self.bigmap), id="MapGrid")
 
-    def on_key(self, _event: events.Key) -> None:
+    def on_key(self, _: events.Key) -> None:
         self.dismiss(True)
         self.bigmap.unregister()
 

@@ -41,7 +41,14 @@ class WildernessMap:
         self.sampled_you: bool = False
         self.sampled_gummton: bool = False
 
-    def sample(self, center_point, radii, skill: str = "", since: datetime = None, you_vnum: str = "") -> (str, bool):
+    def sample(
+        self,
+        center_point: tuple[int, int],
+        radii: tuple[int, int],
+        skill: str = "",
+        since: datetime | None = None,
+        you_vnum: str = "",
+    ) -> tuple[str, bool]:
         """
         Sample the terrain around a specific point in wilderness.
         Reduces that terrain to a single terrain value
@@ -180,7 +187,7 @@ class WildernessMap:
         ruler: bool = False,
         you_vnum: str = "",
         skill: str = "",
-        since: datetime = None,
+        since: datetime | None = None,
     ) -> list[str]:
         scaled_map = []
         map_lines: list[str] = []
@@ -232,7 +239,7 @@ class WildernessMap:
         return map_lines
 
     @lru_cache(100)
-    def get_terrain_color_codes(self, terrain_name: str, bg_color_override: str = "") -> (str, str):
+    def get_terrain_color_codes(self, terrain_name: str, bg_color_override: str = "") -> tuple[str, str]:
         terrain = TERRAIN[terrain_name]
         fg_color = terrain.color
         bg_color = fg_color if terrain.bg_color == "" else terrain.bg_color

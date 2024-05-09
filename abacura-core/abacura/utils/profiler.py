@@ -3,6 +3,8 @@ import threading
 from collections import deque
 from dataclasses import dataclass
 from time import perf_counter_ns
+from types import FrameType
+from typing import Any, Callable
 
 try:
     from resource import RUSAGE_SELF, getrusage
@@ -81,7 +83,7 @@ p_start_time = None
 p_profiling = False
 
 
-def profiler(frame, event, _arg):
+def profiler(frame: FrameType, event: str, _arg: Any) -> Callable[[FrameType, str, Any], Callable]:
     global p_stats
     if event not in ("call", "return"):
         return profiler

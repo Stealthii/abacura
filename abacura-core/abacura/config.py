@@ -19,15 +19,13 @@ class Config:
     _config_file: str
     name = "config"
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, config: str = "~/.abacura") -> None:
         super().__init__()
-        if "config" not in kwargs or kwargs["config"] is None:
-            kwargs["config"] = "~/.abacura"
-            p = Path(kwargs["config"]).expanduser()
-            if not p.is_file():
-                with open(p, "w", encoding="UTF-8"):
-                    pass
-        self._config_file = kwargs["config"]
+        p = Path(config).expanduser()
+        if not p.is_file():
+            with open(p, "w", encoding="UTF-8"):
+                pass
+        self._config_file = config
         self.reload()
 
     def reload(self) -> None:
@@ -39,7 +37,7 @@ class Config:
         except Exception as config_exception:
             raise (config_exception)
 
-    def get_specific_option(self, section: str, key: str, default=None) -> Any:
+    def get_specific_option(self, section: str, key: str, default: Any = None) -> Any:
         """Get configuration value for section, global, or default"""
 
         if section in self.config and key in self.config[section]:

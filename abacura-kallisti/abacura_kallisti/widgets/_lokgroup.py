@@ -15,8 +15,8 @@ class LOKGroup(Static):
 
     group = []
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, id: str | None = None) -> None:
+        super().__init__(id=id)
         self.display = False
         self.expand = True
 

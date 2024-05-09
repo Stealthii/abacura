@@ -79,7 +79,7 @@ rule_set_call_stacks: dict[RuleSet, list[inspect.FrameInfo]] = {}
 original_rule_set_init = RuleSet.__init__
 
 
-def rule_set_init(self: RuleSet, *args, **kwargs) -> None:
+def rule_set_init(self: RuleSet, *args: Any, **kwargs: Any) -> None:
     original_rule_set_init.__get__(self)(*args, **kwargs)
     rule_set_call_stacks[self] = inspect.stack()
 

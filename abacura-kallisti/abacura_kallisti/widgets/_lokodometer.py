@@ -14,8 +14,8 @@ from abacura_kallisti.metrics.odometer import OdometerMessage
 
 
 class LOKOdometerDetailWindow(ScrollableContainer):
-    def __init__(self, odometer: MudMetrics, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, odometer: MudMetrics, *, classes: str | None = None) -> None:
+        super().__init__(classes=classes)
         self._moving: bool = False
         self.odometer = self.summarize(odometer)
         self.styles.height = 10
@@ -63,8 +63,8 @@ class LOKOdometerDetailWindow(ScrollableContainer):
 
 
 class LOKOdometer(Static):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, *, id: str | None = None) -> None:
+        super().__init__(id=id)
         self.queue_display = DataTable(show_cursor=False, id="odometer_table")
         self.queue_display.cursor_type = "row"
         self.queue_display.styles.width = "100%"

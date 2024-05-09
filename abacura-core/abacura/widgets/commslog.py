@@ -12,8 +12,15 @@ class CommsLog(Container):
     Textual container for scrolling, resizable widget.
     """
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(
+        self,
+        name: str | None = None,
+        id: str | None = None,
+    ) -> None:
+        super().__init__(
+            name=name,
+            id=id,
+        )
         self.tl = RichLog(id="commsTL", wrap=True, auto_scroll=True, max_lines=2000)
         self.tl.can_focus = False
 

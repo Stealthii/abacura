@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from textual.widget import Widget
 
     from abacura_kallisti.atlas.location import LocationList
-    from abacura_kallisti.atlas.room import ScannedRoom
+    from abacura_kallisti.atlas.room import Room, ScannedRoom
     from abacura_kallisti.atlas.world import World
     from abacura_kallisti.metrics import MudMetrics
     from abacura_kallisti.metrics.odometer import Odometer
@@ -64,7 +64,7 @@ class LOKPlugin(Plugin):
     #
     #     return self.world.rooms[vnum]
 
-    def evaluate_value_room(self, submitted_value: str):
+    def evaluate_value_room(self, submitted_value: str) -> Room | None:
         """function to evaluate command arguments that are Rooms / locations"""
         if not self.msdp or not self.locations:
             return

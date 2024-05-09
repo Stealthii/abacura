@@ -23,7 +23,7 @@ class LOKKillMessage(AbacuraMessage):
     reduced: bool = False
 
     @property
-    def total_experience(self):
+    def total_experience(self) -> int:
         return self.rare_bonus + self.experience
 
 
@@ -34,7 +34,7 @@ class LegendsOfKallisti(LOKPlugin):
         super().__init__()
         self.add_ticker(seconds=60, callback_fn=self.idle_check, repeats=-1, name="idle-watch")
 
-        def not_in_combat():
+        def not_in_combat() -> bool:
             return self.msdp.opponent_number == 0
 
         queues = {
@@ -109,7 +109,7 @@ class LegendsOfKallisti(LOKPlugin):
     @action(
         r"^You receive your reward for the kill, (\d+) experience points( plus (\d+) bonus experience for a rare kill)?.",
     )
-    def mob_kill(self, experience: int, _rare_msg, rare_bonus) -> None:
+    def mob_kill(self, experience: int, _rare_msg: str, rare_bonus: int) -> None:
         res = self.session.ring_buffer.query(limit=1, like="%is dead!  R.I.P%")
         k_name = xp_kill_re.match(res[0][2])
         if k_name:

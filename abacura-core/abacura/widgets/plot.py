@@ -9,11 +9,11 @@ from textual.widgets import Button, Static
 
 
 class Plot(Static):
-    def __init__(self, x: ArrayLike, y: ArrayLike, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, x: ArrayLike, y: ArrayLike, title: str = "", id: str | None = None) -> None:
+        super().__init__(id=id)
         self.x = x
         self.y = y
-        self.title: str = kwargs.get("title", "")
+        self.title = title
 
     def on_show(self) -> None:
         self.render_plot()

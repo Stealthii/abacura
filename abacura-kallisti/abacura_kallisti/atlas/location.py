@@ -45,7 +45,7 @@ class LocationList:
         return [a for a in self.locations if a.vnum == vnum]
 
     @staticmethod
-    def parse_location(location) -> (str, str):
+    def parse_location(location: str) -> tuple[str, str | None]:
         s = location.split(".")
         name = s[1] if len(s) > 1 else s[0]
         category = s[0] if len(s) > 1 else None

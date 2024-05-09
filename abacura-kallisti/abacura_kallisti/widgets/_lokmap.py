@@ -13,6 +13,7 @@ from textual import log
 from textual.app import ComposeResult
 from textual.containers import Container
 from textual.events import Resize
+from textual.geometry import Size
 from textual.strip import Strip
 from textual.widgets import Static
 
@@ -85,11 +86,17 @@ TERRAIN_LOOKUP: dict[str, TerrainStyle] = {t.name: t for t in TERRAINS}
 
 
 class LOKMapStatic(Static):
-    def __init__(self, strips: list[Strip], **kwargs) -> None:
-        super().__init__(**kwargs)
+    def __init__(
+        self,
+        strips: list[Strip],
+        *,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -> None:
+        super().__init__(id=id, classes=classes)
         self.strips = strips
 
-    def get_content_height(self, container, viewport, width) -> int:
+    def get_content_height(self, container: Size, viewport: Size, width: int) -> int:
         log.warning(f"Content size {len(self.strips)}")
         return len(self.strips)
 
@@ -208,7 +215,7 @@ class LOKMap(Container):
             Segment("- " if "down" in room.exits else "  ", Style(bgcolor=style.bgcolor)),
         ]
 
-    def generate_5x3_map(self, start_room: Room, width, height) -> None:
+    def generate_5x3_map(self, start_room: Room, width: int, height: int) -> None:
         if self.bfs is None:
             return
 
@@ -287,7 +294,7 @@ class LOKMap(Container):
 
         return [Segment(f"{c1}{c2}{c3}", style)]
 
-    def generate_3x3_map(self, start_room: Room, width, height) -> None:
+    def generate_3x3_map(self, start_room: Room, width: int, height: int) -> None:
         if self.bfs is None:
             return
 
@@ -301,7 +308,7 @@ class LOKMap(Container):
             # doing three sub-rows at a time
             self.strips += [Strip([s for cell in row for s in self.make_3x3_segments(i, cell)]) for i in range(3)]
 
-    def generate_1x1_map(self, start_room: Room, width, height) -> None:
+    def generate_1x1_map(self, start_room: Room, width: int, height: int) -> None:
         if self.bfs is None:
             return
 
@@ -321,7 +328,7 @@ class LOKMap(Container):
                     row.append(Segment(" ", Style(bgcolor=bgcolor)))
             self.strips.append(Strip(row))
 
-    def generate_wilderness_map(self, start_room: Room, width, height) -> None:
+    def generate_wilderness_map(self, start_room: Room, width: int, height: int) -> None:
         if self.bfs is None:
             return
 

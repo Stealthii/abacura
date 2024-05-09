@@ -136,7 +136,7 @@ class TypedMSDP:
         return self.int_
 
     @property
-    def str(self):
+    def str(self) -> int:
         return self.str_
 
     @property

@@ -1,7 +1,7 @@
 import sqlite3
 import time
 from datetime import datetime
-from typing import Callable
+from typing import Any, Callable
 
 from abacura.mud import OutputMessage
 
@@ -32,7 +32,7 @@ class RingBufferLogSql:
 
         self.ring_number = self.get_current_ring_number()
 
-    def get_current_ring_number(self):
+    def get_current_ring_number(self) -> int:
         sql = """select ifnull(max(ring_number), 0)
                    from ring_log
                   where epoch_ns = (select max(epoch_ns) from ring_log)"""
@@ -64,7 +64,14 @@ class RingBufferLogSql:
         if self.rows_logged % self.commit_interval == 0:
             self.conn.commit()
 
-    def query(self, like: str = "", clause: str = "", limit: int = 100, epoch_start: int = 0, grouped: bool = False):
+    def query(
+        self,
+        like: str = "",
+        clause: str = "",
+        limit: int = 100,
+        epoch_start: int = 0,
+        grouped: bool = False,
+    ) -> list[tuple[str, Any, str]]:
         select = "message, ring_number, epoch_ns, context"
         group_by = ""
         if grouped:

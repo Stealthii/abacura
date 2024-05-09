@@ -12,7 +12,7 @@ from abacura.plugins.events import event
 class LOKZoneHeading(Static):
     z_name: reactive[str | None] = reactive[str | None](None)
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self) -> None:
         super().__init__()
         self.display = False
         self.classes = "WidgetTitle"
