@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import re
 import time
 from datetime import datetime
@@ -130,10 +131,8 @@ class Session(BaseSession):
             self.screen.footer.session_name = self.name
 
         self.tl = self.screen.tl
-        try:
+        with contextlib.suppress(NoMatches):
             self.debugtl = self.screen.query_one("#debug", expect_type=RichLog)
-        except NoMatches:
-            pass
 
         self.plugin_loader.load_plugins(module_paths=["abacura"], plugin_context=self.core_plugin_context)
         session_modules = self.config.get_specific_option(self.name, "modules")
@@ -187,10 +186,7 @@ class Session(BaseSession):
             return
         for sl in self.input_splitter(line):
             sl = sl.rstrip()
-            if sl == "":
-                cmd = sl
-            else:
-                cmd = sl.split()[0]
+            cmd = sl if sl == "" else sl.split()[0]
 
             if cmd.startswith(self.command_char):
                 self.echo_command(sl, color="green")
@@ -306,9 +302,8 @@ class Session(BaseSession):
         message = OutputMessage(msg, gag)
         self.output_history.append(message)
 
-        if actionable:
-            if self.director and self.director.action_manager:
-                self.director.action_manager.process_output(message)
+        if actionable and self.director and self.director.action_manager:
+            self.director.action_manager.process_output(message)
 
         if not message.gag:
             self.tl.markup = markup

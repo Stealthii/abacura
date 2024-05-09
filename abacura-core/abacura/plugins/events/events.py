@@ -20,7 +20,7 @@ class EventPlugin(Plugin):
         event_manager = self.session.director.event_manager
 
         if name:
-            keys = [key for key in event_manager.events.keys() if key.lower().startswith(name.lower())]
+            keys = [key for key in event_manager.events if key.lower().startswith(name.lower())]
             exact = [key for key in keys if key.lower() == name.lower()]
             if len(keys) > 1 and len(exact) > 1:
                 raise CommandError(f"Ambiguous event name '{name}'")

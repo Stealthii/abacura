@@ -170,13 +170,9 @@ class MSDP(TelnetOption):
                 if not self.initialized:
                     self.request_all_values()
                     self.initialized = True
-            elif var == "GROUP":
+            elif var == "GROUP" or var == "REMORT_LEVELS":
                 self.values[var] = self.parse_group(value)
-            elif var == "REMORT_LEVELS":
-                self.values[var] = self.parse_group(value)
-            elif var == "ROOM_EXITS":
-                self.values[var] = self.parse_exits(value)
-            elif var == "AFFECTS":
+            elif var == "ROOM_EXITS" or var == "AFFECTS":
                 self.values[var] = self.parse_exits(value)
             else:
                 self.values[var] = ansi_escape.sub("", value.decode("UTF-8"))

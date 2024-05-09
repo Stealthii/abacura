@@ -26,7 +26,7 @@ class LocationList:
 
     def save(self) -> None:
         toml_structure = {}
-        for c in self.get_categories().keys():
+        for c in self.get_categories():
             toml_structure[c] = {loc.name: loc.vnum for loc in self.get_category(c) if not loc.temporary}
 
         with self.loc_filepath.open("w") as f:
@@ -40,7 +40,7 @@ class LocationList:
         with self.loc_filepath.open() as f:
             toml_structure = tomlkit.load(f)
             locations: list[Location] = []
-            for c in toml_structure.keys():
+            for c in toml_structure:
                 locations += [Location(c, k, v) for k, v in toml_structure[c].items()]
 
             self.locations = locations

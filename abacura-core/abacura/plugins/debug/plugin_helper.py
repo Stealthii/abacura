@@ -67,8 +67,8 @@ class PluginHelper(Plugin):
             return
 
         loaded_plugins: dict[str, Plugin] = self.session.plugin_loader.plugins
-        matches = [n for n in loaded_plugins.keys() if n.lower().startswith(name.lower())]
-        exact = [n for n in loaded_plugins.keys() if n.lower() == name.lower()]
+        matches = [n for n in loaded_plugins if n.lower().startswith(name.lower())]
+        exact = [n for n in loaded_plugins if n.lower() == name.lower()]
 
         if len(exact) == 1:
             matches = exact
@@ -112,9 +112,6 @@ class PluginHelper(Plugin):
 
             rows.append((f"[{color}]{result.last_action}", result.import_path, [str(e) for e in result.exceptions]))
 
-        if len(rows):
-            tbl = tabulate(rows, headers=["Action", "Plugin Filename", "Errors"])
-        else:
-            tbl = Text("No plugins reloaded.")
+        tbl = tabulate(rows, headers=["Action", "Plugin Filename", "Errors"]) if len(rows) else Text("No plugins reloaded.")
 
         self.output(AbacuraPanel(tbl, title="Plugin Reload"))

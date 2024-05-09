@@ -226,7 +226,7 @@ class TourGuide:
         while len(self.telluria_moves) > 0:
             move = self.telluria_moves[0]
             self.telluria_moves = self.telluria_moves[1:]
-            for k in scanned_room.msdp_exits.keys():
+            for k in scanned_room.msdp_exits:
                 if k.startswith(move):
                     return TourGuideResponse(exit=Exit(direction=move))
 

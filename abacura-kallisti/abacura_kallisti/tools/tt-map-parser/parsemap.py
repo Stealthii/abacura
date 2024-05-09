@@ -113,13 +113,13 @@ class ExitRecord:
         self.commands = ""
 
     def translate_exit(self, _exit: str) -> str:
-        if _exit in ExitRecord.full_dirs.keys():
+        if _exit in ExitRecord.full_dirs:
             return ExitRecord.full_dirs[_exit]
         else:
             return _exit
 
     def clean_commands(self, _command: str) -> str | None:
-        if _command in ExitRecord.full_dirs.keys():
+        if _command in ExitRecord.full_dirs:
             return None
         else:
             return _command
@@ -137,10 +137,7 @@ class ExitRecord:
             for _cmd in cmd:
                 if _cmd.startswith("gt"):
                     return None
-        if len(cmd) > 1:
-            command = ";".join(cmd)
-        else:
-            command = cmd[0]
+        command = ";".join(cmd) if len(cmd) > 1 else cmd[0]
         return command
 
     def parse_dirs(self, _dir: str) -> str:

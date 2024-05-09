@@ -61,7 +61,7 @@ class LOKGroup(Static):
             elif g["class"] in ["TEM", "DRU", "PRO"]:
                 buf = "#48D1CC"
 
-            if not g["with_leader"] == "1":
+            if g["with_leader"] != "1":
                 buf += " italic"
 
             return f"[{buf}]"

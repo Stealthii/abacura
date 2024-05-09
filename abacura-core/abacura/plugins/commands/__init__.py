@@ -100,7 +100,7 @@ class Command:
         for so in submitted_options:
             so_name = so.split("=")[0] if so.find("=") else so
 
-            matched_options = [k for k in command_options.keys() if k.lstrip("_").startswith(so_name.lower())]
+            matched_options = [k for k in command_options if k.lstrip("_").startswith(so_name.lower())]
 
             if len(matched_options) == 0:
                 raise CommandArgumentError(f"Invalid option: {so_name}")

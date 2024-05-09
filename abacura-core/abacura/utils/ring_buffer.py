@@ -55,10 +55,7 @@ class RingBufferLogSql:
         if type(message.message) not in [str, "str"]:
             return
 
-        if self.log_context_provider is not None:
-            log_context = self.log_context_provider()
-        else:
-            log_context = ""
+        log_context = self.log_context_provider() if self.log_context_provider is not None else ""
 
         values = (self.ring_number, log_epoch_ns, log_context, message.message, message.stripped)
         self.conn.execute("insert or replace into ring_log values(?, ?, ?, ?, ?)", values)

@@ -103,10 +103,7 @@ class ImageWidget(Widget):
             blocks: list[HalfBlock] = []
             for x in range(width):
                 top_pixel = rgba_image.getpixel((x, y))
-                if y + 1 < height:
-                    bot_pixel = rgba_image.getpixel((x, y + 1))
-                else:
-                    bot_pixel = (0, 0, 0, 0)
+                bot_pixel = rgba_image.getpixel((x, y + 1)) if y + 1 < height else (0, 0, 0, 0)
 
                 blocks.append(HalfBlock.get_half_block(top_pixel, bot_pixel))
 

@@ -921,10 +921,7 @@ class NodeInfo(Container):
                                 def_location,
                             ),
                         )
-            if usages:
-                usage_info = Text("\n\n").join(usages)
-            else:
-                usage_info = Text(f"No listeners found for {' or '.join(handler_names)}")
+            usage_info = Text("\n\n").join(usages) if usages else Text(f"No listeners found for {' or '.join(handler_names)}")
 
             def_location = format_object_location_info(message_class)
             qualname = message_class.__qualname__
@@ -1136,10 +1133,7 @@ class Inspector(Container):
         """
         if not isinstance(value, list):
             return False
-        for item in value:  # type: ignore
-            if not isinstance(item, Widget):
-                return False
-        return True
+        return all(isinstance(item, Widget) for item in value)
 
     def highlight(self, dom_node: DOMNode | None) -> None:
         """Highlight a DOM node."""

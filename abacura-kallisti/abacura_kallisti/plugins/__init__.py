@@ -77,10 +77,7 @@ class LOKPlugin(Plugin):
         #     vnum = GUILDS[self.msdp.cls]
         else:
             location = self.locations.get_location(submitted_value)
-            if location is not None:
-                vnum = location.vnum
-            else:
-                vnum = submitted_value
+            vnum = location.vnum if location is not None else submitted_value
 
         if vnum in self.world.rooms:
             return self.world.rooms[vnum]

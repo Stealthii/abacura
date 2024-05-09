@@ -39,7 +39,7 @@ class AreaController(LOKPlugin):
                 raise CommandError("Unknown area")
         else:
             areas = {r.area_name: True for r in self.world.rooms.values()}
-            match_areas = [a for a in areas.keys() if a.lower().startswith(area.lower())]
+            match_areas = [a for a in areas if a.lower().startswith(area.lower())]
             match_areas.sort(key=lambda a: 100 - abs(len(a) - len(area)))
             if len(match_areas) == 0:
                 raise CommandError(f"Unknown area {area}")

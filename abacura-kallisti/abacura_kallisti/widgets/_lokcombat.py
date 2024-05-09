@@ -180,15 +180,9 @@ class LOKCombat(Static):
             if self.c_opponent_stamina_max == 0:
                 self.c_opponent_stamina_max = 100
 
-            if self.c_opponent_health_max > 0:
-                hpct = int(self.c_opponent_health * 100 / self.c_opponent_health_max)
-            else:
-                hpct = 0
+            hpct = int(self.c_opponent_health * 100 / self.c_opponent_health_max) if self.c_opponent_health_max > 0 else 0
 
-            if self.c_opponent_stamina_max > 0:
-                spct = int(self.c_opponent_stamina * 100 / self.c_opponent_stamina_max)
-            else:
-                spct = 0
+            spct = int(self.c_opponent_stamina * 100 / self.c_opponent_stamina_max) if self.c_opponent_stamina_max > 0 else 0
 
             self.opponent_block.add_row(
                 "[cyan] HP:",

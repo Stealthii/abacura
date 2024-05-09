@@ -169,7 +169,7 @@ class TaskManager:
         self._remove_timeouts()
 
         # process as many tasks as we can
-        while self._NEXT_COMMAND_TIME < monotonic():
+        while monotonic() > self._NEXT_COMMAND_TIME:
             task = self._get_next_insertable_task()
             if task is None:
                 break

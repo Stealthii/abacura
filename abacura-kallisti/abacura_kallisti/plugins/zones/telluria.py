@@ -119,7 +119,7 @@ class Telluria(LOKPlugin):
         t += self.room.minimap.grid.get((+1, 0), " ")
         t += self.room.minimap.grid.get((-1, 0), " ")
 
-        telluria_location = telluria_decoder.get(t, None)
+        telluria_location = telluria_decoder.get(t)
         self.output(f"Telluria Location: {telluria_location} : '{t}'")
 
     @property
@@ -131,4 +131,4 @@ class Telluria(LOKPlugin):
         t += self.room.minimap.grid.get((+1, 0), " ")
         t += self.room.minimap.grid.get((-1, 0), " ")
 
-        return telluria_decoder.get(t, None)
+        return telluria_decoder.get(t)

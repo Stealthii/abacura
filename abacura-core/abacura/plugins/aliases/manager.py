@@ -90,7 +90,7 @@ class AliasManager:
             with self.alias_filepath.open() as f:
                 toml_structure = tomlkit.load(f)
             aliases: list[Alias] = []
-            for c in toml_structure.keys():
+            for c in toml_structure:
                 aliases += [Alias(c, k, v) for k, v in toml_structure[c].items()]
 
             self.aliases = aliases

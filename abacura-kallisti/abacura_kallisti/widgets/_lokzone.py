@@ -69,10 +69,7 @@ class LOKZoneInfo(Static):
 
     @event("core.msdp.ROOM_WEATHER")
     def update_room_weather(self, message: MSDPMessage) -> None:
-        if message.value in self.weather_icons:
-            self.r_icon = self.weather_icons[message.value]
-        else:
-            self.r_icon = " "
+        self.r_icon = self.weather_icons.get(message.value, " ")
 
     @event("core.msdp.ROOM_VNUM")
     def update_room_vnum(self, message: MSDPMessage) -> None:

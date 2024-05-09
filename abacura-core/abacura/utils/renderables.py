@@ -81,7 +81,7 @@ class AbacuraPropertyGroup(Group):
         if not isinstance(obj, dict):
             obj = {f.name: getattr(obj, f.name) for f in fields(obj)}
 
-        kl = max([len(k) for k in obj.keys()])
+        kl = max([len(k) for k in obj])
         lines = [Text.assemble((title, OutputColors.section), ("\n", ""))]
         for k, v in obj.items():
             if exclude and k in exclude:
@@ -221,12 +221,7 @@ def tabulate(
         row_styles = [row_styler(row) for row in tabular_data]
 
     for h, ct in zip_longest(headers, column_types):
-        if h and h.startswith("_"):
-            justify = "right"
-        elif ct in (int, "int", float, "float"):
-            justify = "right"
-        else:
-            justify = "left"
+        justify = "right" if h and h.startswith("_") or ct in (int, "int", float, "float") else "left"
         hdr = h.lstrip("_") if h else ""
         tbl.add_column(header=hdr, justify=justify)
 

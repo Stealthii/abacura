@@ -276,10 +276,7 @@ class RoomMessageParser:
         terrain_name = terrain_name or ""
         flags = flags or ""
 
-        if exits.lower().find("no exits") >= 0:
-            exit_list = []
-        else:
-            exit_list = [d for d in "NSEWUD" if exits.find(d) >= 0]
+        exit_list = [] if exits.lower().find("no exits") >= 0 else [d for d in "NSEWUD" if exits.find(d) >= 0]
 
         header_flags = ["RegenHp", "RegenMp", "RegenSp", "Wild Magic", "NoMagic", "SetRecall", "Warded", "Bank"]
         # "House", "Sanctum", "Vault", "Donation", "Private", "Stables", "Public", "Postern", "Shop",
