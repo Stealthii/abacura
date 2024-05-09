@@ -207,7 +207,7 @@ def tabulate(
         column_types = [type(v) for v in tabular_data[0]]
     elif is_dataclass(tabular_data[0]):
         df = fields(tabular_data[0])
-        headers = headers if len(headers) else list([f.name for f in df])
+        headers = headers if len(headers) else [f.name for f in df]
         tabular_data = [astuple(row) for row in tabular_data]
         column_types = [f.type for f in df]
     elif not isinstance(tabular_data[0], Iterable) or isinstance(tabular_data[0], str):

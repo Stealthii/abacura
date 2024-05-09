@@ -27,7 +27,7 @@ class LocationController(LOKPlugin):
         """
 
         if location is None:
-            rows = [(k, v) for k, v in self.locations.get_categories().items()]
+            rows = list(self.locations.get_categories().items())
             tbl = tabulate(rows, headers=("Category", "# Locations"))
             self.output(AbacuraPanel(tbl, title="Locations"))
             return

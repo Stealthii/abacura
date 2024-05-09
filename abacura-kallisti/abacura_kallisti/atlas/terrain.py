@@ -135,7 +135,7 @@ class TerrainFactory:
         symbol = sorted([(_TERRAIN[name].symbol_sort, _TERRAIN[name].symbol) for name in names])[0][1]
         color = sorted([(_TERRAIN[name].color_sort, _TERRAIN[name].color) for name in names])[0][1]
         bg_color = sorted([(_TERRAIN[name].color_sort, _TERRAIN[name].bg_color) for name in names])[0][1]
-        impassable = any([_TERRAIN[name].impassable for name in names])
+        impassable = any(_TERRAIN[name].impassable for name in names)
         weight = max([_TERRAIN[name].weight for name in names])
         return Terrain(
             name=terrain_name,

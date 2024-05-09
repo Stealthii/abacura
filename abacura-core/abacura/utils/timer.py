@@ -19,7 +19,7 @@ class TimerError(Exception):
 class Timer(ContextDecorator):
     """Time your code using a class, context manager, or decorator"""
 
-    timers: ClassVar[dict[str, float]] = dict()
+    timers: ClassVar[dict[str, float]] = {}
     name: str | None = None
     text: str = "{:s}: {:0.6f} seconds"
     logger: Callable[[str], None] | None = print

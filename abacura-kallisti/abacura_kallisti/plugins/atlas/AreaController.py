@@ -47,7 +47,7 @@ class AreaController(LOKPlugin):
 
         rooms = [r for r in self.world.rooms.values() if r.area_name == area]
 
-        sorted_rooms = list(sorted(rooms, key=lambda x: x.vnum))[:300]
+        sorted_rooms = sorted(rooms, key=lambda x: x.vnum)[:300]
 
         rows = []
         r: Room

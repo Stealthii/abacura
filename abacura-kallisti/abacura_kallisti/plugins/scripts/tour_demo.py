@@ -55,7 +55,7 @@ class TourDemo(LOKPlugin):
             self.session.show_error(response.error, title="Tour Error")
             return
 
-        rooms = sorted(list(response.reachable_rooms))
+        rooms = sorted(response.reachable_rooms)
         tbl = Table(
             title=f"Reachable rooms in {self.room.area_name} using {response.route}",
             caption=f"{len(rooms)} rooms reachable",

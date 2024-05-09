@@ -125,7 +125,7 @@ class Command:
         return result
 
     def pass_full_command_text(self) -> bool:
-        return any([a for a in self.get_parameters() if a.name.lower() == "text"])
+        return any(a for a in self.get_parameters() if a.name.lower() == "text")
 
     def get_parameters(self) -> list[inspect.Parameter]:
         parameters = inspect.signature(self.callback).parameters.values()

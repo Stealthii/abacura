@@ -184,14 +184,14 @@ class TaskManager:
             self.tasks = []
             return
 
-        removals = set(task for task in self.tasks if task.q.lower() == q.lower())
+        removals = {task for task in self.tasks if task.q.lower() == q.lower()}
         self._remove_tasks(removals)
 
     def add_task(self, task: Task) -> None:
         task.set_queue(self._queues.get(task.q, TaskQueue()))
 
         if task.exclusive:
-            check = set(t for t in self.tasks if t.cmd.lower() == task.cmd.lower())
+            check = {t for t in self.tasks if t.cmd.lower() == task.cmd.lower()}
             if check:
                 return
 
@@ -225,7 +225,7 @@ class TaskManager:
         self.add_task(Task(cmd=cmd, priority=priority, dur=dur, delay=delay, q=q, timeout=timeout))
 
     def remove(self, cmd: str) -> None:
-        removals = set(task for task in self.tasks if task.q.lower() == cmd.lower())
+        removals = {task for task in self.tasks if task.q.lower() == cmd.lower()}
         self._remove_tasks(removals)
 
     def _remove_tasks(self, removals: set[Task]) -> None:

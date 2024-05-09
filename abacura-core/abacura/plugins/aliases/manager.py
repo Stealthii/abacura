@@ -48,7 +48,7 @@ class AliasManager:
 
     def get_categories(self) -> list[str]:
         unique_categories = {a.category for a in self.aliases}
-        return list(sorted(unique_categories))
+        return sorted(unique_categories)
 
     def get_category(self, category: str) -> list[Alias]:
         return [ali for ali in self.aliases if ali.category.lower() == category.lower()]

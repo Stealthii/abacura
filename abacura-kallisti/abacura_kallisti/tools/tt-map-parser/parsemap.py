@@ -212,7 +212,7 @@ def main(infile: str, outfile: str) -> None:
                 line = strip_ansi(line)
                 line = re.sub(r"(;\d\dm)", "", line)
                 vals = re.findall(pattern, line)
-                vals = list(map(lambda v: v.strip(), vals))
+                vals = [v.strip() for v in vals]
                 record_vals = []
                 if line.startswith("R"):
                     last_rnum = vals[0]

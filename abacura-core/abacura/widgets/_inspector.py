@@ -849,7 +849,7 @@ class NodeInfo(Container):
 
         # key_bindings_static.update("\n".join(map(repr, dom_node.BINDINGS)) or "(None defined with BINDINGS)")
         key_bindings_static.update(
-            Text("\n").join(map(lambda binding: highlighter(repr(binding)), dom_node.BINDINGS)) or "(None defined with BINDINGS)",
+            Text("\n").join(highlighter(repr(binding)) for binding in dom_node.BINDINGS) or "(None defined with BINDINGS)",
         )
 
         # For events, look for class properties that are subclasses of Message

@@ -59,7 +59,7 @@ class CommandHelper(Plugin):
         help_text.append(Text(" Usage:\n", style=OutputColors.section))
         help_text.append(Text(f"   #{cmd.name} {' '.join(parameter_names)}"))
 
-        g = Group(*[t for t in help_text])
+        g = Group(*list(help_text))
 
         if len(parameter_rows):
             tbl = tabulate(

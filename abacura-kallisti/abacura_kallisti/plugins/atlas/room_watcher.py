@@ -503,8 +503,8 @@ class RoomWatcher(LOKPlugin):
 
             if sr.vnum in self.world.rooms:
                 room = self.world.rooms[self.msdp.room_vnum]
-                missing_msdp_exits = any([d for d in self.msdp.room_exits if d not in room.exits])
-                extra_room_exits = any([d for d in room.exits if d not in self.msdp.room_exits])
+                missing_msdp_exits = any(d for d in self.msdp.room_exits if d not in room.exits)
+                extra_room_exits = any(d for d in room.exits if d not in self.msdp.room_exits)
                 if missing_msdp_exits or extra_room_exits:
                     self.debuglog("\nRoomWatcher: Mismatch between MSDP & Room exits")
 
