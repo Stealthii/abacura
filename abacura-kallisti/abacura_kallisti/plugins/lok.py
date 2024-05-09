@@ -1,15 +1,20 @@
 """Main Legends of Kallisti Module"""
 
+from __future__ import annotations
+
 import os
 import re
 import time
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins import action
 from abacura.plugins.events import AbacuraMessage, event
 from abacura.plugins.task_queue import TaskQueue
 from abacura_kallisti.plugins import LOKPlugin
+
+if TYPE_CHECKING:
+    from abacura.mud.options.msdp import MSDPMessage
 
 xp_kill_re = re.compile("(.*) is dead!")
 

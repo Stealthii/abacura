@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class PycharmDebugger:
     def __init__(self) -> None:
         # self.module = importlib.import_module("pydevd_pycharm")

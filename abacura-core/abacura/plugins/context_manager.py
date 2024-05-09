@@ -1,5 +1,9 @@
-from types import TracebackType
-from typing import Any, Self, Type
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Self, Type
+
+if TYPE_CHECKING:
+    from types import TracebackType
 
 
 class ContextError(Exception):

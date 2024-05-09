@@ -1,9 +1,14 @@
+from __future__ import annotations
+
 import re
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
-from abacura_kallisti.mud.affect import Affect
 from abacura_kallisti.mud.group import Group
 from abacura_kallisti.mud.skills import SKILL_COMMANDS, SKILLS
+
+if TYPE_CHECKING:
+    from abacura_kallisti.mud.affect import Affect
 
 
 @dataclass(slots=True)

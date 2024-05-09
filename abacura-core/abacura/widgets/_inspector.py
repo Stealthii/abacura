@@ -1,5 +1,7 @@
 """DOM inspector development tool for Textual."""
 
+from __future__ import annotations
+
 __all__ = ["Inspector"]
 
 __author__ = "Isaiah Odhner"
@@ -31,7 +33,7 @@ SOFTWARE.
 import asyncio
 import inspect
 import os
-from typing import Any, Iterable, NamedTuple, TypeGuard
+from typing import TYPE_CHECKING, Any, Iterable, NamedTuple, TypeGuard
 
 from rich.highlighter import ReprHighlighter
 from rich.markup import escape
@@ -39,8 +41,6 @@ from rich.style import Style
 from rich.text import Text
 
 # from rich.syntax import Syntax
-from textual import events
-from textual.app import ComposeResult
 from textual.color import Color
 from textual.containers import Container, VerticalScroll
 from textual.css.match import match
@@ -53,10 +53,14 @@ from textual.message import Message
 from textual.reactive import var
 from textual.widget import Widget
 from textual.widgets import Button, Static, TabbedContent, TabPane, Tree
-from textual.widgets.tree import TreeNode
 
 # from textual.css._style_properties import BorderDefinition
 from abacura.widgets.resizehandle import ResizeHandle
+
+if TYPE_CHECKING:
+    from textual import events
+    from textual.app import ComposeResult
+    from textual.widgets.tree import TreeNode
 
 # from launch_editor import launch_editor
 

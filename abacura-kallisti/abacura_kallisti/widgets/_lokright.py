@@ -1,11 +1,22 @@
 """Legends of Kallisti Right Side Panel Dock"""
 
-from textual.app import ComposeResult
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.containers import Container
 
 from abacura.widgets.resizehandle import ResizeHandle
 from abacura.widgets.sidebar import Sidebar
-from abacura_kallisti.widgets import LOKCombat, LOKGroup, LOKMap, LOKTaskQueue, LOKZone
+
+from ._lokcombat import LOKCombat
+from ._lokgroup import LOKGroup
+from ._lokmap import LOKMap
+from ._loktask_queue import LOKTaskQueue
+from ._lokzone import LOKZone
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
 
 
 class LOKRight(Sidebar):

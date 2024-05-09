@@ -1,9 +1,14 @@
-import random
+from __future__ import annotations
 
-from textual.app import ComposeResult
-from textual.timer import Timer
+import random
+from typing import TYPE_CHECKING
+
 from textual.widget import Widget
 from textual.widgets import ProgressBar, Static
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
+    from textual.timer import Timer
 
 
 class IndeterminateProgressBar(Widget):

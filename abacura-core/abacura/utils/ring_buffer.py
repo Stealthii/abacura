@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import sqlite3
 import time
 from datetime import datetime
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any, Callable
 
-from abacura.mud import OutputMessage
+if TYPE_CHECKING:
+    from abacura.mud import OutputMessage
 
 
 class RingBufferLogSql:

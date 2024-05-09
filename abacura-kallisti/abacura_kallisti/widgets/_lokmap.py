@@ -2,18 +2,18 @@
 LOK Map Widget
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from functools import lru_cache
+from typing import TYPE_CHECKING
 
 from rich.color import Color, ColorType
 from rich.color_triplet import ColorTriplet
 from rich.segment import Segment
 from rich.style import Style
 from textual import log
-from textual.app import ComposeResult
 from textual.containers import Container
-from textual.events import Resize
-from textual.geometry import Size
 from textual.strip import Strip
 from textual.widgets import Static
 
@@ -21,7 +21,13 @@ from abacura.plugins.events import event
 from abacura.widgets.resizehandle import ResizeHandle
 from abacura_kallisti.atlas.bfs import BFS
 from abacura_kallisti.atlas.messages import MapUpdateMessage, MapUpdateRequest
-from abacura_kallisti.atlas.room import Room
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
+    from textual.events import Resize
+    from textual.geometry import Size
+
+    from abacura_kallisti.atlas.room import Room
 
 
 @dataclass(eq=True, frozen=True, slots=True)

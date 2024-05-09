@@ -4,9 +4,15 @@ Experimental pixel image widget
 This depends on the vertical resolution doubling patch to rich-pixels
 """
 
-from rich.console import RenderableType
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from rich_pixels import Pixels
 from textual.widgets import Static
+
+if TYPE_CHECKING:
+    from rich.console import RenderableType
 
 
 class LOKImage(Static):

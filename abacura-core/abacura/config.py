@@ -1,5 +1,7 @@
 """Abacura configuration module"""
 
+from __future__ import annotations
+
 import os
 from pathlib import Path
 from typing import Any
@@ -19,8 +21,9 @@ class Config:
     _config_file: str
     name = "config"
 
-    def __init__(self, config: str = "~/.abacura") -> None:
+    def __init__(self, config: str | None = None) -> None:
         super().__init__()
+        config = config or "~/.abacura"
         p = Path(config).expanduser()
         if not p.is_file():
             with open(p, "w", encoding="UTF-8"):

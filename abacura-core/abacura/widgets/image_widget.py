@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import sys
 from dataclasses import dataclass
 from functools import lru_cache
@@ -9,13 +11,13 @@ from PIL import ImageSequence
 from rich.color import Color
 from rich.segment import Segment
 from rich.style import Style
-from textual import events
 from textual.app import App, ComposeResult
 from textual.strip import Strip
 from textual.widget import Widget
 
 if TYPE_CHECKING:
     from PIL.Image import Image
+    from textual import events
 
 
 @dataclass

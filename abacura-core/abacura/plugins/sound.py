@@ -2,8 +2,14 @@
 Handle MSP
 """
 
-from abacura.mud import OutputMessage
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from abacura.plugins import Plugin, action
+
+if TYPE_CHECKING:
+    from abacura.mud import OutputMessage
 
 
 class SoundPlugin(Plugin):

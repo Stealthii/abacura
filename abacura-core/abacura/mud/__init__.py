@@ -2,6 +2,8 @@
 The mud module contains Session objects and protocol handlers
 """
 
+from __future__ import annotations
+
 import re
 import traceback
 from abc import abstractmethod

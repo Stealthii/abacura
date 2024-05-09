@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abacura.plugins.task_queue import Task
 
 

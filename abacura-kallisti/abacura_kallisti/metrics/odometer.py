@@ -1,9 +1,14 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from abacura.plugins.events import AbacuraMessage
 from abacura_kallisti.metrics import MudMetrics
-from abacura_kallisti.mud.msdp import TypedMSDP
+
+if TYPE_CHECKING:
+    from abacura_kallisti.mud.msdp import TypedMSDP
 
 
 @dataclass

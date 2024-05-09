@@ -1,10 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from rich.table import Table
 
 from abacura.plugins import CommandError, command
 from abacura.plugins.events import event
-from abacura_kallisti.atlas.room import RoomMessage
 from abacura_kallisti.atlas.tour_guide import TourGuide
 from abacura_kallisti.plugins import LOKPlugin
+
+if TYPE_CHECKING:
+    from abacura_kallisti.atlas.room import RoomMessage
 
 
 class TourDemo(LOKPlugin):

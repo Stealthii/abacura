@@ -1,8 +1,14 @@
-from textual.app import ComposeResult
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.containers import Container
 from textual.widgets import Static
 
 from abacura.widgets.resizehandle import ResizeHandle
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
 
 SIDEBAR_CONTENT = """
 Character: Kensho

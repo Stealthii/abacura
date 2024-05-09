@@ -1,11 +1,17 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 import plotext as plt
-from numpy.typing import ArrayLike
 from rich.text import Text
 from textual import on
 from textual.app import App, ComposeResult
 from textual.containers import Center, Vertical
 from textual.widgets import Button, Static
+
+if TYPE_CHECKING:
+    from numpy.typing import ArrayLike
 
 
 class Plot(Static):

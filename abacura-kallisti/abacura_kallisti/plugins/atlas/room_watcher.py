@@ -1,15 +1,16 @@
+from __future__ import annotations
+
 import os
 import re
 import unicodedata
 from dataclasses import asdict, fields
 from itertools import takewhile
-from typing import Pattern
+from typing import TYPE_CHECKING, Pattern
 
 from rich.console import Group
 from rich.text import Text
 
 # from atlas.known_areas import KNOWN_AREAS
-from abacura.mud import OutputMessage
 from abacura.plugins import action, command
 from abacura.plugins.events import AbacuraMessage, event
 from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, tabulate
@@ -25,6 +26,9 @@ from abacura_kallisti.atlas.room import (
 )
 from abacura_kallisti.mud.area import Area
 from abacura_kallisti.plugins import LOKPlugin
+
+if TYPE_CHECKING:
+    from abacura.mud import OutputMessage
 
 
 class RoomMessageParser:

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abacura.plugins import CommandError, Plugin, command
 from abacura.utils.renderables import AbacuraPanel, tabulate
 

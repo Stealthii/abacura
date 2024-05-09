@@ -1,11 +1,16 @@
+from __future__ import annotations
+
 import time
+from typing import TYPE_CHECKING
 
 from abacura.plugins import command
 from abacura.utils.renderables import AbacuraPanel, Group, OutputColors, Text, tabulate
-from abacura_kallisti.atlas.room import Room
 from abacura_kallisti.atlas.travel_guide import TravelGuide
 from abacura_kallisti.plugins import LOKPlugin
 from abacura_kallisti.plugins.scripts.travel import TravelRequest, TravelResult
+
+if TYPE_CHECKING:
+    from abacura_kallisti.atlas.room import Room
 
 
 class TravelHelper(LOKPlugin):

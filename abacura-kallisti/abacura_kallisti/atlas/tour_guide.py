@@ -1,10 +1,15 @@
+from __future__ import annotations
+
 import random
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from abacura_kallisti.atlas.room import Area, Exit, ScannedRoom
 from abacura_kallisti.atlas.travel_guide import TravelGuide, TravelPath
-from abacura_kallisti.atlas.world import World
-from abacura_kallisti.mud.player import PlayerCharacter
+
+if TYPE_CHECKING:
+    from abacura_kallisti.atlas.world import World
+    from abacura_kallisti.mud.player import PlayerCharacter
 
 
 @dataclass

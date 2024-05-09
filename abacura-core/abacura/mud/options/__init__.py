@@ -1,5 +1,7 @@
 """Telnet Options handler module"""
 
+from __future__ import annotations
+
 from abc import abstractmethod
 
 SB = b"\xfa"

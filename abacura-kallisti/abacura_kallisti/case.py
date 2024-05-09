@@ -2,6 +2,8 @@
 Convert CamelCase to snake_case for easier naming of files
 """
 
+from __future__ import annotations
+
 import re
 from typing import Match, Pattern
 

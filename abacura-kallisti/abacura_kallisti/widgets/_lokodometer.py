@@ -1,16 +1,22 @@
 """Kallisti widget for displaying Odometer information"""
 
-from datetime import datetime
+from __future__ import annotations
 
-from textual.app import ComposeResult
+from datetime import datetime
+from typing import TYPE_CHECKING
+
 from textual.containers import ScrollableContainer
-from textual.events import Click, MouseDown, MouseMove, MouseUp
 from textual.widgets import DataTable, Static
 
 from abacura.plugins.events import event
 from abacura.utils import human_format
-from abacura_kallisti.metrics import MudMetrics
 from abacura_kallisti.metrics.odometer import OdometerMessage
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
+    from textual.events import Click, MouseDown, MouseMove, MouseUp
+
+    from abacura_kallisti.metrics import MudMetrics
 
 
 class LOKOdometerDetailWindow(ScrollableContainer):

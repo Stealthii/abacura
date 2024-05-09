@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abacura.plugins import Plugin, command
 from abacura.utils.pycharm import PycharmDebugger
 

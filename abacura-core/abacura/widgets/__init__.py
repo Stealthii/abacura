@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abacura.widgets._inspector import Inspector
 
 from ._rich_image import LOKGif, RichImage

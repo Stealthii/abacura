@@ -5,6 +5,8 @@ Tracks last command, calculates delay, and issues commands in priority order,
 depending on the combat situation.
 """
 
+from __future__ import annotations
+
 from abacura.plugins import Plugin, command, ticker
 from abacura.plugins.task_queue import _DEFAULT_DURATION, _DEFAULT_PRIORITY, CQMessage
 from abacura.utils.renderables import AbacuraPanel, tabulate

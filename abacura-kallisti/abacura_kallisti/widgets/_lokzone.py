@@ -1,12 +1,19 @@
 """Legends of Kallisti Zone information widget"""
 
-from textual.app import ComposeResult
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.containers import Container
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
+
+    from abacura.mud.options.msdp import MSDPMessage
 
 
 class LOKZoneHeading(Static):

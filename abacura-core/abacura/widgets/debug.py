@@ -1,10 +1,16 @@
 """Debug console widget"""
 
-from textual.app import ComposeResult
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.widget import Widget
 from textual.widgets import RichLog
 
 from abacura.widgets.resizehandle import ResizeHandle
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
 
 
 class DebugDock(Widget):

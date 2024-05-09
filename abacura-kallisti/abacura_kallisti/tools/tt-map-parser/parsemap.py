@@ -36,6 +36,8 @@ E {  207} {w} {w} {8} {0} {} {1.000} {} {0.00}
 
 """
 
+from __future__ import annotations
+
 import re
 import sqlite3
 

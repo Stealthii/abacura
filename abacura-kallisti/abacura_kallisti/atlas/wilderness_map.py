@@ -1,10 +1,16 @@
+from __future__ import annotations
+
 from collections import Counter
-from datetime import datetime
 from functools import lru_cache
+from typing import TYPE_CHECKING
 
 from .terrain import SKILL_TERRAIN, TERRAIN
 from .wilderness import WildernessGrid
-from .world import World
+
+if TYPE_CHECKING:
+    from datetime import datetime
+
+    from .world import World
 
 TINTIN_COLORS = {
     "black": "aaa",

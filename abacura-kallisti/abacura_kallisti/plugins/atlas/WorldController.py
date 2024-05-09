@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import importlib
+from typing import TYPE_CHECKING
 
 from rich.text import Text
 
@@ -8,9 +11,11 @@ from abacura.plugins.events import AbacuraMessage, event
 from abacura.utils.renderables import AbacuraPanel, AbacuraPropertyGroup, AbacuraTable, Group, OutputColors, Style, tabulate
 from abacura_kallisti.atlas.messages import MapUpdateMessage, MapUpdateRequest
 from abacura_kallisti.atlas.wilderness import WildernessGrid
-from abacura_kallisti.atlas.world import Room
 from abacura_kallisti.plugins import LOKPlugin
 from abacura_kallisti.plugins.scripts.travel import TravelStatus
+
+if TYPE_CHECKING:
+    from abacura_kallisti.atlas.world import Room
 
 
 class WorldController(LOKPlugin):

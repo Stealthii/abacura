@@ -1,5 +1,7 @@
 """Common stuff for mud.events module"""
 
+from __future__ import annotations
+
 import inspect
 from collections import Counter
 from dataclasses import dataclass, field

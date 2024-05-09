@@ -1,7 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from abacura.plugins import CommandError, command
 from abacura.utils.renderables import AbacuraPanel, tabulate
-from abacura_kallisti.atlas.world import Room
 from abacura_kallisti.plugins import LOKPlugin
+
+if TYPE_CHECKING:
+    from abacura_kallisti.atlas.world import Room
 
 
 class LocationController(LOKPlugin):

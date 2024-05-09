@@ -1,15 +1,22 @@
 """Widget to display current Affects and remaining time"""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from rich.columns import Columns
 
 # from rich.text import Text
-from textual.app import ComposeResult, RenderResult
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
 from abacura.utils.renderables import OutputColors, Text
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult, RenderResult
+
+    from abacura.mud.options.msdp import MSDPMessage
 
 # TODO one day this will use LOKMSDP for typed/parsed values
 # from abacura_kallisti.mud.affect import Affect

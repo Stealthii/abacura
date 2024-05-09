@@ -2,11 +2,17 @@
 Various footer widget bits
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.reactive import reactive
 from textual.widgets import Footer
 
-from abacura.mud.options.msdp import MSDPMessage
 from abacura.plugins.events import event
+
+if TYPE_CHECKING:
+    from abacura.mud.options.msdp import MSDPMessage
 
 
 # TODO this should probably be a specific implementation in abacura-kallisti

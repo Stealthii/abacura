@@ -5,6 +5,8 @@ Tracks last command, calculates delay, and issues commands in priority order,
 depending on the combat situation.
 """
 
+from __future__ import annotations
+
 import bisect
 import itertools
 from dataclasses import dataclass, field

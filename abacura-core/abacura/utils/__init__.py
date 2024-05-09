@@ -1,6 +1,11 @@
+from __future__ import annotations
+
 import re
 from collections import OrderedDict
-from numbers import Real
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from numbers import Real
 
 _pct_colors = OrderedDict()
 _pct_colors[80] = "green"

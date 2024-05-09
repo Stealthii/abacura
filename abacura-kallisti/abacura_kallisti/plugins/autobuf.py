@@ -1,5 +1,7 @@
 """Automatic application of Buffs"""
 
+from __future__ import annotations
+
 from time import monotonic
 
 from abacura.plugins import action, command

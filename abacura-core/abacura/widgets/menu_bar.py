@@ -4,14 +4,18 @@ Menu bar widget
 Intended for top of screen but you do you
 """
 
-from typing import Callable
+from __future__ import annotations
 
-from rich.console import RenderableType
+from typing import TYPE_CHECKING, Callable
+
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.css.query import NoMatches
-from textual.events import Click
 from textual.widgets import Input, OptionList, Static
+
+if TYPE_CHECKING:
+    from rich.console import RenderableType
+    from textual.events import Click
 
 
 class SubMenu(OptionList):

@@ -2,12 +2,15 @@
 Logging module for sessions
 """
 
+from __future__ import annotations
+
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from abacura import Config
+if TYPE_CHECKING:
+    from abacura import Config
 
 
 class AbacuraLogger:

@@ -42,6 +42,7 @@ ignore = [
     "UP",   # pyupgrade
 ]
 select = ["ALL"]
+isort.required-imports = ["from __future__ import annotations"]
 isort.known-first-party = ["abacura", "abacura_kallisti"]
 
 [lint.per-file-ignores]

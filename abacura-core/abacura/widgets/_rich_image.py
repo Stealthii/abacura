@@ -1,21 +1,25 @@
+from __future__ import annotations
+
 import time
 from dataclasses import dataclass
 from datetime import datetime
 from functools import lru_cache
 from itertools import groupby
 from pathlib import Path, PurePath
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from PIL import Image as PILImageModule
 from PIL import ImageSequence
-from PIL.Image import Image
 from rich.color import Color
 from rich.console import Console, ConsoleOptions, RenderableType, RenderResult
 from rich.live import Live
 from rich.segment import Segment
 from rich.style import Style
-from textual.timer import Timer
 from textual.widgets import Static
+
+if TYPE_CHECKING:
+    from PIL.Image import Image
+    from textual.timer import Timer
 
 
 @dataclass

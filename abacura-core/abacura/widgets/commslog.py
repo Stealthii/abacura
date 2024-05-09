@@ -1,10 +1,16 @@
 """A resizeable log window for communications"""
 
-from textual.app import ComposeResult
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.containers import Container
 from textual.widgets import RichLog
 
 from abacura.widgets.resizehandle import ResizeHandle
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
 
 
 class CommsLog(Container):

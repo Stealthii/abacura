@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 
 from abacura.plugins import action, command, ticker

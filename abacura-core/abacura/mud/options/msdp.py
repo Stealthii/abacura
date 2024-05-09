@@ -1,5 +1,7 @@
 """MSDP telnet option processor"""
 
+from __future__ import annotations
+
 import re
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
@@ -8,11 +10,12 @@ from textual import log
 
 from abacura.mud import OutputMessage
 from abacura.mud.options import IAC, SB, SE, TelnetOption
-from abacura.mud.session import Session
 from abacura.plugins.events import AbacuraMessage
 
 if TYPE_CHECKING:
     from typing import Protocol
+
+    from abacura.mud.session import Session
 
     class Handler(Protocol):
         def __call__(self, buf: bytes) -> None: ...

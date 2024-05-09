@@ -1,5 +1,7 @@
 """The Event plugin"""
 
+from __future__ import annotations
+
 from abacura.plugins import CommandError, Plugin, command
 from abacura.plugins.events import AbacuraMessage
 from abacura.utils.renderables import AbacuraPanel, tabulate

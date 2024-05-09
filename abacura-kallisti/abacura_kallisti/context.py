@@ -1,6 +1,8 @@
-import os
+from __future__ import annotations
 
-from abacura.config import Config
+import os
+from typing import TYPE_CHECKING
+
 from abacura.plugins import ContextProvider
 from abacura_kallisti.atlas.location import LocationList
 from abacura_kallisti.atlas.room import ScannedRoom
@@ -8,6 +10,9 @@ from abacura_kallisti.atlas.world import World
 from abacura_kallisti.metrics.odometer import Odometer
 from abacura_kallisti.mud.msdp import TypedMSDP
 from abacura_kallisti.mud.player import PlayerCharacter
+
+if TYPE_CHECKING:
+    from abacura.config import Config
 
 
 class LOKContextProvider(ContextProvider):

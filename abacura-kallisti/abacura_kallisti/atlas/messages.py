@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from abacura.plugins.events import AbacuraMessage
 
-from .room import Room
-from .world import World
+if TYPE_CHECKING:
+    from .room import Room
+    from .world import World
 
 
 @dataclass

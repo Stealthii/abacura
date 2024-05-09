@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 import sys
 import threading
 from collections import deque
 from dataclasses import dataclass
 from time import perf_counter_ns
-from types import FrameType
-from typing import Any, Callable
+from typing import TYPE_CHECKING, Any, Callable
+
+if TYPE_CHECKING:
+    from types import FrameType
 
 try:
     from resource import RUSAGE_SELF, getrusage

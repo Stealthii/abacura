@@ -1,15 +1,19 @@
+from __future__ import annotations
+
 from dataclasses import astuple, dataclass, fields, is_dataclass
 from itertools import zip_longest
-from typing import Any, Callable, ClassVar, Iterable, Protocol
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Iterable, Protocol
 
 from rich import box as rich_box
-from rich.align import AlignMethod
 from rich.console import Group, JustifyMethod, RenderableType
-from rich.padding import PaddingDimensions
 from rich.panel import Panel
 from rich.style import Style, StyleType
 from rich.table import Table
 from rich.text import Text, TextType
+
+if TYPE_CHECKING:
+    from rich.align import AlignMethod
+    from rich.padding import PaddingDimensions
 
 
 @dataclass

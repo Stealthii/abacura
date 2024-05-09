@@ -1,10 +1,15 @@
 """TERMINAL-TYPE SUPPORT"""
 
-from asyncio.streams import StreamWriter
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from textual import log
 
 from abacura.mud.options import IAC, SB, SE, WILL, TelnetOption
+
+if TYPE_CHECKING:
+    from asyncio.streams import StreamWriter
 
 SEND = b"\x01"
 IS = b"\x00"

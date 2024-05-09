@@ -1,10 +1,16 @@
-from textual.app import ComposeResult
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.containers import Grid
 from textual.widgets import Input
 
 from abacura.plugins import Plugin, command
 from abacura.screens import AbacuraWindow
 from abacura_kallisti.widgets import LOKMap
+
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
 
 
 class BigMapWindow(AbacuraWindow):

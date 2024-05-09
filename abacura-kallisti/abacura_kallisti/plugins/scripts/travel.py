@@ -1,11 +1,15 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 from abacura.plugins import action
 from abacura.plugins.events import AbacuraMessage, event
-from abacura_kallisti.atlas.room import Room, RoomMessage
 from abacura_kallisti.atlas.travel_guide import TravelGuide, TravelPath
 from abacura_kallisti.plugins import LOKPlugin
+
+if TYPE_CHECKING:
+    from abacura_kallisti.atlas.room import Room, RoomMessage
 
 
 @dataclass

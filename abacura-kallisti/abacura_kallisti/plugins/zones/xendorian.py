@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abacura.plugins import action, command
 from abacura.utils.renderables import AbacuraPanel, tabulate
 from abacura_kallisti.atlas.room import Exit
